@@ -54,20 +54,12 @@
                     <LineShadowText class="block sm:inline" shadowColor="white">Lines</LineShadowText>
                 </h1>
 
-                <p class="text-lg md:text-xl mb-8 max-w-2xl font-arvo hidden md:block text-gray-300">
-                    La herramienta definitiva para freelancers y PyMEs.
-                    Deja que nuestra IA gestione tus clientes 24/7.
-                </p>
+                <TextGenerateEffect
+                    words="La herramienta definitiva para freelancers y PyMEs. Deja que nuestra IA gestione tus clientes 24/7."
+                    class="text-lg md:text-xl mb-8 max-w-2xl font-sans hidden md:block text-white-300" />
 
                 <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-                    <router-link to="/register"
-                        class="btn-custom bg-white text-indigo-700 hover:bg-gray-100 hover:text-indigo-600 border-none text-center px-8">
-                        Empezar Ahora
-                    </router-link>
-                    <button
-                        class="px-6 py-3 rounded-full border-2 border-white font-bold hover:bg-white hover:text-indigo-600 transition">
-                        Ver Demo
-                    </button>
+                    <InteractiveHoverButton text="Empezar Ahora" to="/register" class="leading-normal" />
                 </div>
             </div>
 
@@ -76,36 +68,62 @@
                 :class="'[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]'" />
         </header>
 
-        <section class="py-20 bg-gray-50">
-            <div class="max-w-6xl mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">¿Por qué elegirnos?</h2>
-
-                <!-- Grid responsivo: 1 col en móvil, 3 en desktop (md:grid-cols-3) -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-                    <!-- Tarjeta 1 -->
-                    <div class="feature-card group">
-                        <div class="icon-box">💬</div>
-                        <h3 class="text-xl font-bold mb-2 text-gray-800">Chatbots Inteligentes</h3>
-                        <p class="text-gray-600">Responde dudas frecuentes sin levantar un dedo.</p>
+        <section class="py-20 bg-gray-950 px-4">
+            <div class="max-w-4xl mx-auto mb-20 text-center">
+                <h2 class="text-6xl md:text-9xl font-bold font-league text-white mb-4">Todo lo que necesitas</h2>
+                <p class="text-gray-400 text-xl">Potencia tu negocio con nuestras herramientas.</p>
+            </div>
+            <div class="features p-10">
+                <FlipCard class="feature-1 mx-auto bounce">
+                    <template #default class="flex items-center justify-center">
+                        <div
+                            class="h-full w-full flex flex-col justify-center items-center bg-indigo-800 p-4 text-center">
+                            <h3 class="font-league text-white text-4xl md:text-6xl">
+                                Chatbots Inteligentes
+                            </h3>
+                        </div>
+                    </template>
+                    <template #back>
+                        <div class="flex min-h-full flex-col justify-center items-center gap-2">
+                            <p
+                                class="mt-1 py-4 text-2xl leading-normal text-indigo-500 text-center font-bold">
+                                Respuestas automáticas 24/7 impulsadas por IA avanzada.
+                            </p>
+                        </div>
+                    </template>
+                </FlipCard>
+                <FlipCard class="feature-2 mx-auto">
+                    <template #default class="flex items-center justify-center">
+                        <div
+                            class="h-full w-full flex flex-col justify-center items-center bg-indigo-800 p-4 text-center">
+                            <h3 class="font-league text-white text-4xl md:text-6xl">
+                                Automatización
+                            </h3>
+                        </div>
+                    </template>
+                    <template #back>
+                        <div class="flex min-h-full flex-col justify-center items-center gap-2">
+                            <p
+                                class="mt-1 py-4 text-2xl leading-normal text-indigo-500 text-center font-bold">
+                                Mejora tu productividad con tu propio asistente.
+                            </p>
+                        </div>
+                    </template>
+                </FlipCard>
+                <div class="feature-3">
+                    <h3 class="font-league text-white text-6xl">Integraciones</h3>
+                </div>
+                <div class="feature-4 logo">
+                    <img src="../img/logo.png">
+                </div>
+                <div class="feature-5 flex justify-around gap-2">
+                    <h3 class="font-league text-white text-6xl">Panel de Control</h3>
+                    <div class="w-96">
+                        <img src="../img/dashboard_sample.jpg" alt="dashboard picture" class="rounded-lg"></img>
                     </div>
-
-                    <!-- Tarjeta 2 -->
-                    <div class="feature-card group">
-                        <div class="icon-box">📅</div>
-                        <h3 class="text-xl font-bold mb-2 text-gray-800">Agenda Automática</h3>
-                        <p class="text-gray-600">Toma pedidos y agendamientos directo en tu calendario.</p>
-                    </div>
-
-                    <!-- Tarjeta 3 -->
-                    <div class="feature-card group">
-                        <div class="icon-box">📈</div>
-                        <h3 class="text-xl font-bold mb-2 text-gray-800">Métricas Reales</h3>
-                        <p class="text-gray-600">Visualiza cuánto estás vendiendo en tiempo real.</p>
-                    </div>
-
                 </div>
             </div>
+
         </section>
 
         <!-- 4. PLANES -->
@@ -144,6 +162,38 @@
 import { ref } from 'vue';
 import LineShadowText from '@/components/LineShadowText.vue';
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
+import TextGenerateEffect from '@/components/TextGenerateEffect.vue';
+import InteractiveHoverButton from '@/components/InteractiveHoverButton.vue';
+import FlipCard from '@/components/FlipCard.vue';
+
+
+const features = ref([
+    {
+        title: "Chatbots Inteligentes",
+        description: "Respuestas automáticas 24/7 impulsadas por IA avanzada.",
+        icon: "💬",
+        class: "md:col-span-1",
+    },
+    {
+        title: "Análisis de Sentimientos",
+        description: "Entiende si tu cliente está feliz o molesto antes de responder.",
+        icon: "🧠",
+        class: "md:col-span-1",
+    },
+    {
+        title: "Integración Total",
+        description: "Conecta con WhatsApp, Instagram y Telegram en un solo lugar.",
+        icon: "🔗",
+        class: "md:col-span-1",
+    },
+    {
+        title: "Panel de Control",
+        description: "Visualiza métricas en tiempo real de todos tus bots. Gestiona, edita y mejora tus flujos de conversación sin código.",
+        icon: "📈",
+        class: "md:col-span-3",
+        hasHeader: true
+    },
+]);
 
 const planes = ref([
     {
@@ -181,18 +231,16 @@ const toggleMenu = () => {
     background-repeat: no-repeat;
 }
 
-.font-league {
+h1.font-league {
     font-size: 20rem;
 }
 
 
 .btn-custom {
     background-color: #4F46E5;
-    /* Indigo 600 */
     color: white;
     padding: 0.75rem 1.5rem;
     border-radius: 9999px;
-    /* Pill shape */
     font-weight: bold;
     transition: transform 0.2s, box-shadow 0.2s;
     display: inline-block;
@@ -204,7 +252,34 @@ const toggleMenu = () => {
     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
 }
 
-/* 3. Tarjetas con efecto glassmorphism o hover especial */
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+}
+
+.feature-1 {
+    grid-area: 1 / 1 / 4 / 2;
+}
+
+.feature-2 {
+    grid-area: 1 / 2 / 4 / 3;
+}
+
+.feature-3 {
+    grid-area: 1 / 3 / 4 / 4;
+}
+
+.feature-4 {
+    grid-area: 4 / 1 / 7 / 2;
+}
+
+.feature-5 {
+    grid-area: 4 / 2 / 7 / 4;
+}
+
 .feature-card {
     background: white;
     padding: 2rem;
@@ -239,5 +314,23 @@ const toggleMenu = () => {
     /* Se pone azul */
     color: white;
     /* Icono blanco */
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(-2%);
+        animation-timing-function: cubic-bezier(0.8,0,1,1);
+    }
+    50% {
+        transform: none;
+        animation-timing-function: cubic-bezier(0,0,0.2,1);
+    }
+}
+.bounce {
+    animation: bounce 1s infinite;
+}
+
+.bounce:hover{
+    animation-play-state: paused;
 }
 </style>
