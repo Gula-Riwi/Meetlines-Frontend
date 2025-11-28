@@ -47,7 +47,7 @@
         <header id="hero"
             class="hero-bg flex flex-col justify-center md:items-start sm:items-center px-16 text-white h-svh">
             <h1
-                class="text-7xl md:text-8xl lg:text-9xl font-extrabold tracking-widest mb-6 leading-tight font-ultra italic text-center">
+                class="text-7xl md:text-8xl lg:text-9xl tracking-widest mb-6 leading-tight font-ultra italic text-center">
                 Meet<span class="underline block sm:inline">Lines</span>
             </h1>
             <p class="text-lg md:text-xl mb-8 max-w-2xl font-arvo hidden md:block">
