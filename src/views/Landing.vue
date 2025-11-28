@@ -45,25 +45,35 @@
         </nav>
 
         <header id="hero"
-            class="hero-bg flex flex-col justify-center md:items-start sm:items-center px-16 text-white h-svh">
-            <h1
-                class="tracking-wide mb-6 font-league text-center italic">
-                Meet<span class="underline block sm:inline">Lines</span>
-            </h1>
-            <p class="text-lg md:text-xl mb-8 max-w-2xl font-arvo hidden md:block">
-                La herramienta definitiva para freelancers y PyMEs.
-                Deja que nuestra IA gestione tus clientes 24/7.
-            </p>
-            <div class="flex flex-col md:flex-row gap-4">
-                <router-link to="/register"
-                    class="btn-custom bg-white text-indigo-700 hover:bg-gray-100 hover:text-indigo-600 border-none text-center w-25">
-                    Empezar Ahora
-                </router-link>
-                <button
-                    class="px-6 py-3 rounded-full border-2 border-white font-bold hover:bg-white hover:text-indigo-600 transition">
-                    Ver Demo
-                </button>
+            class="relative flex flex-col justify-center md:items-start sm:items-center px-16 text-white h-svh bg-blue-950 overflow-hidden">
+
+            <div class="relative z-10">
+                <h1
+                    class="tracking-wide mb-6 font-league text-center md:text-left italic text-5xl md:text-7xl font-bold">
+                    Meet
+                    <LineShadowText class="block sm:inline" shadowColor="white">Lines</LineShadowText>
+                </h1>
+
+                <p class="text-lg md:text-xl mb-8 max-w-2xl font-arvo hidden md:block text-gray-300">
+                    La herramienta definitiva para freelancers y PyMEs.
+                    Deja que nuestra IA gestione tus clientes 24/7.
+                </p>
+
+                <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
+                    <router-link to="/register"
+                        class="btn-custom bg-white text-indigo-700 hover:bg-gray-100 hover:text-indigo-600 border-none text-center px-8">
+                        Empezar Ahora
+                    </router-link>
+                    <button
+                        class="px-6 py-3 rounded-full border-2 border-white font-bold hover:bg-white hover:text-indigo-600 transition">
+                        Ver Demo
+                    </button>
+                </div>
             </div>
+
+            <InteractiveGridPattern :width="60" :height="60" :squares="[50, 50]"
+                squares-class-name="hover:fill-indigo-500/50"
+                :class="'[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]'" />
         </header>
 
         <section class="py-20 bg-gray-50">
@@ -132,6 +142,8 @@
 
 <script setup>
 import { ref } from 'vue';
+import LineShadowText from '@/components/LineShadowText.vue';
+import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 
 const planes = ref([
     {
