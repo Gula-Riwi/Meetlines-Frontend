@@ -70,8 +70,9 @@
 
         <section class="py-20 bg-gray-950 px-4">
             <div class="max-w-4xl mx-auto mb-20 text-center">
-                <h2 class="text-6xl md:text-9xl font-bold font-league text-white mb-4">Todo lo que necesitas</h2>
-                <p class="text-gray-400 text-xl">Potencia tu negocio con nuestras herramientas.</p>
+                <TextReveal class="text-6xl md:text-9xl font-bold font-league text-white mb-4">Todo lo que necesitas
+                </TextReveal>
+                <TextReveal class="text-gray-400 text-xl">Potencia tu negocio con nuestras herramientas.</TextReveal>
             </div>
             <div class="features p-10">
                 <FlipCard class="feature-1 mx-auto bounce">
@@ -85,8 +86,7 @@
                     </template>
                     <template #back>
                         <div class="flex min-h-full flex-col justify-center items-center gap-2">
-                            <p
-                                class="mt-1 py-4 text-2xl leading-normal text-indigo-500 text-center font-bold">
+                            <p class="mt-1 py-4 text-2xl leading-normal text-indigo-500 text-center font-bold">
                                 Respuestas automáticas 24/7 impulsadas por IA avanzada.
                             </p>
                         </div>
@@ -103,27 +103,87 @@
                     </template>
                     <template #back>
                         <div class="flex min-h-full flex-col justify-center items-center gap-2">
-                            <p
-                                class="mt-1 py-4 text-2xl leading-normal text-indigo-500 text-center font-bold">
+                            <p class="mt-1 py-4 text-2xl leading-normal text-indigo-500 text-center font-bold">
                                 Mejora tu productividad con tu propio asistente.
                             </p>
                         </div>
                     </template>
                 </FlipCard>
-                <div class="feature-3">
-                    <h3 class="font-league text-white text-6xl">Integraciones</h3>
-                </div>
+                <FlipCard class="feature-3 mx-auto">
+                    <template #default class="flex items-center justify-center">
+                        <div
+                            class="h-full w-full flex flex-col justify-center items-center bg-indigo-800 p-4 text-center">
+                            <h3 class="font-league text-white text-4xl md:text-6xl">
+                                Integraciones
+                            </h3>
+                        </div>
+                    </template>
+                    <template #back>
+                        <div class="grid grid-cols-2 grid-rows-2 min-h-full w-full gap-4 p-4">
+                            <div class="group/icon relative flex items-center justify-center">
+                                <div
+                                    class="absolute inset-0 bg-blue-500 rounded-full blur-xl opacity-0 transition-opacity duration-500 group-hover/icon:opacity-70">
+                                </div>
+                                <font-awesome-icon :icon="['fab', 'meta']"
+                                    class="relative z-10 text-gray-300 text-6xl transition-all duration-300 group-hover/icon:text-white group-hover/icon:scale-110" />
+                            </div>
+
+                            <div class="group/icon relative flex items-center justify-center">
+                                <div
+                                    class="absolute inset-0 bg-green-500 rounded-full blur-xl opacity-0 transition-opacity duration-500 group-hover/icon:opacity-70">
+                                </div>
+                                <font-awesome-icon :icon="['fab', 'whatsapp']"
+                                    class="relative z-10 text-gray-300 text-6xl transition-all duration-300 group-hover/icon:text-white group-hover/icon:scale-110" />
+                            </div>
+
+                            <div class="group/icon relative flex items-center justify-center">
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 rounded-full blur-xl opacity-0 transition-opacity duration-500 group-hover/icon:opacity-80">
+                                </div>
+                                <font-awesome-icon :icon="['fab', 'instagram']"
+                                    class="relative z-10 text-gray-300 text-6xl transition-all duration-300 group-hover/icon:text-white group-hover/icon:scale-110" />
+                            </div>
+
+                            <div class="group/icon relative flex items-center justify-center">
+                                <div
+                                    class="absolute inset-0 bg-blue-700 rounded-full blur-xl opacity-0 transition-opacity duration-500 group-hover/icon:opacity-70">
+                                </div>
+                                <font-awesome-icon :icon="['fab', 'facebook']"
+                                    class="relative z-10 text-gray-300 text-6xl transition-all duration-300 group-hover/icon:text-white group-hover/icon:scale-110" />
+                            </div>
+
+                        </div>
+                    </template>
+                </FlipCard>
                 <div class="feature-4 logo">
                     <img src="../img/logo.png">
                 </div>
-                <div class="feature-5 flex justify-around gap-2">
-                    <h3 class="font-league text-white text-6xl">Panel de Control</h3>
-                    <div class="w-96">
-                        <img src="../img/dashboard_sample.jpg" alt="dashboard picture" class="rounded-lg"></img>
+                <div
+                    class="feature-5 group relative flex flex-col justify-end overflow-hidden rounded-2xl min-h-[400px] w-full">
+                    <img src="../img/dashboard_sample.jpg" alt="dashboard picture"
+                        class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-90 transition-opacity duration-300">
+                    </div>
+
+                    <div class="relative z-10 p-6 md:p-8">
+                        <h3 class="font-league text-white text-4xl md:text-5xl font-bold mb-1">
+                            Panel de Control
+                        </h3>
+                        <div
+                            class="grid grid-rows-[0fr] transition-all duration-500 ease-in-out group-hover:grid-rows-[1fr]">
+                            <div class="overflow-hidden">
+                                <p
+                                    class="text-lg text-gray-200 pt-4 opacity-0 transition-opacity duration-700 delay-100 group-hover:opacity-100">
+                                    Visualiza métricas en tiempo real de todos tus bots. Gestiona, edita y mejora tus
+                                    flujos de
+                                    conversación sin código.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </section>
 
         <!-- 4. PLANES -->
@@ -165,6 +225,7 @@ import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 import TextGenerateEffect from '@/components/TextGenerateEffect.vue';
 import InteractiveHoverButton from '@/components/InteractiveHoverButton.vue';
 import FlipCard from '@/components/FlipCard.vue';
+import TextReveal from '@/components/TextReveal.vue';
 
 
 const features = ref([
@@ -257,7 +318,7 @@ h1.font-league {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(6, 1fr);
     grid-column-gap: 5px;
-    grid-row-gap: 5px;
+    grid-row-gap: 15px;
 }
 
 .feature-1 {
@@ -317,20 +378,24 @@ h1.font-league {
 }
 
 @keyframes bounce {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(-2%);
-        animation-timing-function: cubic-bezier(0.8,0,1,1);
+        animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
     }
+
     50% {
         transform: none;
-        animation-timing-function: cubic-bezier(0,0,0.2,1);
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
     }
 }
+
 .bounce {
     animation: bounce 1s infinite;
 }
 
-.bounce:hover{
+.bounce:hover {
     animation-play-state: paused;
 }
 </style>
