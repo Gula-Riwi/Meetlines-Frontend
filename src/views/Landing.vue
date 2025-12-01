@@ -187,24 +187,45 @@
         </section>
 
         <!-- 4. PLANES -->
-        <section class="py-20 bg-white">
+        <section class="py-20 bg-gray-400">
             <div class="max-w-4xl mx-auto px-6 text-center">
-                <h2 class="text-3xl font-bold text-gray-800 mb-12">Planes Simples</h2>
+                <TextReveal class="text-6xl md:text-9xl font-bold font-league text-black mb-10">Nuestros Planes
+                </TextReveal>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div v-for="plan in planes" :key="plan.nombre"
-                        class="border border-gray-200 rounded-2xl p-8 hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
-                        <h3 class="text-2xl font-bold text-gray-800">{{ plan.nombre }}</h3>
-                        <p class="text-4xl font-extrabold text-indigo-600 my-4">{{ plan.precio }}</p>
-                        <ul class="text-left space-y-3 mb-8 text-gray-600">
-                            <li v-for="feature in plan.features" :key="feature" class="flex items-center">
-                                <span class="text-green-500 mr-2">✔</span> {{ feature }}
-                            </li>
-                        </ul>
-                        <button
-                            class="w-full py-3 rounded-lg font-bold bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white transition">
-                            Elegir Plan
-                        </button>
+                    <div v-for="plan in planes" :key="plan.nombre" class="p-8 flex justify-center">
+                        <GlareCard class="flex flex-col justify-center items-center">
+                            <h3 class="text-4xl mt-4 tracking-wider text-white font-league">{{ plan.nombre }}</h3>
+                            <div>
+                                <span class="text-4xl font-extrabold text-indigo-500">$</span>
+                                <NumberTicker :value=plan.precio :decimalPlaces="0"
+                                    class="text-4xl font-extrabold text-indigo-500 my-4" />
+                                <span class="text-gray-300 text-md">/mes</span>
+                            </div>
+                            <div class="flex-1 p-6 w-full">
+                                <ul class="space-y-4">
+                                    <li v-for="feature in plan.features" :key="feature" class="flex items-start gap-3">
+                                        <div
+                                            class="mt-1 bg-indigo-500/20 p-1 rounded-full text-indigo-400 flex-shrink-0">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                                    d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-gray-300 text-sm leading-snug">
+                                            {{ feature }}
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <ShimmerButton class="font-bold mb-5" shimmer-size="2px" background="#312e81"
+                                shimmerColor="#818cf8">
+                                <span
+                                    class="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white lg:text-lg dark:from-white dark:to-slate-900/10">
+                                    Elegir Plan
+                                </span>
+                            </ShimmerButton>
+                        </GlareCard>
                     </div>
                 </div>
             </div>
@@ -226,6 +247,9 @@ import TextGenerateEffect from '@/components/TextGenerateEffect.vue';
 import InteractiveHoverButton from '@/components/InteractiveHoverButton.vue';
 import FlipCard from '@/components/FlipCard.vue';
 import TextReveal from '@/components/TextReveal.vue';
+import GlareCard from '@/components/GlareCard.vue';
+import NumberTicker from '@/components/NumberTicker.vue';
+import ShimmerButton from '@/components/ShimmerButton.vue';
 
 
 const features = ref([
@@ -259,12 +283,12 @@ const features = ref([
 const planes = ref([
     {
         nombre: 'Freelancer',
-        precio: '$0',
+        precio: 0,
         features: ['1 Chatbot', '50 conversaciones/mes', 'Soporte por correo']
     },
     {
         nombre: 'Pyme',
-        precio: '$29',
+        precio: 29,
         features: ['3 Chatbots', 'Conversaciones ilimitadas', 'Dashboard Pro', 'Soporte Prioritario']
     }
 ]);
