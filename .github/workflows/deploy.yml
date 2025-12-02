@@ -15,7 +15,7 @@ jobs:
     - name: 🟢 Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20'
+        node-version: '18'
         cache: 'npm'
     
     - name: 📦 Install dependencies
@@ -27,17 +27,6 @@ jobs:
         VITE_API_URL: ${{ secrets.VITE_API_URL }}
         VITE_API_TIMEOUT: ${{ secrets.VITE_API_TIMEOUT }}
         VITE_ENABLE_LOGGING: ${{ secrets.VITE_ENABLE_LOGGING }}
-
-    - name: 🧹 Clean old files
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
-        key: ${{ secrets.VPS_SSH_KEY }}
-        port: 22
-        script: |
-          rm -rf /var/www/MeetLines-Frontend/dist/*
-          mkdir -p /var/www/MeetLines-Frontend/dist
     
     - name: 🚀 Deploy to VPS
       uses: appleboy/scp-action@v0.1.7
@@ -46,9 +35,9 @@ jobs:
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.VPS_SSH_KEY }}
         port: 22
-        source: "dist/*"
-        target: "/var/www/MeetLines-Frontend/dist/"
-        strip_components: 1
+        source: "dist/"
+        target: "/var/www/meetlines/"
+        rm: true
     
     - name: 🔧 Fix permissions
       uses: appleboy/ssh-action@v1.0.3
@@ -58,8 +47,8 @@ jobs:
         key: ${{ secrets.VPS_SSH_KEY }}
         port: 22
         script: |
-          sudo chown -R miguel_arias:www-data /var/www/MeetLines-Frontend/
-          sudo chmod -R 755 /var/www/MeetLines-Frontend/
+          sudo chown -R $USER:$USER /var/www/meetlines/
+          sudo chmod -R 755 /var/www/meetlines/
     
     - name: 🔄 Reload Nginx
       uses: appleboy/ssh-action@v1.0.3
@@ -70,4 +59,4 @@ jobs:
         port: 22
         script: |
           sudo systemctl reload nginx
-          echo "✅ Deployment completed!!"
+          echo "✅ Deployment completed!"
