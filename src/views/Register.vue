@@ -22,12 +22,12 @@
                 <p class="text-gray-200 text-sm">Gestiona tus pedidos con IA hoy mismo</p>
             </div>
 
-            <form @submit.prevent="registrarse" class="space-y-5">
+            <form @submit.prevent="register" class="space-y-5">
 
                 <!-- Nombre -->
                 <div class="space-y-1">
                     <label class="text-sm font-medium text-gray-300 ml-1">Nombre de Empresa / Freelancer</label>
-                    <input type="text" v-model="nombre" required placeholder="Mi Negocio Inc."
+                    <input type="text" v-model="name" required placeholder="Mi Negocio Inc."
                         class="w-full bg-gray-950/50 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" />
                 </div>
 
@@ -52,12 +52,26 @@
                         class="w-full bg-gray-950/50 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" />
                 </div>
 
-                <!-- Botón de Registro (Usando ShimmerButton) -->
+                <div v-if="errorMsg"
+                    class="p-3 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm text-center">
+                    {{ errorMsg }}
+                </div>
+
+
                 <div class="pt-4">
-                    <ShimmerButton class="w-full font-bold" shimmer-size="2px" background="#312e81"
-                        shimmerColor="#818cf8" border-radius="12px" @click="registrarse">
-                        <span class="text-white tracking-wide">
-                            Registrarse
+                    <ShimmerButton class="w-full font-bold transition-opacity"
+                        :class="{ 'opacity-50 cursor-not-allowed': isLoading }" shimmer-size="2px" background="#312e81"
+                        shimmerColor="#818cf8" border-radius="12px" @click="registrarse" :disabled="isLoading">
+                        <span class="text-white tracking-wide flex items-center gap-2">
+                            <svg v-if="isLoading" class="animate-spin h-5 w-5 text-white"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            {{ isLoading ? 'Creando cuenta...' : 'Registrarse' }}
                         </span>
                     </ShimmerButton>
                 </div>
@@ -85,19 +99,25 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
-import ShimmerButton from '@/components/ShimmerButton.vue'; 
+import ShimmerButton from '@/components/ShimmerButton.vue';
 import LineShadowText from '@/components/LineShadowText.vue';
+
+import authService from '@/services/authService';
 
 const router = useRouter();
 
 
-const nombre = ref('');
+const name = ref('');
 const email = ref('');
 const password = ref('');
 const confirmPassword = ref('');
 
-const registrarse = () => {
-    if (!nombre.value || !email.value || !password.value) {
+const isLoading = ref(false);
+const errorMsg = ref('');
+
+const register = async () => {
+    errorMsg.value = '';
+    if (!name.value || !email.value || !password.value) {
         alert("Por favor completa todos los campos");
         return;
     }
@@ -107,14 +127,37 @@ const registrarse = () => {
         return;
     }
 
-    console.log("Registrando:", {
-        nombre: nombre.value,
-        email: email.value,
-        pass: password.value
-    });
+    try {
+        isLoading.value = true;
 
-    alert("Cuenta creada con éxito. Ahora ingresa a tu panel.");
-    router.push('/dashboard');
+
+        const userData = {
+            name: name.value,
+            email: email.value,
+            password: password.value
+        };
+
+        // --- LLAMADA REAL ---
+        // Esto fallará ahora porque no hay backend, pero así se hace:
+        await authService.register(userData);
+
+        // --- (SOLO PARA PRUEBAS MIENTRAS NO HAY BACKEND) ---
+        // Comenta la línea de arriba y descomenta esta para simular una carga de 2 segundos:
+        // await new Promise(resolve => setTimeout(resolve, 2000)); 
+
+        // 4. Éxito
+        alert("Cuenta creada con éxito.");
+        router.push('/dashboard');
+
+    } catch (error) {
+        console.error(error);
+        if (error.response && error.response.data && error.response.data.message) {
+            errorMsg.value = error.response.data.message;
+        } else {
+            errorMsg.value = "Ocurrió un error al conectar con el servidor.";
+        }
+    } finally {
+        isLoading.value = false; 
+    }
 };
 </script>
-

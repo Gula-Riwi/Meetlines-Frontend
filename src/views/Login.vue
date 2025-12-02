@@ -41,12 +41,26 @@
                         class="w-full bg-gray-950/50 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" />
                 </div>
 
+                <div v-if="errorMsg"
+                    class="p-3 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm text-center">
+                    {{ errorMsg }}
+                </div>
+
                 <!-- Botón de Entrar -->
                 <div class="pt-4">
-                    <ShimmerButton class="w-full font-bold" shimmer-size="2px" background="#312e81"
-                        shimmerColor="#818cf8" border-radius="12px" @click="Login">
-                        <span class="text-white tracking-wide">
-                            Entrar
+                    <ShimmerButton class="w-full font-bold transition-opacity"
+                        :class="{ 'opacity-50 cursor-not-allowed': isLoading }" shimmer-size="2px" background="#312e81"
+                        shimmerColor="#818cf8" border-radius="12px" @click="Login" :disabled="isLoading">
+                        <span class="text-white tracking-wide flex items-center gap-2">
+                            <svg v-if="isLoading" class="animate-spin h-5 w-5 text-white"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            {{ isLoading ? 'Verificando...' : 'Entrar' }}
                         </span>
                     </ShimmerButton>
                 </div>
@@ -77,30 +91,61 @@ import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 import ShimmerButton from '@/components/ShimmerButton.vue';
 import LineShadowText from '@/components/LineShadowText.vue';
 
+// Servicios
+import authService from '@/services/authService';
+// Cookies
+import Cookies from 'js-cookie';
+
 const router = useRouter();
 
 // Variables reactivas
 const email = ref('');
 const password = ref('');
+const isLoading = ref(false);
+const errorMsg = ref('');
 
-const Login = () => {
-    // Validación simple
+const Login = async () => {
+    errorMsg.value = '';
+
     if (!email.value || !password.value) {
-        alert("Por favor ingresa tus credenciales");
+        errorMsg.value = "Por favor ingresa tus credenciales";
         return;
     }
 
-    console.log("Logueando con:", email.value, password.value);
+    try {
+        isLoading.value = true;
 
-    if (password.value.length < 6) {
-        alert("La contraseña es muy corta");
-        return;
+        // Llamada real (descomentar cuando haya back)
+        // const response = await authService.login({ email: email.value, password: password.value });
+
+        // --- SIMULACIÓN ---
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        const response = { token: 'simulacion-jwt-xyz123', user: { name: 'Admin' } };
+        // ------------------
+
+        if (response.token) {
+            // --- AQUÍ GUARDAMOS EN COOKIE ---
+            Cookies.set('auth_token', response.token, { expires: 7, secure: true, sameSite: 'Strict' });
+
+            // Datos no sensibles en localStorage
+            localStorage.setItem('user', JSON.stringify(response.user));
+
+            router.push('/dashboard');
+        } else {
+            errorMsg.value = "Error: El servidor no devolvió un token.";
+        }
+
+    } catch (error) {
+        console.error(error);
+        if (error.response && error.response.status === 401) {
+            errorMsg.value = "Correo o contraseña incorrectos.";
+        } else if (error.response && error.response.data && error.response.data.message) {
+            errorMsg.value = error.response.data.message;
+        } else {
+            errorMsg.value = "Error de conexión con el servidor.";
+        }
+    } finally {
+        isLoading.value = false;
     }
-
-    // Guardamos la sesión (asegúrate que esta clave 'isLoggedIn' coincida con la que usas en router/index.js)
-    localStorage.setItem('isLoggedIn', 'true');
-
-    alert("¡Login exitoso! Redirigiendo...");
-    router.push('/dashboard');
 };
 </script>

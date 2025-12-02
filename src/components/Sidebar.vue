@@ -20,12 +20,14 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import Cookies from 'js-cookie';
 
 const router = useRouter();
 
 const Logout = () => {
     if (confirm('¿Seguro que deseas salir?')) {
-        localStorage.removeItem('isLoggedIn');
+        Cookies.remove('auth_token');
+        localStorage.removeItem('user');
         router.push('/');
     }
 }

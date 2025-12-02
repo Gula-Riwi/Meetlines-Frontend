@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import Cookies from 'js-cookie';
 
 import Landing from '../views/Landing.vue'
 import Login from '../views/Login.vue'
@@ -19,16 +20,16 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes
 })
 
 router.beforeEach((to, from, next) => {
   const protectedRoute = to.matched.some(record => record.meta.requiresAuth);
   
-  const authUser = localStorage.getItem('isLoggedIn');
+  const token = Cookies.get('auth_token');
 
-  if (protectedRoute && !authUser) {
+  if (protectedRoute && !token) {
     next('/login');
   } else {
     next();
