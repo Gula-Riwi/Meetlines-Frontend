@@ -1,247 +1,181 @@
 <template>
-    <div class="dashboard-layout">
+    <div class="flex h-screen bg-gray-950 font-sans text-white overflow-hidden">
+
         <Sidebar />
 
-        <!-- 2. CONTENIDO PRINCIPAL -->
-        <main class="main-content">
-
-            <!-- Cabecera simple -->
-            <header class="top-bar">
-                <h2>Hola, Freelancer 👋</h2>
-                <div class="user-info">
-                    <span>admin@mitienda.com</span>
+        <main class="flex-1 flex flex-col overflow-hidden relative bg-blue-950">
+            <!-- Header -->
+            <header
+                class="h-20 flex items-center justify-between px-8 border-b border-white/5 bg-gray-950/50 backdrop-blur-sm z-10">
+                <div>
+                    <h2 class="text-2xl font-bold">Hola, Freelancer 👋</h2>
+                    <p class="text-sm text-gray-400">Aquí tienes el resumen de hoy</p>
                 </div>
-            </header>
-
-            <!-- SECCIÓN DE MÉTRICAS (KPIs) -->
-            <section class="stats-grid">
-                <!-- Usamos v-for para no repetir código HTML por cada tarjeta -->
-                <div class="stat-card" v-for="(stat, index) in metricas" :key="index">
-                    <div class="stat-title">{{ stat.titulo }}</div>
-                    <div class="stat-value">{{ stat.valor }}</div>
-                    <div class="stat-change" :class="stat.subio ? 'positive' : 'negative'">
-                        {{ stat.porcentaje }}
+                <div class="flex items-center gap-4">
+                    <div class="text-right hidden md:block">
+                        <p class="text-sm font-bold text-white">Admin User</p>
+                        <p class="text-xs text-gray-400">admin@mitienda.com</p>
+                    </div>
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 border-2 border-white/20">
                     </div>
                 </div>
-            </section>
-
-            <!-- SECCIÓN DE PEDIDOS RECIENTES (Tabla) -->
-            <section class="recent-orders">
-                <h3>📦 Últimos Pedidos Gestionados por la IA</h3>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Cliente</th>
-                                <th>Producto/Servicio</th>
-                                <th>Total</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="pedido in ultimosPedidos" :key="pedido.id">
-                                <td>{{ pedido.cliente }}</td>
-                                <td>{{ pedido.producto }}</td>
-                                <td>{{ pedido.total }}</td>
-                                <td>
-                                    <!-- Estilo dinámico según el estado del pedido -->
-                                    <span :class="['badge', pedido.estadoClass]">
-                                        {{ pedido.estado }}
+            </header>
+            <div class="flex-1 overflow-y-auto p-8 z-10 scrollbar-hide">
+                <section ref="swapyContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div v-for="stat in metricas" :key="stat.id" :data-swapy-slot="stat.id">
+                        <div :data-swapy-item="stat.id" class="h-full">
+                            <div
+                                class="p-6 rounded-2xl bg-gray-900 border border-white/10 hover:border-indigo-500/50 transition-colors group cursor-grab active:cursor-grabbing h-full select-none">
+                                <div class="flex justify-between items-start mb-4">
+                                    <p class="text-sm font-medium text-gray-400">{{ stat.titulo }}</p>
+                                    <span
+                                        :class="stat.subio ? 'text-green-400 bg-green-400/10' : 'text-red-400 bg-red-400/10'"
+                                        class="text-xs px-2 py-1 rounded-full font-bold">
+                                        {{ stat.porcentaje }}
                                     </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+                                </div>
 
+                                <div class="flex items-end gap-1">
+                                    <span v-if="stat.esMoneda" class="text-3xl font-bold text-white mb-1">$</span>
+                                    <NumberTicker :value="stat.valorNum" :decimalPlaces="stat.decimales || 0"
+                                        class="text-4xl font-bold text-white group-hover:text-indigo-400 transition-colors" />
+                                    <span v-if="stat.sufijo" class="text-xl text-gray-500 mb-2 ml-1">{{
+                                        stat.sufijo}}</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TABLA DE PEDIDOS -->
+                <section class="bg-gray-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+                    <div class="p-6 border-b border-white/10 flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-white">📦 Últimos Pedidos</h3>
+                        <button class="text-sm text-indigo-400 hover:text-indigo-300 font-medium transition-colors">
+                            Ver todos
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-gray-900/50 text-gray-400 text-xs uppercase tracking-wider border-b border-white/5">
+                                    <th class="p-4 font-medium">Cliente</th>
+                                    <th class="p-4 font-medium">Producto</th>
+                                    <th class="p-4 font-medium">Total</th>
+                                    <th class="p-4 font-medium">Estado</th>
+                                    <th class="p-4 font-medium text-right">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr v-for="pedido in ultimosPedidos" :key="pedido.id"
+                                    class="hover:bg-white/5 transition-colors">
+                                    <td class="p-4 font-medium text-white">{{ pedido.cliente }}</td>
+                                    <td class="p-4 text-gray-300">{{ pedido.producto }}</td>
+                                    <td class="p-4 font-bold text-white">{{ pedido.total }}</td>
+                                    <td class="p-4">
+                                        <span :class="estadoClases[pedido.estadoClass]"
+                                            class="px-3 py-1 rounded-full text-xs font-bold border">
+                                            {{ pedido.estado }}
+                                        </span>
+                                    </td>
+                                    <td class="p-4 text-right">
+                                        <button class="text-gray-400 hover:text-white transition-colors">•••</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </div>
+            <InteractiveGridPattern :width="60" :height="60" :squares="[50, 50]"
+            squares-class-name="hover:fill-indigo-500/50"
+            :class="'[mask-image:radial-gradient(800px_circle_at_center,white,transparent)] opacity-40'" />
         </main>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { createSwapy } from 'swapy';
 import Sidebar from '../components/Sidebar.vue';
+import NumberTicker from '@/components/NumberTicker.vue';
+import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 
-// DATOS SIMULADOS (En el futuro, esto vendrá de tu Backend)
+const estadoClases = {
+    completed: 'bg-green-500/10 text-green-400 border-green-500/20',
+    pending: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+    warning: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
+};
 
-// 1. Métricas principales
+// 2. Referencia para el contenedor HTML
+const swapyContainer = ref();
+
+// 3. Agregar IDs únicos a las métricas (Vital para Swapy)
 const metricas = ref([
-    { titulo: 'Ventas del Mes', valor: '$1,250', porcentaje: '+15%', subio: true },
-    { titulo: 'Conversaciones IA', valor: '432', porcentaje: '+5%', subio: true },
-    { titulo: 'Pedidos Automáticos', valor: '28', porcentaje: '-2%', subio: false },
-    { titulo: 'Horas Ahorradas', valor: '12h', porcentaje: 'Este mes', subio: true },
+    {
+        id: 'sales', // ID único
+        titulo: 'Ventas del Mes',
+        valorNum: 1250,
+        esMoneda: true,
+        porcentaje: '+15%',
+        subio: true
+    },
+    {
+        id: 'chats',
+        titulo: 'Conversaciones IA',
+        valorNum: 432,
+        esMoneda: false,
+        porcentaje: '+5%',
+        subio: true
+    },
+    {
+        id: 'orders',
+        titulo: 'Pedidos Automáticos',
+        valorNum: 28,
+        esMoneda: false,
+        porcentaje: '-2%',
+        subio: false
+    },
+    {
+        id: 'hours',
+        titulo: 'Horas Ahorradas',
+        valorNum: 12,
+        esMoneda: false,
+        sufijo: 'h',
+        porcentaje: '+8%',
+        subio: true
+    },
 ]);
 
-// 2. Lista de pedidos
 const ultimosPedidos = ref([
     { id: 1, cliente: 'Juan Pérez', producto: 'Diseño Logo', total: '$150', estado: 'Completado', estadoClass: 'completed' },
     { id: 2, cliente: 'Ana Gomez', producto: 'Consultoría', total: '$80', estado: 'En Proceso', estadoClass: 'pending' },
     { id: 3, cliente: 'Restaurante X', producto: 'Gestión Redes', total: '$300', estado: 'Pendiente', estadoClass: 'warning' },
+    { id: 4, cliente: 'Tech Solutions', producto: 'Chatbot Web', total: '$500', estado: 'Completado', estadoClass: 'completed' },
+    { id: 5, cliente: 'Carlos Ruiz', producto: 'Soporte Técnico', total: '$50', estado: 'Pendiente', estadoClass: 'warning' },
 ]);
 
+
+onMounted(() => {
+    if (swapyContainer.value) {
+        const swapy = createSwapy(swapyContainer.value, {
+            animation: 'dynamic' // Animación suave
+        });
+
+        // Opcional: Escuchar cuando el usuario termina de reordenar
+        swapy.onSwap((event) => {
+            const newData = event.data ? event.data.object : event.object;
+
+            if (newData) {
+                console.log('Nuevo orden:', nuevosDatos);
+                // Aquí guardarías en localStorage si quisieras
+            }
+        });
+    }
+});
+
 </script>
-
-<style scoped>
-/* LAYOUT GENERAL (Grid o Flex) */
-.dashboard-layout {
-    display: flex;
-    height: 100vh;
-    background-color: #f4f6f8;
-    font-family: Arial, sans-serif;
-}
-
-/* SIDEBAR */
-.sidebar {
-    width: 250px;
-    background-color: #2c3e50;
-    color: white;
-    display: flex;
-    flex-direction: column;
-}
-
-.sidebar-header {
-    padding: 20px;
-    text-align: center;
-    border-bottom: 1px solid #34495e;
-}
-
-.sidebar-footer {
-    padding: 20px;
-    margin-top: auto;
-}
-
-.menu {
-    list-style: none;
-    padding: 0;
-    margin: 20px 0;
-}
-
-.menu li {
-    padding: 15px 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.menu li:hover,
-.menu li.active {
-    background-color: #34495e;
-    border-left: 4px solid #42b983;
-}
-
-/* MAIN CONTENT */
-.main-content {
-    flex: 1;
-    /* Toma todo el espacio restante */
-    padding: 2rem;
-    overflow-y: auto;
-    /* Permite scroll si el contenido es muy largo */
-}
-
-.top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-}
-
-/* TARJETAS DE MÉTRICAS */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.stat-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.stat-title {
-    color: #777;
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-}
-
-.stat-value {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #333;
-}
-
-.stat-change {
-    font-size: 0.8rem;
-    margin-top: 5px;
-}
-
-.positive {
-    color: green;
-}
-
-.negative {
-    color: red;
-}
-
-/* TABLA DE PEDIDOS */
-.recent-orders {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.table-container {
-    overflow-x: auto;
-    margin-top: 1rem;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th,
-td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-}
-
-th {
-    color: #666;
-    font-size: 0.9rem;
-}
-
-/* Badges de estado */
-.badge {
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    color: white;
-}
-
-.completed {
-    background-color: #4CAF50;
-}
-
-.pending {
-    background-color: #2196F3;
-}
-
-.warning {
-    background-color: #FF9800;
-}
-
-.btn-logout {
-    width: 100%;
-    padding: 10px;
-    background: #e74c3c;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-}
-</style>

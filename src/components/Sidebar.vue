@@ -1,19 +1,69 @@
-<!-- src/components/Sidebar.vue -->
 <template>
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <h3>🤖 Panel IA</h3>
+    <aside
+        class="w-64 h-screen bg-gray-900 border-r border-white/10 flex-col text-white transition-all duration-300 hidden md:flex">
+
+        <!-- Header / Logo -->
+        <div class="h-20 flex items-center justify-center border-b border-white/10">
+            <h3 class="text-2xl font-league tracking-wider flex items-center gap-2">
+                Panel Administrativo
+            </h3>
         </div>
 
-        <ul class="menu">
-            <li class="active">📊 Resumen</li>
-            <li>💬 Mis Chatbots</li>
-            <li>📦 Pedidos</li>
-            <li>⚙️ Configuración</li>
-        </ul>
+        <!-- Menú de Navegación -->
+        <nav class="flex-1 overflow-y-auto py-6 px-3">
+            <ul class="space-y-2">
 
-        <div class="sidebar-footer">
-            <button @click="Logout" class="btn-logout">Cerrar Sesión</button>
+                <!-- Item: Resumen (Activo por defecto visualmente) -->
+                <li>
+                    <a href="#"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-500/20 transition-all">
+                        <span class="text-lg">📊</span>
+                        <span class="font-medium">Resumen</span>
+                    </a>
+                </li>
+
+                <!-- Item: Chatbots -->
+                <li>
+                    <a href="#"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                        <span class="text-lg">💬</span>
+                        <span class="font-medium">Mis Chatbots</span>
+                    </a>
+                </li>
+
+                <!-- Item: Pedidos -->
+                <li>
+                    <a href="#"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                        <span class="text-lg">📦</span>
+                        <span class="font-medium">Pedidos</span>
+                    </a>
+                </li>
+
+                <!-- Item: Configuración -->
+                <li>
+                    <a href="#"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                        <span class="text-lg">⚙️</span>
+                        <span class="font-medium">Configuración</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+        <!-- Footer / Logout -->
+        <div class="p-4 border-t border-white/10">
+            <button @click="Logout"
+                class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" x2="9" y1="12" y2="12" />
+                </svg>
+                <span class="font-bold text-sm">Cerrar Sesión</span>
+            </button>
         </div>
     </aside>
 </template>
@@ -28,57 +78,7 @@ const Logout = () => {
     if (confirm('¿Seguro que deseas salir?')) {
         Cookies.remove('auth_token');
         localStorage.removeItem('user');
-        router.push('/');
+        router.push('/login');
     }
 }
 </script>
-
-<style scoped>
-.sidebar {
-    width: 250px;
-    background-color: #2c3e50;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.sidebar-header {
-    padding: 20px;
-    text-align: center;
-    border-bottom: 1px solid #34495e;
-}
-
-.sidebar-footer {
-    padding: 20px;
-    margin-top: auto;
-}
-
-.menu {
-    list-style: none;
-    padding: 0;
-    margin: 20px 0;
-}
-
-.menu li {
-    padding: 15px 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.menu li:hover,
-.menu li.active {
-    background-color: #34495e;
-    border-left: 4px solid #42b983;
-}
-
-.btn-logout {
-    width: 100%;
-    padding: 10px;
-    background: #e74c3c;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-}
-</style>

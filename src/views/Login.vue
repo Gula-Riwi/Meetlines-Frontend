@@ -77,7 +77,6 @@
             </div>
         </div>
 
-        <!-- 3. FONDO ANIMADO -->
         <InteractiveGridPattern :width="60" :height="60" :squares="[50, 50]"
             squares-class-name="hover:fill-indigo-500/50"
             :class="'[mask-image:radial-gradient(800px_circle_at_center,white,transparent)] opacity-40'" />
