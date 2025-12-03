@@ -36,7 +36,7 @@ jobs:
         key: ${{ secrets.VPS_SSH_KEY }}
         port: 22
         source: "dist/"
-        target: "/var/www/MeetLines-Frontend/dist/"
+        target: "/var/www/MeetLines-Frontend/"
         rm: true
     
     - name: 🔧 Fix permissions
@@ -47,8 +47,8 @@ jobs:
         key: ${{ secrets.VPS_SSH_KEY }}
         port: 22
         script: |
-          sudo chown -R $USER:$USER /var/www/MeetLines-Frontend/dist/
-          sudo chmod -R 755 /var/www/MeetLines-Frontend/dist/
+          sudo chown -R miguel_arias:www-data /var/www/MeetLines-Frontend/
+          sudo chmod -R 755 /var/www/MeetLines-Frontend/
     
     - name: 🔄 Reload Nginx
       uses: appleboy/ssh-action@v1.0.3
