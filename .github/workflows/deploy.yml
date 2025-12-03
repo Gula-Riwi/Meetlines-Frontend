@@ -59,4 +59,4 @@ jobs:
         port: 22
         script: |
           sudo systemctl reload nginx
-          echo "✅ Deployment completed"
+          echo "✅ Deployment completed!!"
