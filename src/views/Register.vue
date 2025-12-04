@@ -155,8 +155,10 @@ const register = async () => {
 
         await authService.register(userData);
 
-        alert("Cuenta creada con éxito.");
-        router.push('/login'); 
+        router.push({ 
+            path: '/check-email', 
+            query: { email: email.value }
+        });
 
     } catch (error) {
         console.error("Error en registro:", error);

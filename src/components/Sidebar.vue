@@ -72,13 +72,25 @@
 import { useRouter } from 'vue-router';
 import Cookies from 'js-cookie';
 
+import authService from '@/services/authService';
+
 const router = useRouter();
 
-const Logout = () => {
+const Logout = async () => {
     if (confirm('¿Seguro que deseas salir?')) {
-        Cookies.remove('auth_token');
-        localStorage.removeItem('user');
-        router.push('/login');
+        try {
+            const refreshToken = Cookies.get('refresh_token');
+            if (refreshToken) {
+                await authService.logout(refreshToken);
+            }
+        } catch (error) {
+            console.error("Error al cerrar sesión en servidor:", error);
+        } finally {
+            Cookies.remove('auth_token');
+            Cookies.remove('refresh_token'); 
+            localStorage.removeItem('user');
+            router.push('/login');
+        }
     }
 }
 </script>

@@ -2,12 +2,48 @@ import api from './api';
 
 export default {
     async register(userData) {
-        const response = await api.post('/Auth/register', userData);
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const payload = {
+            ...userData,
+            timezone: timezone
+        };
+
+        const response = await api.post('/Auth/register', payload, {
+            headers: {
+                'Timezone': timezone,
+            },
+        });
         return response.data;
     },
 
     async login(credentials) {
         const response = await api.post('/Auth/login', credentials);
         return response.data;
+    },
+
+    async verifyEmail(token) {
+        const response = await api.post('/Auth/verify-email', { token });
+        return response.data;
+    },
+
+    async forgotPassword(email) {
+        const response = await api.post('/Auth/forgot-password', { email });
+        return response.data;
+    },
+
+    async resetPassword(data) {
+        const response = await api.post('/Auth/reset-password', data);
+        return response.data;
+    },
+
+    async logout(refreshToken) {
+        const response = await api.post('/Auth/logout', { refreshToken });
+        return response.data;
+    },
+
+    async resendVerificationEmail(email) {
+        const response = await api.post('/Auth/resend-verification-email', { email });
+        return response.data;
     }
+
 };

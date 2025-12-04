@@ -5,6 +5,10 @@ import Landing from '../views/Landing.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Dashboard from '../views/Dashboard.vue'
+import VerifyEmail from '../views/VerifyEmail.vue'; 
+import ForgotPassword from '../views/ForgotPassword.vue';
+import ResetPassword from '../views/ResetPassword.vue';
+import CheckEmail from '../views/CheckEmail.vue';
 
 
 const routes = [
@@ -16,7 +20,27 @@ const routes = [
     name: 'Dashboard', 
     component: Dashboard,
     meta: { requiresAuth: true } 
-  }
+  },
+  { 
+    path: '/verify-email', 
+    name: 'VerifyEmail', 
+    component: VerifyEmail 
+  },
+  { 
+    path: '/forgot-password', 
+    name: 'ForgotPassword', 
+    component: ForgotPassword 
+  },
+  { 
+    path: '/reset-password',
+    name: 'ResetPassword', 
+    component: ResetPassword 
+  },
+  { 
+    path: '/check-email', 
+    name: 'CheckEmail', 
+    component: CheckEmail 
+  },
 ]
 
 const router = createRouter({

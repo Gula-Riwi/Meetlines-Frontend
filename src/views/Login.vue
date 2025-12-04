@@ -36,7 +36,13 @@
 
                 <!-- Contraseña -->
                 <div class="space-y-1">
-                    <label class="text-sm font-medium text-gray-300 ml-1">Contraseña</label>
+                    <div class="flex justify-between items-center">
+                        <label class="text-sm font-medium text-gray-300 ml-1">Contraseña</label>
+                        <router-link to="/forgot-password"
+                            class="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">
+                            ¿Olvidaste tu contraseña?
+                        </router-link>
+                    </div>
                     <input type="password" v-model="password" required placeholder="••••••••"
                         class="w-full bg-gray-950/50 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" />
                 </div>
@@ -86,10 +92,10 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+// Componentes
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 import ShimmerButton from '@/components/ShimmerButton.vue';
 import LineShadowText from '@/components/LineShadowText.vue';
-
 // Servicios
 import authService from '@/services/authService';
 // Cookies
@@ -114,32 +120,31 @@ const Login = async () => {
     try {
         isLoading.value = true;
 
-        // Llamada real (descomentar cuando haya back)
-        // const response = await authService.login({ email: email.value, password: password.value });
+        const response = await authService.login({ email: email.value, password: password.value });
+        if (response.success && response.data) {
+            const { accessToken, refreshToken, name, email, userId } = response.data;
 
-        // --- SIMULACIÓN ---
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        const response = { token: 'simulacion-jwt-xyz123', user: { name: 'Admin' } };
-        // ------------------
+            Cookies.set('auth_token', accessToken, { expires: 1, secure: true, sameSite: 'Strict' });
 
-        if (response.token) {
-            // --- AQUÍ GUARDAMOS EN COOKIE ---
-            Cookies.set('auth_token', response.token, { expires: 7, secure: true, sameSite: 'Strict' });
+            Cookies.set('refresh_token', refreshToken, { expires: 7, secure: true, sameSite: 'Strict' });
 
-            // Datos no sensibles en localStorage
-            localStorage.setItem('user', JSON.stringify(response.user));
-
+            const userData = {
+                name: name,
+                email: email,
+                id: userId
+            };
+            localStorage.setItem('user', JSON.stringify(userData));
             router.push('/dashboard');
+
         } else {
-            errorMsg.value = "Error: El servidor no devolvió un token.";
+            errorMsg.value = response.message || "Credenciales incorrectas.";
         }
 
     } catch (error) {
-        console.error(error);
-        if (error.response && error.response.status === 401) {
-            errorMsg.value = "Correo o contraseña incorrectos.";
-        } else if (error.response && error.response.data && error.response.data.message) {
-            errorMsg.value = error.response.data.message;
+        console.error("Error en login:", error);
+
+        if (error.response && error.response.data) {
+            errorMsg.value = error.response.data.message || "Error al iniciar sesión.";
         } else {
             errorMsg.value = "Error de conexión con el servidor.";
         }
