@@ -8,7 +8,7 @@
             <!-- Header -->
             <header
                 class="h-20 flex items-center justify-between px-8 border-b border-white/5 bg-gray-950/50 backdrop-blur-sm z-10">
-                <h2 class="text-2xl font-bold">Mi Perfil</h2>
+                <h2 class="text-4xl font-league italic tracking-wide font-bold">Mi Perfil</h2>
             </header>
 
             <div class="flex-1 overflow-y-auto p-8 z-10">

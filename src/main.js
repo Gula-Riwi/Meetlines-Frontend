@@ -11,9 +11,9 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import { faMeta, faWhatsapp, faInstagram, faFacebook } from '@fortawesome/free-brands-svg-icons'
-import { faCheck, faRobot } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faRobot, faUser } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faMeta, faWhatsapp, faInstagram, faCheck, faRobot, faFacebook)
+library.add(faMeta, faWhatsapp, faInstagram, faCheck, faRobot, faFacebook, faUser)
 
 const app = createApp(App)
 

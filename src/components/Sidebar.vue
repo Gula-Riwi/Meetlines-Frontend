@@ -4,7 +4,7 @@
         <!-- Header / Logo -->
         <div class="h-20 flex items-center justify-center border-b border-white/10">
             <router-link to="/dashboard"
-                class="text-2xl font-league tracking-wider flex items-center gap-2 hover:text-indigo-400 transition-colors">
+                class="text-5xl font-league tracking-wider flex items-center gap-2 hover:text-indigo-400 transition-colors">
                 Panel Admin
             </router-link>
         </div>
@@ -36,7 +36,8 @@
                 <li>
                     <router-link to="/profile" active-class="bg-indigo-600 shadow-lg shadow-indigo-500/20"
                         class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-all">
-                        <span class="text-lg">👤</span>
+                        <span class="text-lg"><font-awesome-icon :icon="['fas', 'user']"
+                                        class="relative z-10 text-gray-300 text-2xl" /></span>
                         <span class="font-medium">Mi Perfil</span>
                     </router-link>
                 </li>
