@@ -44,6 +44,20 @@ export default {
     async resendVerificationEmail(email) {
         const response = await api.post('/Auth/resend-verification-email', { email });
         return response.data;
-    }
+    },
 
+    async refreshToken(currentRefreshToken) {
+        const response = await api.post('/Auth/refresh-token', { refreshToken: currentRefreshToken });
+        return response.data;
+    },
+
+    async oauthLogin(oauthData) {
+        const response = await api.post('/Auth/oauth-login', oauthData);
+        return response.data;
+    },
+
+    async getProfile() {
+        const response = await api.get('/Profile');
+        return response.data;
+    }
 };

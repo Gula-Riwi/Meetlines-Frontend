@@ -11,7 +11,6 @@
             <span class="font-medium">Volver al inicio</span>
         </router-link>
 
-        <!-- 2. CARD DE LOGIN -->
         <div
             class="relative z-10 w-full max-w-md p-8 bg-gray-900/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl mx-4">
 
@@ -81,6 +80,21 @@
                     </router-link>
                 </p>
             </div>
+
+            <div class="mb-6">
+                <!-- Separador -->
+                <div class="flex items-center gap-4 my-6">
+                    <div class="h-px bg-white/10 flex-1"></div>
+                    <span class="text-gray-500 text-xs uppercase">O inicia sesión con Google</span>
+                    <div class="h-px bg-white/10 flex-1"></div>
+                </div>
+
+                <button @click="loginWithGoogle" type="button"
+                    class="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-100 text-gray-800 font-bold py-3 px-4 rounded-xl transition-all duration-200 shadow-lg">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-6 h-6" alt="Google Logo">
+                    <span>Continuar con Google</span>
+                </button>
+            </div>
         </div>
 
         <InteractiveGridPattern :width="60" :height="60" :squares="[50, 50]"
@@ -100,6 +114,11 @@ import LineShadowText from '@/components/LineShadowText.vue';
 import authService from '@/services/authService';
 // Cookies
 import Cookies from 'js-cookie';
+
+//Google and JWT
+import { googleTokenLogin } from 'vue3-google-login';
+import axios from 'axios';
+
 
 const router = useRouter();
 
@@ -151,5 +170,50 @@ const Login = async () => {
     } finally {
         isLoading.value = false;
     }
+};
+
+const loginWithGoogle = () => {
+    errorMsg.value = '';
+
+    googleTokenLogin().then(async (response) => {
+        if (response.access_token) {
+            try {
+                isLoading.value = true;
+                const googleUserInfo = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+                    headers: { Authorization: `Bearer ${response.access_token}` }
+                });
+
+                const user = googleUserInfo.data;
+
+                const oauthData = {
+                    externalProviderId: user.sub,
+                    email: user.email,
+                    name: user.name,
+                    provider: 0,
+                    profilePictureUrl: user.picture
+                };
+                const apiResponse = await authService.oauthLogin(oauthData);
+
+                if (apiResponse.success && apiResponse.data) {
+                    const { accessToken, refreshToken, name, email, userId } = apiResponse.data;
+                    Cookies.set('auth_token', accessToken, { expires: 1, secure: true, sameSite: 'Strict' });
+                    Cookies.set('refresh_token', refreshToken, { expires: 7, secure: true, sameSite: 'Strict' });
+                    localStorage.setItem('user', JSON.stringify({ name, email, id: userId }));
+                    router.push('/dashboard');
+                } else {
+                    errorMsg.value = apiResponse.message || "Error al iniciar con Google.";
+                }
+
+            } catch (err) {
+                console.error("Error en proceso Google:", err);
+                errorMsg.value = "No se pudieron obtener los datos de Google.";
+            } finally {
+                isLoading.value = false;
+            }
+        }
+    }).catch(err => {
+        console.error("Popup cerrado o error:", err);
+        isLoading.value = false;
+    });
 };
 </script>

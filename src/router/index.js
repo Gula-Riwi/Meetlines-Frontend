@@ -9,6 +9,7 @@ import VerifyEmail from '../views/VerifyEmail.vue';
 import ForgotPassword from '../views/ForgotPassword.vue';
 import ResetPassword from '../views/ResetPassword.vue';
 import CheckEmail from '../views/CheckEmail.vue';
+import Profile from '../views/Profile.vue';
 
 
 const routes = [
@@ -41,6 +42,12 @@ const routes = [
     name: 'CheckEmail', 
     component: CheckEmail 
   },
+  { 
+    path: '/profile', 
+    name: 'Profile', 
+    component: Profile,
+    meta: { requiresAuth: true } 
+  }
 ]
 
 const router = createRouter({
