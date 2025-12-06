@@ -107,6 +107,7 @@
                     </button>
 
                     <!-- Facebook -->
+                    <!-- Facebook OAuth login with public_profile and email scopes -->
                     <button @click="loginWithFacebook" type="button"
                         class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-200 shadow-lg">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
