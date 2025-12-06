@@ -319,7 +319,7 @@ const planes = ref([
     {
         nombre: 'Estándar',
         precio: 50,
-        features: ['3 Chatbots', '2 empresas']
+        features: ['2 Chatbots', '2 empresas']
     },
     {
         nombre: 'Empresarial',

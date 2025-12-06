@@ -11,7 +11,6 @@
             <span class="font-medium">Volver al inicio</span>
         </router-link>
 
-        <!-- 2. CARD DE LOGIN -->
         <div
             class="relative z-10 w-full max-w-md p-8 bg-gray-900/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl mx-4">
 
@@ -36,7 +35,13 @@
 
                 <!-- Contraseña -->
                 <div class="space-y-1">
-                    <label class="text-sm font-medium text-gray-300 ml-1">Contraseña</label>
+                    <div class="flex justify-between items-center">
+                        <label class="text-sm font-medium text-gray-300 ml-1">Contraseña</label>
+                        <router-link to="/forgot-password"
+                            class="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">
+                            ¿Olvidaste tu contraseña?
+                        </router-link>
+                    </div>
                     <input type="password" v-model="password" required placeholder="••••••••"
                         class="w-full bg-gray-950/50 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" />
                 </div>
@@ -75,6 +80,21 @@
                     </router-link>
                 </p>
             </div>
+
+            <div class="mb-6">
+                <!-- Separador -->
+                <div class="flex items-center gap-4 my-6">
+                    <div class="h-px bg-white/10 flex-1"></div>
+                    <span class="text-gray-500 text-xs uppercase">O inicia sesión con Google</span>
+                    <div class="h-px bg-white/10 flex-1"></div>
+                </div>
+
+                <button @click="loginWithGoogle" type="button"
+                    class="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-100 text-gray-800 font-bold py-3 px-4 rounded-xl transition-all duration-200 shadow-lg">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-6 h-6" alt="Google Logo">
+                    <span>Continuar con Google</span>
+                </button>
+            </div>
         </div>
 
         <InteractiveGridPattern :width="60" :height="60" :squares="[50, 50]"
@@ -86,14 +106,19 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+// Componentes
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 import ShimmerButton from '@/components/ShimmerButton.vue';
 import LineShadowText from '@/components/LineShadowText.vue';
-
 // Servicios
 import authService from '@/services/authService';
 // Cookies
 import Cookies from 'js-cookie';
+
+//Google and JWT
+import { googleTokenLogin } from 'vue3-google-login';
+import axios from 'axios';
+
 
 const router = useRouter();
 
@@ -114,37 +139,81 @@ const Login = async () => {
     try {
         isLoading.value = true;
 
-        // Llamada real (descomentar cuando haya back)
-        // const response = await authService.login({ email: email.value, password: password.value });
+        const response = await authService.login({ email: email.value, password: password.value });
+        if (response.success && response.data) {
+            const { accessToken, refreshToken, name, email, userId } = response.data;
 
-        // --- SIMULACIÓN ---
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        const response = { token: 'simulacion-jwt-xyz123', user: { name: 'Admin' } };
-        // ------------------
+            Cookies.set('auth_token', accessToken, { expires: 1, secure: true, sameSite: 'Strict' });
 
-        if (response.token) {
-            // --- AQUÍ GUARDAMOS EN COOKIE ---
-            Cookies.set('auth_token', response.token, { expires: 7, secure: true, sameSite: 'Strict' });
+            Cookies.set('refresh_token', refreshToken, { expires: 7, secure: true, sameSite: 'Strict' });
 
-            // Datos no sensibles en localStorage
-            localStorage.setItem('user', JSON.stringify(response.user));
+            const userData = {
+                name: name,
+                email: email,
+                id: userId
+            };
+            localStorage.setItem('user', JSON.stringify(userData));
+            router.push('/projects');
 
-            router.push('/dashboard');
         } else {
-            errorMsg.value = "Error: El servidor no devolvió un token.";
+            errorMsg.value = response.message || "Credenciales incorrectas.";
         }
 
     } catch (error) {
-        console.error(error);
-        if (error.response && error.response.status === 401) {
-            errorMsg.value = "Correo o contraseña incorrectos.";
-        } else if (error.response && error.response.data && error.response.data.message) {
-            errorMsg.value = error.response.data.message;
+        console.error("Error en login:", error);
+
+        if (error.response && error.response.data) {
+            errorMsg.value = error.response.data.message || "Error al iniciar sesión.";
         } else {
             errorMsg.value = "Error de conexión con el servidor.";
         }
     } finally {
         isLoading.value = false;
     }
+};
+
+const loginWithGoogle = () => {
+    errorMsg.value = '';
+
+    googleTokenLogin().then(async (response) => {
+        if (response.access_token) {
+            try {
+                isLoading.value = true;
+                const googleUserInfo = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+                    headers: { Authorization: `Bearer ${response.access_token}` }
+                });
+
+                const user = googleUserInfo.data;
+
+                const oauthData = {
+                    externalProviderId: user.sub,
+                    email: user.email,
+                    name: user.name,
+                    provider: 0,
+                    profilePictureUrl: user.picture
+                };
+                const apiResponse = await authService.oauthLogin(oauthData);
+
+                if (apiResponse.success && apiResponse.data) {
+                    const { accessToken, refreshToken, name, email, userId } = apiResponse.data;
+                    Cookies.set('auth_token', accessToken, { expires: 1, secure: true, sameSite: 'Strict' });
+                    Cookies.set('refresh_token', refreshToken, { expires: 7, secure: true, sameSite: 'Strict' });
+                    localStorage.setItem('user', JSON.stringify({ name, email, id: userId }));
+                    router.push('/projects');
+                } else {
+                    errorMsg.value = apiResponse.message || "Error al iniciar con Google.";
+                }
+
+            } catch (err) {
+                console.error("Error en proceso Google:", err);
+                errorMsg.value = "No se pudieron obtener los datos de Google.";
+            } finally {
+                isLoading.value = false;
+            }
+        }
+    }).catch(err => {
+        console.error("Popup cerrado o error:", err);
+        isLoading.value = false;
+    });
 };
 </script>

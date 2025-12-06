@@ -4,15 +4,22 @@ import App from './App.vue'
 import router from './router'
 import './styles.css'
 
+//Google Login
+import vue3GoogleLogin from 'vue3-google-login'
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import { faMeta, faWhatsapp, faInstagram, faFacebook } from '@fortawesome/free-brands-svg-icons'
-import { faCheck, faRobot } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faRobot, faUser } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faMeta, faWhatsapp, faInstagram, faCheck, faRobot, faFacebook)
+library.add(faMeta, faWhatsapp, faInstagram, faCheck, faRobot, faFacebook, faUser)
 
 const app = createApp(App)
+
+app.use(vue3GoogleLogin, {
+    clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID
+})
 
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(router)
