@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Cookies from 'js-cookie';
+import { getCurrentSubdomain, isInProjectSubdomain } from '../services/tenantService';
 
 import Landing from '../views/Landing.vue'
 import Login from '../views/Login.vue'
@@ -10,12 +11,20 @@ import ForgotPassword from '../views/ForgotPassword.vue';
 import ResetPassword from '../views/ResetPassword.vue';
 import CheckEmail from '../views/CheckEmail.vue';
 import Profile from '../views/Profile.vue';
-import ProjectsList from '../views/ProjectsList.vue'; 
+import ProjectsList from '../views/ProjectsList.vue';
+import EmployeeLogin from '../views/EmployeeLogin.vue';
+import OAuthDiscordCallback from '../views/OAuthDiscordCallback.vue';
+import OAuthFacebookCallback from '../views/OAuthFacebookCallback.vue';
 
 
 const routes = [
   { path: '/', name: 'Landing', component: Landing },
   { path: '/login', name: 'Login', component: Login },
+  {
+    path: '/employee-login',
+    name: 'EmployeeLogin',
+    component: EmployeeLogin
+  },
   { path: '/register', name: 'Register', component: Register },
   { 
     path: '/dashboard', 
@@ -55,6 +64,16 @@ const routes = [
     component: ProjectsList,
     meta: { requiresAuth: true }
   },
+  {
+    path: '/auth/discord/callback',
+    name: 'OAuthDiscordCallback',
+    component: OAuthDiscordCallback
+  },
+  {
+    path: '/auth/facebook/callback',
+    name: 'OAuthFacebookCallback',
+    component: OAuthFacebookCallback
+  },
 ]
 
 const router = createRouter({
@@ -64,9 +83,36 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const protectedRoute = to.matched.some(record => record.meta.requiresAuth);
-  
   const token = Cookies.get('auth_token');
+  const inProjectSubdomain = isInProjectSubdomain();
+  const subdomain = getCurrentSubdomain();
 
+  // Si estamos en un subdominio de proyecto
+  if (inProjectSubdomain) {
+    // Si ya estamos autenticados, forzamos al dashboard del tenant
+    if (token) {
+      if (to.name !== 'Dashboard') {
+        console.log(`📍 Subdominio detectado: ${subdomain}, redirigiendo a dashboard`);
+        next({ name: 'Dashboard' });
+        return;
+      }
+      // si ya vamos al dashboard, permitir
+      next();
+      return;
+    }
+
+    // Si NO estamos autenticados y no estamos en la ruta de login de empleados, redirigir allí
+    if (to.name !== 'EmployeeLogin') {
+      console.log(`📍 Subdominio detectado: ${subdomain}, usuario no autenticado - redirigiendo a EmployeeLogin`);
+      next({ name: 'EmployeeLogin' });
+      return;
+    }
+    // Si ya vamos a EmployeeLogin, permitir
+    next();
+    return;
+  }
+
+  // Si intentamos acceder a una ruta protegida sin token
   if (protectedRoute && !token) {
     next('/login');
   } else {

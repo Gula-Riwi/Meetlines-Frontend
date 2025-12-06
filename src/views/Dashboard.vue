@@ -8,8 +8,8 @@
             <header
                 class="h-20 flex items-center justify-between px-8 border-b border-white/5 bg-gray-950/50 backdrop-blur-sm z-10">
                 <div>
-                    <h2 class="text-2xl font-bold">Hola, Freelancer 👋</h2>
-                    <p class="text-sm text-gray-400">Aquí tienes el resumen de hoy</p>
+                    <h2 class="text-2xl font-bold">{{ projectName ? projectName : 'Hola, Freelancer' }} 👋</h2>
+                    <p class="text-sm text-gray-400">{{ projectName ? 'Panel del proyecto' : 'Aquí tienes el resumen de hoy' }}</p>
                 </div>
                 <div class="flex items-center gap-4">
                     <div class="text-right hidden md:block">
@@ -104,6 +104,8 @@ import { createSwapy } from 'swapy';
 import Sidebar from '../components/Sidebar.vue';
 import NumberTicker from '@/components/NumberTicker.vue';
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
+import { getCurrentSubdomain, isInProjectSubdomain } from '@/services/tenantService';
+import api from '@/services/api';
 
 const estadoClases = {
     completed: 'bg-green-500/10 text-green-400 border-green-500/20',
@@ -113,6 +115,10 @@ const estadoClases = {
 
 // 2. Referencia para el contenedor HTML
 const swapyContainer = ref();
+
+// Proyecto detectado por subdominio (si aplica)
+const project = ref(null);
+const projectName = ref('');
 
 // 3. Agregar IDs únicos a las métricas (Vital para Swapy)
 const metricas = ref([
@@ -161,6 +167,29 @@ const ultimosPedidos = ref([
 
 
 onMounted(() => {
+    // Si estamos en un subdominio, intentar cargar el proyecto correspondiente
+    (async () => {
+        try {
+            if (isInProjectSubdomain()) {
+                const sub = getCurrentSubdomain();
+                const resp = await api.get('/Projects');
+                if (resp && resp.data && resp.data.success) {
+                    const data = resp.data.data;
+                    const projects = data.projects || data;
+                    const found = projects.find(p => p.subdomain === sub);
+                    if (found) {
+                        project.value = found;
+                        projectName.value = found.name;
+                    } else {
+                        console.warn('No se encontró proyecto con subdominio', sub);
+                    }
+                }
+            }
+        } catch (e) {
+            console.error('Error cargando proyecto por subdominio', e);
+        }
+    })();
+
     if (swapyContainer.value) {
         const swapy = createSwapy(swapyContainer.value, {
             animation: 'dynamic' // Animación suave
