@@ -1,11 +1,24 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { getApiBaseUrl } from './tenantService';
+
+const getBaseURL = () => {
+    // Si hay VITE_API_URL configurado, úsalo (tiene prioridad)
+    if (import.meta.env.VITE_API_URL) {
+        console.log('✅ Usando VITE_API_URL:', import.meta.env.VITE_API_URL);
+        return import.meta.env.VITE_API_URL;
+    }
+    // Si no, usa la URL dinámica basada en el host actual (incluyendo subdominio)
+    console.log('⚠️ VITE_API_URL no está configurado, usando URL dinámica');
+    return getApiBaseUrl();
+};
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
+    baseURL: getBaseURL(),
     headers: {
         'Content-Type': 'application/json',
-    }
+    },
+    withCredentials: true
 });
 
 api.interceptors.request.use(
@@ -35,15 +48,15 @@ api.interceptors.response.use(
                     throw new Error('No refresh token available');
                 }
 
-                const response = await axios.post(`${BASE_URL}/Auth/refresh-token`, {
+                const response = await axios.post(`${getBaseURL()}/api/auth/refresh-token`, {
                     refreshToken: refreshToken
                 });
 
                 const { success, data } = response.data;
 
                 if (success && data) {
-                    Cookies.set('auth_token', data.accessToken, { expires: 1, secure: true, sameSite: 'Strict' });
-                    Cookies.set('refresh_token', data.refreshToken, { expires: 7, secure: true, sameSite: 'Strict' });
+                    Cookies.set('auth_token', data.accessToken, { expires: 1, secure: false, sameSite: 'Lax' });
+                    Cookies.set('refresh_token', data.refreshToken, { expires: 7, secure: false, sameSite: 'Lax' });
 
                     originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
 
