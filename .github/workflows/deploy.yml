@@ -27,6 +27,14 @@ jobs:
         VITE_API_URL: ${{ secrets.VITE_API_URL }}
         VITE_API_TIMEOUT: ${{ secrets.VITE_API_TIMEOUT }}
         VITE_ENABLE_LOGGING: ${{ secrets.VITE_ENABLE_LOGGING }}
+        VITE_API_PROTOCOL: ${{ secrets.VITE_API_PROTOCOL }}
+        VITE_BACKEND_PORT: ${{ secrets.VITE_BACKEND_PORT }}
+        VITE_BASE_DOMAIN: ${{ secrets.VITE_BASE_DOMAIN }}
+        VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+        VITE_DISCORD_CLIENT_ID: ${{ secrets.VITE_DISCORD_CLIENT_ID }}
+        VITE_FACEBOOK_APP_ID: ${{ secrets.VITE_FACEBOOK_APP_ID }}
+        VITE_ENABLE_FEATURE_X: ${{ secrets.VITE_ENABLE_FEATURE_X }}
+        
 
     - name: 🧹 Clean old files
       uses: appleboy/ssh-action@v1.0.3
