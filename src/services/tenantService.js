@@ -41,19 +41,19 @@ export function getApiBaseUrl() {
   // Si estamos en un subdominio de meet-lines.local, usa localhost con el puerto del backend
   if (hostname.endsWith('.meet-lines.local')) {
     const backendPort = import.meta.env.VITE_BACKEND_PORT || '8080';
-    console.log('📍 getApiBaseUrl: subdominio detectado, usando localhost:', `${protocol}://localhost:${backendPort}`);
+    console.log('📍 getApiBaseUrl: subdominio detectado (local), usando localhost:', `${protocol}://localhost:${backendPort}`);
     return `${protocol}://localhost:${backendPort}`;
   }
 
-  // Backend port where the API is running (set in .env or default to 8080)
-  const backendPort = import.meta.env.VITE_BACKEND_PORT || '8080';
-
-  // If backendPort equals current window port, reuse it; otherwise use backendPort
+  // En producción (si no es .local), asumimos que la API está en el mismo host (proxy inverso)
+  // Si tenemos un puerto explícito en la URL actual, lo usamos. Si no (443/80), no añadimos nada.
   const currentPort = window.location.port;
-  const portToUse = (currentPort && currentPort === backendPort) ? `:${currentPort}` : `:${backendPort}`;
-
-  const url = `${protocol}://${hostname}${portToUse}`;
-  console.log('📍 getApiBaseUrl: usando hostname actual:', url);
+  const portPart = currentPort ? `:${currentPort}` : '';
+  
+  // Construir URL: protocol://subdomain.domain.com[:port]
+  const url = `${protocol}://${hostname}${portPart}`;
+  
+  console.log('📍 getApiBaseUrl: producción detectada, usando origen:', url);
   return url;
 }
 
