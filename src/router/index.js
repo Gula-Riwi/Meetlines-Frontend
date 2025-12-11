@@ -13,6 +13,7 @@ import CheckEmail from '../views/CheckEmail.vue';
 import Profile from '../views/Profile.vue';
 import ProjectsList from '../views/ProjectsList.vue';
 import BotConfigSetup from '../views/BotConfigSetup.vue';
+import ChannelsManager from '../views/ChannelsManager.vue';
 import EmployeeLogin from '../views/EmployeeLogin.vue';
 import OAuthDiscordCallback from '../views/OAuthDiscordCallback.vue';
 import OAuthFacebookCallback from '../views/OAuthFacebookCallback.vue';
@@ -69,6 +70,12 @@ const routes = [
     path: '/projects/:projectId/bot-setup',
     name: 'BotConfigSetup',
     component: BotConfigSetup,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/projects/:projectId/channels',
+    name: 'ChannelsManager',
+    component: ChannelsManager,
     meta: { requiresAuth: true }
   },
   {
