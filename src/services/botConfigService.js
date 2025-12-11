@@ -8,13 +8,11 @@ export default {
      */
     async getByProjectId(projectId) {
         try {
-            const response = await api.get(`/api/projects/${projectId}/bot-config/my-config`, {
-                validateStatus: function (status) {
-                    return status < 500; // Resolve promise for 404s instead of rejecting
-                }
-            });
+            const response = await api.get(`/api/projects/${projectId}/bot-config/my-config`);
             
-            if (response.status === 404) return null;
+            // 204 No Content means config not exists yet
+            if (response.status === 204) return null;
+            
             return response.data;
         } catch (error) {
             // 404 means config doesn't exist yet
