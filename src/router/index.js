@@ -6,6 +6,7 @@ import Landing from '../views/Landing.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Dashboard from '../views/Dashboard.vue'
+import EmployeeDashboard from '../views/EmployeeDashboard.vue';
 import VerifyEmail from '../views/VerifyEmail.vue';
 import ForgotPassword from '../views/ForgotPassword.vue';
 import ResetPassword from '../views/ResetPassword.vue';
@@ -31,7 +32,13 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: Dashboard,
+    component: () => {
+        if (isInProjectSubdomain()) {
+            return import('../views/EmployeeDashboard.vue');
+        } else {
+            return import('../views/Dashboard.vue');
+        }
+    },
     meta: { requiresAuth: true }
   },
   {
