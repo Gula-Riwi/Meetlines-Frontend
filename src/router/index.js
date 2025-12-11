@@ -16,8 +16,10 @@ import ProjectsList from '../views/ProjectsList.vue';
 import BotConfigSetup from '../views/BotConfigSetup.vue';
 import ChannelsManager from '../views/ChannelsManager.vue';
 import EmployeeLogin from '../views/EmployeeLogin.vue';
+import EmployeeResetPassword from '../views/EmployeeResetPassword.vue';
 import OAuthDiscordCallback from '../views/OAuthDiscordCallback.vue';
 import OAuthFacebookCallback from '../views/OAuthFacebookCallback.vue';
+import EmployeesManager from '../views/EmployeesManager.vue';
 
 
 const routes = [
@@ -28,16 +30,21 @@ const routes = [
     name: 'EmployeeLogin',
     component: EmployeeLogin
   },
+  {
+    path: '/employee-reset-password',
+    name: 'EmployeeResetPassword',
+    component: EmployeeResetPassword
+  },
   { path: '/register', name: 'Register', component: Register },
   {
     path: '/dashboard',
     name: 'Dashboard',
     component: () => {
-        if (isInProjectSubdomain()) {
-            return import('../views/EmployeeDashboard.vue');
-        } else {
-            return import('../views/Dashboard.vue');
-        }
+      if (isInProjectSubdomain()) {
+        return import('../views/EmployeeDashboard.vue');
+      } else {
+        return import('../views/Dashboard.vue');
+      }
     },
     meta: { requiresAuth: true }
   },
@@ -65,6 +72,12 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: Profile,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/employees',
+    name: 'EmployeesManager',
+    component: EmployeesManager,
     meta: { requiresAuth: true }
   },
   {
