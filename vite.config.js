@@ -21,6 +21,7 @@ export default defineConfig({
     allowedHosts: [
       'localhost',
       '127.0.0.1',
+      '.localhost', // Permite todos los subdominios .localhost
       'meet-lines.local',
       '.meet-lines.local', // Permite todos los subdominios
       'meet-lines.com',

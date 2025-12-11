@@ -61,6 +61,21 @@ export default {
         return response.data;
     },
 
+    async employeeForgotPassword(email) {
+        const response = await api.post('/api/Auth/employee-forgot-password', { email });
+        return response.data;
+    },
+
+    async employeeResetPassword(data) {
+        const response = await api.post('/api/Auth/employee-reset-password', data);
+        return response.data;
+    },
+
+    async employeeChangePassword(data) {
+        const response = await api.put('/api/Auth/employee-change-password', data);
+        return response.data;
+    },
+
     async getProfile() {
         const response = await api.get('/api/profile');
         return response.data;
