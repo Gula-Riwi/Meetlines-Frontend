@@ -172,15 +172,19 @@
                                         class="flex items-center gap-3 bg-gray-800 p-3 rounded-xl border border-white/5">
                                         
                                         <!-- Day Toggle -->
+                                        <!-- Day Label -->
                                         <div class="w-24">
-                                            <label class="inline-flex items-center cursor-pointer">
-                                                <input type="checkbox" v-model="schedule.closed" :true-value="false" :false-value="true" class="sr-only peer">
-                                                <div class="text-sm font-medium transition-colors"
-                                                    :class="!schedule.closed ? 'text-white' : 'text-gray-500'">
-                                                    {{ getDayLabel(day) }}
-                                                </div>
-                                            </label>
+                                            <span class="text-sm font-medium transition-colors"
+                                                :class="!schedule.closed ? 'text-white' : 'text-gray-500'">
+                                                {{ getDayLabel(day) }}
+                                            </span>
                                         </div>
+
+                                        <!-- Toggle Switch -->
+                                        <label class="relative inline-flex items-center cursor-pointer mr-4">
+                                            <input type="checkbox" v-model="schedule.closed" :true-value="false" :false-value="true" class="sr-only peer">
+                                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                                        </label>
 
                                         <!-- Time Inputs -->
                                         <div v-if="!schedule.closed" class="flex items-center gap-2 flex-1 animate-fade-in">
