@@ -6,12 +6,13 @@ import Landing from '../views/Landing.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Dashboard from '../views/Dashboard.vue'
-import VerifyEmail from '../views/VerifyEmail.vue'; 
+import VerifyEmail from '../views/VerifyEmail.vue';
 import ForgotPassword from '../views/ForgotPassword.vue';
 import ResetPassword from '../views/ResetPassword.vue';
 import CheckEmail from '../views/CheckEmail.vue';
 import Profile from '../views/Profile.vue';
 import ProjectsList from '../views/ProjectsList.vue';
+import BotConfigSetup from '../views/BotConfigSetup.vue';
 import EmployeeLogin from '../views/EmployeeLogin.vue';
 import OAuthDiscordCallback from '../views/OAuthDiscordCallback.vue';
 import OAuthFacebookCallback from '../views/OAuthFacebookCallback.vue';
@@ -26,42 +27,48 @@ const routes = [
     component: EmployeeLogin
   },
   { path: '/register', name: 'Register', component: Register },
-  { 
-    path: '/dashboard', 
-    name: 'Dashboard', 
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
     component: Dashboard,
-    meta: { requiresAuth: true } 
+    meta: { requiresAuth: true }
   },
-  { 
-    path: '/verify-email', 
-    name: 'VerifyEmail', 
-    component: VerifyEmail 
+  {
+    path: '/verify-email',
+    name: 'VerifyEmail',
+    component: VerifyEmail
   },
-  { 
-    path: '/forgot-password', 
-    name: 'ForgotPassword', 
-    component: ForgotPassword 
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: ForgotPassword
   },
-  { 
+  {
     path: '/reset-password',
-    name: 'ResetPassword', 
-    component: ResetPassword 
+    name: 'ResetPassword',
+    component: ResetPassword
   },
-  { 
-    path: '/check-email', 
-    name: 'CheckEmail', 
-    component: CheckEmail 
+  {
+    path: '/check-email',
+    name: 'CheckEmail',
+    component: CheckEmail
   },
-  { 
-    path: '/profile', 
-    name: 'Profile', 
+  {
+    path: '/profile',
+    name: 'Profile',
     component: Profile,
-    meta: { requiresAuth: true } 
+    meta: { requiresAuth: true }
   },
-  { 
-    path: '/projects', 
-    name: 'ProjectsList', 
+  {
+    path: '/projects',
+    name: 'ProjectsList',
     component: ProjectsList,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/projects/:projectId/bot-setup',
+    name: 'BotConfigSetup',
+    component: BotConfigSetup,
     meta: { requiresAuth: true }
   },
   {
