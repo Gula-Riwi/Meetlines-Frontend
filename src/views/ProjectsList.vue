@@ -15,7 +15,9 @@
         <main class="flex-1 container mx-auto px-4 py-12 z-10">
 
             <div class="mb-10 text-center">
-                <h1 class="text-7xl md:text-8xl font-bold font-league mb-4">Mis <span><LineShadowText shadowColor="white">Negocios</LineShadowText></span></h1>
+                <h1 class="text-7xl md:text-8xl font-bold font-league mb-4">Mis <span>
+                        <LineShadowText shadowColor="white">Negocios</LineShadowText>
+                    </span></h1>
                 <p class="text-gray-400">Selecciona un proyecto para gestionar o crea uno nuevo.</p>
             </div>
 
@@ -28,7 +30,7 @@
 
                 <!-- 1. Tarjetas de Proyectos Existentes -->
                 <div v-for="project in projects" :key="project.id" @click="selectProject(project)"
-                    class="group relative bg-gray-900 border border-white/10 rounded-2xl p-6 cursor-pointer hover:border-indigo-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10">
+                    class="group relative bg-gray-900 border border-white/10 rounded-2xl p-6 cursor-pointer hover:border-indigo-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 z-20">
 
                     <div class="flex justify-between items-start mb-4">
                         <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-2xl">
@@ -40,7 +42,8 @@
                     </div>
 
                     <h3 class="text-xl font-bold text-white mb-1">{{ project.name }}</h3>
-                    <p class="text-sm text-indigo-400 mb-4">{{ project.subdomain }}.meetlines.com</p>
+                    <p v-if="project.subdomain" class="text-sm text-indigo-400 mb-4">{{ project.subdomain
+                        }}.meet-lines.com</p>
                     <p class="text-sm text-gray-500 line-clamp-2">{{ project.description || 'Sin descripción' }}</p>
 
                     <div
@@ -49,7 +52,7 @@
                     </div>
                 </div>
 
-                <!-- 2. Botón Crear Nuevo (Tarjeta Punteada) -->
+                <!-- 2. Botón Crear Nuevo -->
                 <button @click="showCreateModal = true"
                     class="group z-20 flex flex-col items-center justify-center min-h-[250px] border-2 border-dashed border-white/10 rounded-2xl p-6 hover:border-indigo-500/50 hover:bg-white/5 transition-all duration-300">
                     <div
@@ -64,8 +67,8 @@
 
             </div>
             <InteractiveGridPattern :width="60" :height="60" :squares="[50, 50]"
-            squares-class-name="hover:fill-indigo-500/50"
-            :class="'[mask-image:radial-gradient(700px_circle_at_center,white,transparent)] opacity-20'" />
+                squares-class-name="hover:fill-indigo-500/50"
+                :class="'[mask-image:radial-gradient(700px_circle_at_center,white,transparent)] opacity-20'" />
         </main>
 
         <!-- MODAL DE CREACIÓN -->
@@ -83,19 +86,6 @@
                         <label class="text-sm text-gray-400">Nombre del Negocio</label>
                         <input type="text" v-model="newProject.name" required placeholder="Ej: Restaurante Mexicano"
                             class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors">
-                    </div>
-
-                    <!-- Subdominio -->
-                    <div class="space-y-1">
-                        <label class="text-sm text-gray-400">Subdominio (URL)</label>
-                        <div class="flex">
-                            <input type="text" v-model="newProject.subdomain" required placeholder="restaurante-mx"
-                                class="flex-1 bg-gray-950 border border-gray-700 rounded-l-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors">
-                            <span
-                                class="bg-gray-800 border border-l-0 border-gray-700 text-gray-400 px-3 py-2 rounded-r-lg text-sm flex items-center">
-                                .meetlines.com
-                            </span>
-                        </div>
                     </div>
 
                     <!-- Industria -->
@@ -140,6 +130,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import Cookies from 'js-cookie';
 import projectService from '@/services/projectService';
+import botConfigService from '@/services/botConfigService';
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 import LineShadowText from '@/components/LineShadowText.vue';
 
@@ -152,7 +143,6 @@ const isCreating = ref(false);
 
 const newProject = ref({
     name: '',
-    subdomain: '',
     industry: '',
     description: ''
 });
@@ -167,9 +157,15 @@ const loadProjects = async () => {
     try {
         isLoading.value = true;
         const response = await projectService.getAll();
-        if (response.success) {
-            projects.value = response.data;
+
+        if (response && response.projects) {
+            projects.value = response.projects;
+        } else if (response.data && response.data.projects) {
+            projects.value = response.data.projects;
         }
+        // Opcional: Podrías guardar 'canCreateMore' para deshabilitar el botón de crear si alcanzó el límite
+        // const canCreate = response.data ? response.data.canCreateMore : response.canCreateMore;
+
     } catch (error) {
         console.error("Error cargando proyectos:", error);
     } finally {
@@ -184,19 +180,35 @@ const createProject = async () => {
         if (response.success) {
             await loadProjects();
             showCreateModal.value = false;
-            newProject.value = { name: '', subdomain: '', industry: '', description: '' };
+            newProject.value = { name: '', industry: '', description: '' };
         }
     } catch (error) {
         console.error("Error creando proyecto:", error);
-        alert("Error al crear el proyecto. Verifica que el subdominio no esté en uso.");
+        alert("Error al crear el proyecto.");
     } finally {
         isCreating.value = false;
     }
 };
 
-const selectProject = (project) => {
+const selectProject = async (project) => {
     localStorage.setItem('currentProject', JSON.stringify(project));
-    router.push('/dashboard');
+
+    // Check if bot configuration exists for this project
+    try {
+        const botConfig = await botConfigService.getByProjectId(project.id);
+
+        if (botConfig) {
+            // Bot config exists, go directly to dashboard
+            router.push('/dashboard');
+        } else {
+            // No bot config, redirect to setup wizard
+            router.push(`/projects/${project.id}/bot-setup`);
+        }
+    } catch (error) {
+        console.error('Error checking bot config:', error);
+        // On error, assume no config and go to setup
+        router.push(`/projects/${project.id}/bot-setup`);
+    }
 };
 
 const logout = () => {

@@ -41,7 +41,7 @@
                                     <NumberTicker :value="stat.valorNum" :decimalPlaces="stat.decimales || 0"
                                         class="text-4xl font-bold text-white group-hover:text-indigo-400 transition-colors" />
                                     <span v-if="stat.sufijo" class="text-xl text-gray-500 mb-2 ml-1">{{
-                                        stat.sufijo}}</span>
+                                        stat.sufijo }}</span>
                                 </div>
                             </div>
 
@@ -92,8 +92,8 @@
 
             </div>
             <InteractiveGridPattern :width="60" :height="60" :squares="[50, 50]"
-            squares-class-name="hover:fill-indigo-500/50"
-            :class="'[mask-image:radial-gradient(800px_circle_at_center,white,transparent)] opacity-40'" />
+                squares-class-name="hover:fill-indigo-500/50"
+                :class="'[mask-image:radial-gradient(800px_circle_at_center,white,transparent)] opacity-40'" />
         </main>
     </div>
 </template>
@@ -101,11 +101,15 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { createSwapy } from 'swapy';
+import { useRouter } from 'vue-router';
 import Sidebar from '../components/Sidebar.vue';
 import NumberTicker from '@/components/NumberTicker.vue';
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 import { getCurrentSubdomain, isInProjectSubdomain } from '@/services/tenantService';
 import api from '@/services/api';
+import botConfigService from '@/services/botConfigService';
+
+const router = useRouter();
 
 const estadoClases = {
     completed: 'bg-green-500/10 text-green-400 border-green-500/20',
@@ -167,6 +171,28 @@ const ultimosPedidos = ref([
 
 
 onMounted(() => {
+    // Check if bot config exists for current project
+    (async () => {
+        const currentProject = localStorage.getItem('currentProject');
+        if (currentProject) {
+            const proj = JSON.parse(currentProject);
+            try {
+                const botConfig = await botConfigService.getByProjectId(proj.id);
+                if (!botConfig) {
+                    // No bot config, redirect to setup
+                    console.log('No bot config found, redirecting to setup');
+                    router.push(`/projects/${proj.id}/bot-setup`);
+                    return;
+                }
+            } catch (error) {
+                console.error('Error checking bot config:', error);
+                // On error, redirect to setup to be safe
+                router.push(`/projects/${proj.id}/bot-setup`);
+                return;
+            }
+        }
+    })();
+
     // Si estamos en un subdominio, intentar cargar el proyecto correspondiente
     (async () => {
         try {
