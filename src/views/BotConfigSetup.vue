@@ -255,7 +255,7 @@
                                     </div>
                                 </label>
                             </div>
-                            </div>
+
                             <!-- Messages Fields -->
                             <div class="space-y-4 pt-4 border-t border-white/10">
                                 <div>
@@ -395,7 +395,7 @@
                                         placeholder="¡Tenemos un {discount}% de descuento para ti!">
                                 </div>
                             </div>
-
+                        </div>
                     </div>
 
                     <!-- Advanced Config -->
