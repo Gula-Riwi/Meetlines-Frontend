@@ -70,7 +70,7 @@ jobs:
           sudo chown -R miguel_arias:www-data /var/www/MeetLines-Frontend/
           sudo chmod -R 755 /var/www/MeetLines-Frontend/
     
-    - name: 🔄 Reload Nginx
+    - name: Reload Nginx
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.VPS_HOST }}
@@ -79,4 +79,4 @@ jobs:
         port: 22
         script: |
           sudo systemctl reload nginx
-          echo "✅ Deployment completed!!"
+          echo "Deployment completed!!"
