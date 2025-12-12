@@ -20,6 +20,7 @@ import EmployeeResetPassword from '../views/EmployeeResetPassword.vue';
 import OAuthDiscordCallback from '../views/OAuthDiscordCallback.vue';
 import OAuthFacebookCallback from '../views/OAuthFacebookCallback.vue';
 import EmployeesManager from '../views/EmployeesManager.vue';
+import ProjectConfig from '../views/ProjectConfig.vue';
 
 
 const routes = [
@@ -96,6 +97,12 @@ const routes = [
     path: '/projects/:projectId/channels',
     name: 'ChannelsManager',
     component: ChannelsManager,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/projects/:projectId/config',
+    name: 'ProjectConfig',
+    component: ProjectConfig,
     meta: { requiresAuth: true }
   },
   {

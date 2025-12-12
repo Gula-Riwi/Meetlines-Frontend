@@ -74,6 +74,15 @@
                         <span class="font-medium">Equipo</span>
                     </router-link>
                 </li>
+                <li>
+                    <!-- Link dinámico a configuración del proyecto actual -->
+                    <router-link :to="'/projects/' + currentProject.id + '/config'"
+                        active-class="bg-indigo-600 shadow-lg shadow-indigo-500/20"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-all">
+                        <font-awesome-icon :icon="['fas', 'cog']" class="text-lg" />
+                        <span class="font-medium">Configuración</span>
+                    </router-link>
+                </li>
             </ul>
         </nav>
 

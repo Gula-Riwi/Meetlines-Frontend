@@ -115,7 +115,7 @@
                         <template #back>
                             <div class="flex min-h-full flex-col justify-center items-center gap-2 p-4">
                                 <p class="text-xl leading-normal text-indigo-400 text-center font-bold">
-                                    Mejora tu 
+                                    Mejora tu
                                     <TextHighlight
                                         class="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg text-white"
                                         textEndColor="white" :delay="1000">
@@ -185,8 +185,13 @@
                 </div>
 
                 <!-- Feature 4 (Logo) -->
-                <div class="feature-4 logo flex justify-center items-center py-10 md:py-0">
-                    <img src="../img/logo.png" class="w-32 md:w-full max-w-[200px] object-contain">
+                <div class="feature-4 flex justify-center items-center p-6">
+                    <h2 class="font-league text-white italic font-bold tracking-wide text-center">
+                        Meet
+                        <span class="block sm:inline-block">
+                            <LineShadowText shadowColor="white">Lines</LineShadowText>
+                        </span>
+                    </h2>
                 </div>
 
                 <!-- Feature 5 (Dashboard) -->
@@ -228,9 +233,9 @@
                 </TextReveal>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 justify-items-center">
-                    <div v-for="plan in planes" :key="plan.nombre" class="p-0  flex justify-center w-full">
+                    <div v-for="plan in planes" :key="plan.nombre" class="p-0  flex justify-center w-full bounce">
                         <router-link to="/register" class="group cursor-pointer w-full max-w-[350px]">
-                            <GlareCard class="flex flex-col justify-center items-center bg-blue-950">
+                            <GlareCard class="flex flex-col justify-center items-center bg-blue-950 shadow-2xl">
                                 <h3 class="text-4xl mt-4 tracking-wider text-white font-league">{{ plan.nombre }}</h3>
                                 <div>
                                     <span class="text-4xl font-extrabold text-indigo-500">$</span>
@@ -346,6 +351,11 @@ const toggleMenu = () => {
 
 h1.font-league {
     font-size: clamp(10rem, 20vw, 20rem);
+    line-height: 1;
+}
+
+h2.font-league {
+    font-size: clamp(10rem, 10vw, 12rem);
     line-height: 1;
 }
 

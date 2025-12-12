@@ -33,17 +33,28 @@
                     class="group relative bg-gray-900 border border-white/10 rounded-2xl p-6 cursor-pointer hover:border-indigo-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 z-20">
 
                     <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-2xl">
-                            🏢
-                        </div>
                         <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-400 border border-white/5">
                             {{ project.industry || 'General' }}
                         </span>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity" @click.stop>
+                            <button @click.stop="openEditModal(project)"
+                                class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-indigo-400 transition-colors"
+                                title="Editar">
+                                <font-awesome-icon icon="pen" class="text-xs" />
+                            </button>
+                            <button @click.stop="confirmDelete(project)"
+                                class="w-8 h-8 rounded-full bg-white/5 hover:bg-red-500/20 flex items-center justify-center text-gray-400 hover:text-red-400 transition-colors"
+                                title="Eliminar">
+                                <font-awesome-icon icon="trash" class="text-xs" />
+                            </button>
+                        </div>
                     </div>
 
                     <h3 class="text-xl font-bold text-white mb-1">{{ project.name }}</h3>
                     <p v-if="project.subdomain" class="text-sm text-indigo-400 mb-4">{{ project.subdomain
-                        }}.meet-lines.com</p>
+                    }}.meet-lines.com</p>
                     <p class="text-sm text-gray-500 line-clamp-2">{{ project.description || 'Sin descripción' }}</p>
 
                     <div
@@ -75,49 +86,107 @@
         <div v-if="showCreateModal"
             class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
             <div
-                class="bg-gray-900 border border-white/10 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-fade-in-up">
+                class="bg-gray-900 border border-white/10 rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden animate-fade-in-up">
                 <div class="p-6 border-b border-white/10">
-                    <h3 class="text-5xl tracking-wide font-league font-bold text-white">Nuevo Proyecto</h3>
+                    <h3 class="text-4xl tracking-wide font-league font-bold text-white">{{ isEditing ? 'Editar Proyecto'
+                        : 'Nuevo Proyecto' }}</h3>
+                    <p class="text-gray-400 text-sm mt-1">Completa la información de tu negocio</p>
                 </div>
 
-                <form @submit.prevent="createProject" class="p-6 space-y-4">
-                    <!-- Nombre -->
-                    <div class="space-y-1">
-                        <label class="text-sm text-gray-400">Nombre del Negocio</label>
-                        <input type="text" v-model="newProject.name" required placeholder="Ej: Restaurante Mexicano"
-                            class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors">
+                <form @submit.prevent="createProject" class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                    <!-- Columna Izquierda: Información Básica -->
+                    <div class="space-y-4">
+                        <h4 class="text-indigo-400 font-bold uppercase text-xs tracking-wider mb-2">Información General
+                        </h4>
+
+                        <!-- Nombre -->
+                        <div class="space-y-1">
+                            <label class="text-sm text-gray-400">Nombre del Negocio</label>
+                            <input type="text" v-model="newProject.name" required placeholder="Ej: Restaurante Mexicano"
+                                class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors">
+                        </div>
+
+                        <!-- Industria -->
+                        <div class="space-y-1">
+                            <label class="text-sm text-gray-400">Industria</label>
+                            <select v-model="newProject.industry" required
+                                class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors">
+                                <option value="" disabled>Selecciona una opción</option>
+                                <option value="Restaurante">Restaurante</option>
+                                <option value="E-commerce">E-commerce</option>
+                                <option value="Salud">Salud / Clínica</option>
+                                <option value="Servicios">Servicios Profesionales</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="space-y-1">
+                            <label class="text-sm text-gray-400">Descripción</label>
+                            <textarea v-model="newProject.description" rows="3" placeholder="Breve descripción..."
+                                class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors"></textarea>
+                        </div>
+
+                        <div class="border-t border-white/10 pt-4 mt-2">
+                            <h4 class="text-indigo-400 font-bold uppercase text-xs tracking-wider mb-2">Dirección</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-1 col-span-2">
+                                    <label class="text-sm text-gray-400">Dirección</label>
+                                    <input type="text" v-model="newProject.address" placeholder="Av. Principal 123"
+                                        class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-sm text-gray-400">Ciudad</label>
+                                    <input type="text" v-model="newProject.city" placeholder="Ciudad"
+                                        class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-sm text-gray-400">País</label>
+                                    <input type="text" v-model="newProject.country" placeholder="País"
+                                        class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Industria -->
-                    <div class="space-y-1">
-                        <label class="text-sm text-gray-400">Industria</label>
-                        <select v-model="newProject.industry"
-                            class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors">
-                            <option value="" disabled>Selecciona una opción</option>
-                            <option value="Restaurante">Restaurante</option>
-                            <option value="E-commerce">E-commerce</option>
-                            <option value="Salud">Salud / Clínica</option>
-                            <option value="Servicios">Servicios Profesionales</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </div>
+                    <!-- Columna Derecha: Ubicación en Mapa -->
+                    <div class="space-y-4 flex flex-col">
+                        <h4 class="text-indigo-400 font-bold uppercase text-xs tracking-wider mb-2">Ubicación (Opcional)
+                        </h4>
+                        <p class="text-xs text-gray-400 mb-2">Haz click en el mapa para marcar la ubicación exacta de tu
+                            negocio.</p>
 
-                    <!-- Descripción -->
-                    <div class="space-y-1">
-                        <label class="text-sm text-gray-400">Descripción</label>
-                        <textarea v-model="newProject.description" rows="3" placeholder="Breve descripción..."
-                            class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors"></textarea>
-                    </div>
+                        <div class="flex-1 rounded-xl overflow-hidden border border-gray-700 min-h-[300px] relative">
+                            <GoogleMap :api-key="googleMapsApiKey" style="width: 100%; height: 100%" :center="mapCenter"
+                                :zoom="15" @click="handleMapClick">
+                                <Marker v-if="newProject.latitude && newProject.longitude"
+                                    :options="{ position: { lat: newProject.latitude, lng: newProject.longitude } }" />
+                            </GoogleMap>
 
-                    <div class="flex justify-end gap-3 pt-4">
-                        <button type="button" @click="showCreateModal = false"
-                            class="px-4 py-2 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Cancelar</button>
-                        <button type="submit" :disabled="isCreating"
-                            class="px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-bold transition-colors flex items-center gap-2">
-                            <span v-if="isCreating"
-                                class="animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full"></span>
-                            {{ isCreating ? 'Creando...' : 'Crear Proyecto' }}
-                        </button>
+                            <div v-if="!newProject.latitude"
+                                class="absolute inset-0 pointer-events-none flex items-center justify-center bg-black/20">
+                                <span
+                                    class="bg-black/70 px-3 py-1 rounded-full text-xs text-white backdrop-blur-sm">Click
+                                    para seleccionar ubicación</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 text-xs text-gray-500">
+                            <div>Lat: {{ newProject.latitude?.toFixed(6) || '---' }}</div>
+                            <div>Lng: {{ newProject.longitude?.toFixed(6) || '---' }}</div>
+                        </div>
+
+                        <div class="flex justify-end gap-3 pt-4 mt-auto">
+                            <button type="button" @click="closeModal"
+                                class="px-4 py-2 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Cancelar</button>
+                            <button type="submit" :disabled="isCreating"
+                                class="px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-bold transition-colors flex items-center gap-2">
+                                <span v-if="isCreating"
+                                    class="animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full"></span>
+                                {{ isCreating ? 'Guardando...' : (isEditing ? 'Guardar Cambios' : 'Crear Proyecto') }}
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -133,18 +202,30 @@ import projectService from '@/services/projectService';
 import botConfigService from '@/services/botConfigService';
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 import LineShadowText from '@/components/LineShadowText.vue';
+import { GoogleMap, Marker } from 'vue3-google-map';
 
 const router = useRouter();
 const user = ref({});
 const projects = ref([]);
 const isLoading = ref(true);
 const showCreateModal = ref(false);
+const isEditing = ref(false);
+const editingId = ref(null);
 const isCreating = ref(false);
+
+
+const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS;
+const mapCenter = ref({ lat: 6.247836486763944, lng: -75.57957695784035 });
 
 const newProject = ref({
     name: '',
     industry: '',
-    description: ''
+    description: '',
+    address: '',
+    city: '',
+    country: '',
+    latitude: null,
+    longitude: null
 });
 
 onMounted(async () => {
@@ -163,8 +244,6 @@ const loadProjects = async () => {
         } else if (response.data && response.data.projects) {
             projects.value = response.data.projects;
         }
-        // Opcional: Podrías guardar 'canCreateMore' para deshabilitar el botón de crear si alcanzó el límite
-        // const canCreate = response.data ? response.data.canCreateMore : response.canCreateMore;
 
     } catch (error) {
         console.error("Error cargando proyectos:", error);
@@ -173,22 +252,106 @@ const loadProjects = async () => {
     }
 };
 
+const handleMapClick = (event) => {
+    if (event.latLng) {
+        newProject.value.latitude = event.latLng.lat();
+        newProject.value.longitude = event.latLng.lng();
+    }
+};
+
+const openEditModal = async (project) => {
+    try {
+        isLoading.value = true;
+        const fullProject = await projectService.getById(project.id);
+
+        // Handle if response is wrapped in data or direct
+        const projectData = fullProject.data || fullProject;
+
+        isEditing.value = true;
+        editingId.value = project.id;
+        newProject.value = {
+            name: projectData.name,
+            industry: projectData.industry,
+            description: projectData.description,
+            address: projectData.address || '',
+            city: projectData.city || '',
+            country: projectData.country || '',
+            latitude: projectData.latitude || null,
+            longitude: projectData.longitude || null
+        };
+
+        // Set map center if project has location
+        if (projectData.latitude && projectData.longitude) {
+            mapCenter.value = { lat: projectData.latitude, lng: projectData.longitude };
+        }
+
+        showCreateModal.value = true;
+    } catch (error) {
+        console.error("Error fetching project details:", error);
+        alert("Error al cargar los detalles del proyecto.");
+    } finally {
+        isLoading.value = false;
+    }
+};
+
+const confirmDelete = async (project) => {
+    if (confirm(`¿Estás seguro de que quieres eliminar el proyecto "${project.name}"? Esta acción no se puede deshacer.`)) {
+        try {
+            await projectService.delete(project.id);
+            await loadProjects();
+        } catch (error) {
+            console.error("Error eliminando proyecto:", error);
+            alert("Error al eliminar el proyecto.");
+        }
+    }
+};
+
 const createProject = async () => {
     try {
         isCreating.value = true;
-        const response = await projectService.create(newProject.value);
-        if (response.success) {
+
+        const payload = { ...newProject.value };
+
+        let response;
+        if (isEditing.value) {
+            response = await projectService.update(editingId.value, payload);
+        } else {
+            response = await projectService.create(payload);
+        }
+
+        if (response.success || (isEditing.value && response)) { // Update might not return success:true in older controllers, but usually does or throws
             await loadProjects();
             showCreateModal.value = false;
-            newProject.value = { name: '', industry: '', description: '' };
+            resetForm();
         }
     } catch (error) {
-        console.error("Error creando proyecto:", error);
-        const errorMessage = error.response?.data?.error || "Error al crear el proyecto.";
+        console.error("Error guardando proyecto:", error);
+        const errorMessage = error.response?.data?.error || "Error al guardar el proyecto.";
         alert(errorMessage);
     } finally {
         isCreating.value = false;
     }
+};
+
+const resetForm = () => {
+    newProject.value = {
+        name: '',
+        industry: '',
+        description: '',
+        address: '',
+        city: '',
+        country: '',
+        latitude: null,
+        longitude: null
+    };
+    isEditing.value = false;
+    editingId.value = null;
+};
+
+// Hook into modal close to reset form if canceled
+const closeModal = () => {
+    showCreateModal.value = false;
+    resetForm();
 };
 
 const selectProject = async (project) => {
