@@ -1,66 +1,40 @@
 <template>
-    <div class="flex h-screen bg-gray-950 font-sans text-white overflow-hidden">
-        <Sidebar />
-
-        <main class="flex-1 flex flex-col overflow-hidden relative bg-blue-950">
-            <!-- Header -->
-            <header
-                class="h-20 flex items-center justify-between px-8 border-b border-white/5 bg-gray-950/50 backdrop-blur-sm z-10">
-                <div>
-                    <h2 class="text-2xl font-bold">Bienvenido, {{ employeeName }} 👋</h2>
-                    <p class="text-sm text-gray-400">Panel de Empleado - {{ projectName }}</p>
+    <div class="min-h-screen bg-gray-950 font-sans text-white">
+        <!-- Header -->
+        <header
+            class="h-20 flex items-center justify-between px-8 border-b border-white/5 bg-gray-950/50 backdrop-blur-sm sticky top-0 z-10">
+            <div>
+                <h2 class="text-2xl font-bold">Bienvenido, {{ employeeName }} 👋</h2>
+                <p class="text-sm text-gray-400">Panel de Empleado - {{ projectName }}</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="text-right hidden md:block">
+                    <p class="text-sm font-bold text-white">{{ employeeName }}</p>
+                    <p class="text-sm text-indigo-400">{{ employeeRole }}</p>
                 </div>
-                <div class="flex items-center gap-4">
-                    <div class="text-right hidden md:block">
-                        <p class="text-sm font-bold text-white">{{ employeeName }}</p>
-                        <p class="text-sm text-indigo-400">{{ employeeRole }}</p>
-                    </div>
-                    <div
-                        class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 border-2 border-white/20 flex items-center justify-center font-bold text-lg">
-                        {{ employeeInitials }}
-                    </div>
+                <div
+                    class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 border-2 border-white/20 flex items-center justify-center font-bold text-lg">
+                    {{ employeeInitials }}
                 </div>
-            </header>
+                <!-- Logout Button -->
+                <button @click="handleLogout"
+                    class="flex items-center gap-2 px-4 py-2 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" x2="9" y1="12" y2="12" />
+                    </svg>
+                    <span class="font-bold text-sm hidden md:inline">Salir</span>
+                </button>
+            </div>
+        </header>
 
-            <div class="flex-1 overflow-y-auto p-8 z-10 scrollbar-hide">
-                <!-- Welcome Section -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                    <!-- Card 1: Chats -->
-                    <div
-                        class="bg-gray-900 border border-white/10 rounded-2xl p-6 hover:border-indigo-500/50 transition-colors cursor-pointer group">
-                        <div class="flex items-center gap-4 mb-4">
-                            <div
-                                class="p-3 rounded-xl bg-indigo-500/10 text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold">Mis Chats</h3>
-                        </div>
-                        <p class="text-gray-400 text-sm">Gestiona tus conversaciones asignadas y atiende a los clientes.
-                        </p>
-                    </div>
-
-                    <!-- Card 2: Citas -->
-                    <div
-                        class="bg-gray-900 border border-white/10 rounded-2xl p-6 hover:border-indigo-500/50 transition-colors cursor-pointer group">
-                        <div class="flex items-center gap-4 mb-4">
-                            <div
-                                class="p-3 rounded-xl bg-purple-500/10 text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold">Mis Citas</h3>
-                        </div>
-                        <p class="text-gray-400 text-sm">Revisa tu agenda y las próximas citas programadas.</p>
-                    </div>
-
-                    <!-- Card 3: Perfil -->
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto p-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Profile Card -->
+                <div class="lg:col-span-1">
                     <div @click="showChangePasswordModal = true"
                         class="bg-gray-900 border border-white/10 rounded-2xl p-6 hover:border-indigo-500/50 transition-colors cursor-pointer group">
                         <div class="flex items-center gap-4 mb-4">
@@ -74,21 +48,67 @@
                             </div>
                             <h3 class="text-xl font-bold">Mi Perfil</h3>
                         </div>
-                        <p class="text-gray-400 text-sm">Actualiza tu información personal y contraseña.</p>
+                        <p class="text-gray-400 text-sm mb-3">Actualiza tu información personal y contraseña.</p>
+                        <div class="text-sm text-indigo-400 font-medium">Click para cambiar contraseña →</div>
                     </div>
                 </div>
 
-                <div class="bg-indigo-900/20 border border-indigo-500/30 rounded-2xl p-6 text-center">
-                    <h3 class="text-lg font-bold text-indigo-300 mb-2">🚀 Estamos preparando más herramientas para ti
-                    </h3>
-                    <p class="text-gray-400">Pronto verás aquí métricas de desempeño y más utilidades.</p>
+                <!-- Task Checklist -->
+                <div class="lg:col-span-2">
+                    <div class="bg-gray-900 border border-white/10 rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-2xl font-bold">Mis Tareas</h3>
+                            <span class="px-3 py-1 bg-indigo-600/20 text-indigo-400 rounded-full text-sm font-medium">
+                                {{ completedTasks }}/{{ tasks.length }} completadas
+                            </span>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div v-if="tasks.length === 0"
+                            class="text-center py-12 border-2 border-dashed border-white/10 rounded-xl">
+                            <div class="text-6xl mb-4">📋</div>
+                            <h4 class="text-lg font-bold mb-2">No hay tareas asignadas</h4>
+                            <p class="text-gray-400 text-sm">Las tareas aparecerán aquí cuando sean asignadas.</p>
+                        </div>
+
+                        <!-- Task List -->
+                        <div v-else class="space-y-3">
+                            <div v-for="task in tasks" :key="task.id"
+                                class="flex items-center gap-4 p-4 bg-gray-800/50 rounded-xl hover:bg-gray-800 transition-colors group">
+                                <!-- Checkbox -->
+                                <button @click="toggleTask(task.id)"
+                                    class="flex-shrink-0 w-6 h-6 rounded-md border-2 transition-all"
+                                    :class="task.completed ? 'bg-indigo-600 border-indigo-600' : 'border-gray-600 hover:border-indigo-500'">
+                                    <svg v-if="task.completed" xmlns="http://www.w3.org/2000/svg" class="w-full h-full"
+                                        viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </button>
+
+                                <!-- Task Content -->
+                                <div class="flex-1">
+                                    <p class="font-medium transition-all"
+                                        :class="task.completed ? 'line-through text-gray-500' : 'text-white'">
+                                        {{ task.title }}
+                                    </p>
+                                    <p v-if="task.description" class="text-sm text-gray-400 mt-1">{{ task.description }}
+                                    </p>
+                                </div>
+
+                                <!-- Priority Badge -->
+                                <span v-if="task.priority" class="px-2 py-1 rounded-md text-xs font-bold" :class="{
+                                    'bg-red-500/20 text-red-400': task.priority === 'high',
+                                    'bg-yellow-500/20 text-yellow-400': task.priority === 'medium',
+                                    'bg-blue-500/20 text-blue-400': task.priority === 'low'
+                                }">
+                                    {{ task.priority === 'high' ? 'Alta' : task.priority === 'medium' ? 'Media' : 'Baja'
+                                    }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
-
-            <InteractiveGridPattern :width="60" :height="60" :squares="[50, 50]"
-                squares-class-name="hover:fill-indigo-500/50"
-                :class="'[mask-image:radial-gradient(800px_circle_at_center,white,transparent)] opacity-40'" />
         </main>
 
         <!-- Change Password Modal -->
@@ -207,9 +227,11 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import Sidebar from '../components/Sidebar.vue';
-import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
+import { useRouter } from 'vue-router';
+import Cookies from 'js-cookie';
 import authService from '@/services/authService';
+
+const router = useRouter();
 
 const employeeName = ref('');
 const employeeRole = ref('');
@@ -228,10 +250,42 @@ const changePasswordError = ref('');
 const changePasswordSuccess = ref(false);
 const changingPassword = ref(false);
 
+// Tasks - Template for future API integration
+const tasks = ref([
+    // Example tasks - these will be replaced with API data
+    // {
+    //     id: 1,
+    //     title: 'Revisar mensajes pendientes',
+    //     description: 'Responder a los clientes en espera',
+    //     completed: false,
+    //     priority: 'high'
+    // },
+    // {
+    //     id: 2,
+    //     title: 'Actualizar estado de citas',
+    //     description: 'Marcar citas completadas del día',
+    //     completed: false,
+    //     priority: 'medium'
+    // }
+]);
+
 const employeeInitials = computed(() => {
     if (!employeeName.value) return 'E';
     return employeeName.value.substring(0, 2).toUpperCase();
 });
+
+const completedTasks = computed(() => {
+    return tasks.value.filter(task => task.completed).length;
+});
+
+const toggleTask = (taskId) => {
+    const task = tasks.value.find(t => t.id === taskId);
+    if (task) {
+        task.completed = !task.completed;
+        // TODO: Send update to API when endpoint is ready
+        // await taskService.updateTask(taskId, { completed: task.completed });
+    }
+};
 
 const changePassword = async () => {
     changePasswordError.value = '';
@@ -278,21 +332,41 @@ const closeChangePasswordModal = () => {
     showNewPassword.value = false;
 };
 
+const handleLogout = async () => {
+    if (confirm('¿Seguro que deseas salir?')) {
+        try {
+            const refreshToken = Cookies.get('refresh_token');
+            if (refreshToken) {
+                await authService.logout(refreshToken);
+            }
+        } catch (e) {
+            console.error('Error en logout:', e);
+        } finally {
+            Cookies.remove('auth_token');
+            Cookies.remove('refresh_token');
+            localStorage.clear();
+            router.push('/employee-login');
+        }
+    }
+};
+
 onMounted(() => {
-    // Cargar datos del usuario desde localStorage (guardados en login)
+    // Cargar datos del usuario desde localStorage
     try {
         const userStr = localStorage.getItem('user');
         if (userStr) {
             const user = JSON.parse(userStr);
             employeeName.value = user.name || 'Empleado';
-            // El rol a veces viene en el JWT o respuesta login, asumimos algo simple si no está
             employeeRole.value = 'Colaborador';
         }
 
-        // Cargar proyecto actual (si existe contexto) o detectar por subdominio si fuera necesario
-        // En Employee Dashboard, el contexto del proyecto es implícito al subdominio
+        // Detectar proyecto por subdominio
         const sub = window.location.hostname.split('.')[0];
         projectName.value = sub.charAt(0).toUpperCase() + sub.slice(1);
+
+        // TODO: Fetch tasks from API when endpoint is ready
+        // const response = await taskService.getEmployeeTasks();
+        // tasks.value = response.data;
 
     } catch (e) {
         console.error('Error cargando datos de empleado', e);
