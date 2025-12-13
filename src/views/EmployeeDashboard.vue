@@ -32,7 +32,10 @@
 
         <!-- Main Content -->
         <main class="max-w-7xl mx-auto p-8">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <InteractiveGridPattern :width="60" :height="60" :squares="[50, 50]"
+                squares-class-name="hover:fill-indigo-500/50"
+                :class="'absolute inset-0 [mask-image:radial-gradient(800px_circle_at_center,white,transparent)] opacity-40'" />
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10">
                 <!-- Profile Card -->
                 <div class="lg:col-span-1">
                     <div @click="showChangePasswordModal = true"
@@ -66,7 +69,7 @@
                         <!-- Empty State -->
                         <div v-if="tasks.length === 0"
                             class="text-center py-12 border-2 border-dashed border-white/10 rounded-xl">
-                            <div class="text-6xl mb-4">📋</div>
+                            <font-awesome-icon :icon="['fas', 'clipboard-list']" class="text-6xl mb-4" />
                             <h4 class="text-lg font-bold mb-2">No hay tareas asignadas</h4>
                             <p class="text-gray-400 text-sm">Las tareas aparecerán aquí cuando sean asignadas.</p>
                         </div>
@@ -230,6 +233,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import Cookies from 'js-cookie';
 import authService from '@/services/authService';
+import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 
 const router = useRouter();
 

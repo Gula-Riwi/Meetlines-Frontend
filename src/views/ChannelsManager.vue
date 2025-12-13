@@ -1,10 +1,10 @@
 <template>
-    <div class="min-h-screen bg-gray-950 text-white font-sans flex flex-col">
+    <div class="min-h-screen bg-blue-950 text-white font-sans flex flex-col">
         <!-- Header -->
         <header class="border-b border-white/10 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-10">
             <div class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold font-league">Mis Canales</h1>
+                    <h1 class="text-4xl tracking-wide font-bold font-league">Mis Canales</h1>
                     <p class="text-gray-400 mt-1">Gestiona tus redes sociales y puntos de contacto públicos</p>
                 </div>
                 <button @click="$router.back()" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2">
@@ -18,10 +18,14 @@
 
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto p-6">
-            <div class="max-w-6xl mx-auto">
+            <InteractiveGridPattern :width="60" :height="60" :squares="[50, 50]"
+                squares-class-name="hover:fill-indigo-500/50"
+                :class="'[mask-image:radial-gradient(800px_circle_at_center,white,transparent)] opacity-40'" />
+
+            <div class="max-w-6xl mx-auto relative z-20">
                 
                 <!-- Loading State -->
-                <div v-if="loading" class="flex justify-center py-12">
+                <div v-if="loading" class="flex justify-center py-12 z-10">
                      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
                 </div>
 
@@ -144,6 +148,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router'; // Assuming vue-router is used
 import { channelService } from '../services/channelService';
+import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 
 const route = useRoute();
 const projectId = route.params.projectId || 'CURRENT_PROJECT_ID'; // Ideally from route or store

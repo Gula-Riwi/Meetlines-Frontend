@@ -28,6 +28,18 @@
 
             <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto z-20">
 
+                <!-- 2. Botón Crear Nuevo -->
+                <button @click="showCreateModal = true"
+                    class="group z-20 flex flex-col items-center justify-center min-h-[250px] border-2 border-dashed border-white/10 rounded-2xl p-6 hover:border-indigo-500/50 hover:bg-white/5 transition-all duration-300">
+                    <div
+                        class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400 group-hover:text-white"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                    <span class="font-bold text-gray-400 group-hover:text-white">Crear Nuevo Negocio</span>
+                </button>
                 <!-- 1. Tarjetas de Proyectos Existentes -->
                 <div v-for="project in projects" :key="project.id" @click="selectProject(project)"
                     class="group relative bg-gray-900 border border-white/10 rounded-2xl p-6 cursor-pointer hover:border-indigo-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 z-20">
@@ -62,20 +74,6 @@
                         Entrar al Panel <span class="ml-2">→</span>
                     </div>
                 </div>
-
-                <!-- 2. Botón Crear Nuevo -->
-                <button @click="showCreateModal = true"
-                    class="group z-20 flex flex-col items-center justify-center min-h-[250px] border-2 border-dashed border-white/10 rounded-2xl p-6 hover:border-indigo-500/50 hover:bg-white/5 transition-all duration-300">
-                    <div
-                        class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400 group-hover:text-white"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                    </div>
-                    <span class="font-bold text-gray-400 group-hover:text-white">Crear Nuevo Negocio</span>
-                </button>
-
             </div>
             <InteractiveGridPattern :width="60" :height="60" :squares="[50, 50]"
                 squares-class-name="hover:fill-indigo-500/50"

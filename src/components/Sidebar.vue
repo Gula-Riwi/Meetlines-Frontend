@@ -47,7 +47,7 @@
                 <li>
                     <router-link to="/dashboard" active-class="bg-indigo-600 shadow-lg shadow-indigo-500/20"
                         class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-all">
-                        <font-awesome-icon :icon="['fas', 'check']" class="text-lg" />
+                        <font-awesome-icon :icon="['fas', 'chart-simple']" class="text-lg" />
                         <span class="font-medium">Resumen</span>
                     </router-link>
                 </li>
@@ -62,8 +62,7 @@
                     <router-link :to="'/projects/' + currentProject.id + '/channels'"
                         active-class="bg-indigo-600 shadow-lg shadow-indigo-500/20"
                         class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-all">
-                        <!-- Icono temporal, idealmente usar font-awesome o svg -->
-                        <span class="text-lg">📢</span>
+                        <font-awesome-icon :icon="['fas', 'tower-broadcast']" class="text-lg" />
                         <span class="font-medium">Mis Canales</span>
                     </router-link>
                 </li>

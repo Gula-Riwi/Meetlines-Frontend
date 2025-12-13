@@ -8,9 +8,20 @@
 
             <div class="max-w-4xl mx-auto z-10 relative">
                 <!-- Header -->
-                <div class="mb-8">
-                    <h1 class="text-4xl font-league font-bold mb-2">Configuración del Proyecto</h1>
-                    <p class="text-gray-400">Administra los detalles, servicios e integraciones de tu negocio.</p>
+                <div class="mb-8 flex justify-between items-center">
+                    <div>
+                        <h1 class="text-4xl tracking-wide font-league font-bold mb-2">Configuración del Proyecto</h1>
+                        <p class="text-gray-400">Administra los detalles, servicios e integraciones de tu negocio.</p>
+                    </div>
+                    <button @click="$router.back()"
+                        class="text-gray-400 hover:text-white transition-colors flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span>Volver</span>
+                    </button>
                 </div>
 
                 <!-- Tabs -->
@@ -200,7 +211,7 @@
                             <div class="space-y-1 md:col-span-2">
                                 <label class="text-xs text-gray-500 uppercase font-bold">Bot Token</label>
                                 <input type="password" v-model="telegramConfig.botToken"
-                                    placeholder="123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
+                                    placeholder="Ej: 123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
                                     class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-blue-500 focus:outline-none transition-colors">
                             </div>
                         </div>

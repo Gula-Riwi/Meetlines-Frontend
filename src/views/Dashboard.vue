@@ -4,23 +4,6 @@
         <Sidebar />
 
         <main class="flex-1 flex flex-col overflow-hidden relative bg-blue-950">
-            <!-- Header -->
-            <header
-                class="h-20 flex items-center justify-between px-8 border-b border-white/5 bg-gray-950/50 backdrop-blur-sm z-10">
-                <div>
-                    <h2 class="text-2xl font-bold">{{ projectName ? projectName : 'Hola, Freelancer' }} 👋</h2>
-                    <p class="text-sm text-gray-400">{{ projectName ? 'Panel del proyecto' : 'Aquí tienes el resumen de hoy' }}</p>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="text-right hidden md:block">
-                        <p class="text-sm font-bold text-white">Admin User</p>
-                        <p class="text-xs text-gray-400">admin@mitienda.com</p>
-                    </div>
-                    <div
-                        class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 border-2 border-white/20">
-                    </div>
-                </div>
-            </header>
             <div class="flex-1 overflow-y-auto p-8 z-10 scrollbar-hide">
                 <section ref="swapyContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <div v-for="stat in metricas" :key="stat.id" :data-swapy-slot="stat.id">

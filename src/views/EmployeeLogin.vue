@@ -1,7 +1,9 @@
 <template>
   <div class="min-h-screen w-full flex items-center justify-center bg-blue-950 relative overflow-hidden font-sans">
+    <InteractiveGridPattern :width="60" :height="60" :squares="[50, 50]" squares-class-name="hover:fill-indigo-500/50"
+      :class="'absolute inset-0 [mask-image:radial-gradient(800px_circle_at_center,white,transparent)] opacity-40'" />
     <div
-      class="relative z-10 w-full max-w-md p-8 bg-gray-900/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl mx-4">
+      class="relative z-20 w-full max-w-md p-8 bg-gray-900/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl mx-4">
       <div class="text-center mb-8">
         <h2 class="text-6xl md:text-7xl font-bold font-league text-white mb-2">Acceso Empleados</h2>
         <p class="text-gray-200 text-sm">Inicia sesión como empleado del proyecto</p>
