@@ -31,12 +31,10 @@ export default {
         const response = await api.patch(`/api/projects/${id}/whatsapp`, configData);
         return response.data;
     },
-
-    // Si en el futuro se implementa el endpoint de Telegram en ProjectsController:
-    // async configureTelegram(id, configData) {
-    //     const response = await api.patch(`/api/projects/${id}/telegram`, configData);
-    //     return response.data;
-    // },
+    async configureTelegram(id, configData) {
+        const response = await api.patch(`/api/projects/${id}/telegram`, configData);
+        return response.data;
+    },
 
     // Endpoints públicos
     async getPublicProjects(latitude, longitude) {
@@ -61,7 +59,7 @@ export default {
     // Configuración Adicional
     async uploadPhoto(id, file) {
         const formData = new FormData();
-        formData.append('photo', file);
+        formData.append('File', file);
         const response = await api.post(`/api/projects/${id}/photos`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -70,23 +68,42 @@ export default {
         return response.data;
     },
 
+    async getPhotos(id) {
+        const response = await api.get(`/api/projects/${id}/photos`);
+        return response.data;
+    },
+
+    async deletePhoto(projectId, photoId) {
+        await api.delete(`/api/projects/${projectId}/photos/${photoId}`);
+    },
+
     async configureTelegram(id, configData) {
         const response = await api.patch(`/api/projects/${id}/telegram`, configData);
         return response.data;
     },
 
-    // Stub para servicios (mock por ahora)
-    async saveServices(id, services) {
-        // Simular retardo de red
-        await new Promise(resolve => setTimeout(resolve, 800));
-        console.log(`Guardando servicios para proyecto ${id}:`, services);
-        return { success: true, message: "Servicios actualizados (Mock)" };
+    // Services Management
+    async getProjectServices(projectId) {
+        const response = await api.get(`/api/management/projects/${projectId}/services`);
+        return response.data;
     },
 
-    async getServices(id) {
-        // Simular retardo
-        await new Promise(resolve => setTimeout(resolve, 500));
-        // Retorna lista vacía o mock
-        return [];
+    async createService(projectId, serviceData) {
+        const response = await api.post(`/api/projects/${projectId}/services`, serviceData);
+        return response.data;
+    },
+
+    async getServiceById(serviceId) {
+        const response = await api.get(`/api/services/${serviceId}`);
+        return response.data;
+    },
+
+    async updateService(serviceId, serviceData) {
+        const response = await api.put(`/api/services/${serviceId}`, serviceData);
+        return response.data;
+    },
+
+    async deleteService(serviceId) {
+        await api.delete(`/api/services/${serviceId}`);
     }
 };

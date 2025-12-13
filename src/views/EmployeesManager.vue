@@ -27,9 +27,9 @@
 
                 <div v-else-if="employees.length === 0"
                     class="text-center py-12 md:py-16 bg-gray-900/50 rounded-2xl border border-white/10 border-dashed mx-auto max-w-2xl">
-                    <div class="text-5xl md:text-6xl mb-4">👥</div>
+                    <font-awesome-icon :icon="['fas', 'users']" class="text-5xl md:text-6xl mb-4" />
                     <h3 class="text-lg md:text-xl font-bold mb-2">No hay empleados aún</h3>
-                    <p class="text-gray-400 text-sm md:text-base px-4">Agrega colaboradores para que te ayuden a gestionar el bot.</p>
+                    <p class="text-gray-400 text-sm md:text-base px-4">Agrega colaboradores a tu negocio</p>
                 </div>
 
                 <!-- Tabla de Empleados -->
