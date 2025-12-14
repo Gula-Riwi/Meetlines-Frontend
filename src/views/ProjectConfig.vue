@@ -174,11 +174,34 @@
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                                <div class="space-y-1">
-                                    <label class="text-xs text-gray-500 uppercase font-bold">Verify Token</label>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between items-end">
+                                        <label
+                                            class="text-xs text-gray-500 uppercase font-bold flex items-center gap-2">
+                                            Verify Token
+                                            <span
+                                                class="bg-indigo-500/20 text-indigo-300 text-[10px] px-2 py-0.5 rounded border border-indigo-500/30 normal-case font-normal">
+                                                Créalo tú mismo
+                                            </span>
+                                        </label>
+                                    </div>
+
                                     <input type="text" v-model="whatsappConfig.whatsappVerifyToken"
-                                        placeholder="Token de verificación"
+                                        placeholder="Ej: mi_token_secreto_123"
                                         class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-green-500 focus:outline-none transition-colors text-sm">
+
+                                    <!-- CAJA DE INFORMACIÓN (Callout) -->
+                                    <div
+                                        class="bg-yellow-500/5 border border-yellow-500/20 rounded-lg p-3 flex gap-3 items-start">
+                                        <font-awesome-icon :icon="['fas', 'circle-info']"
+                                            class="text-yellow-500 mt-0.5 text-sm" />
+
+                                        <div class="text-xs text-gray-400 leading-relaxed">
+                                            <span class="text-yellow-500 font-bold block mb-1">¡No olvides este
+                                                dato!</span>
+                                            Inventa una contraseña segura aquí, guárdala en un lugar seguro.
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="space-y-1">
                                     <label class="text-xs text-gray-500 uppercase font-bold">Phone ID</label>
