@@ -71,8 +71,10 @@
                         <div v-if="tasks.length === 0"
                             class="text-center py-12 border-2 border-dashed border-white/10 rounded-xl">
                             <!-- Icon for empty chat -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4 text-gray-600"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                             </svg>
                             <h4 class="text-lg font-bold mb-2">No tienes chats asignados</h4>
                             <p class="text-gray-400 text-sm">Cuando te asignen un cliente, aparecerá aquí.</p>
@@ -80,7 +82,9 @@
 
                         <!-- Loading State -->
                         <div v-else-if="isLoadingTasks" class="py-12 flex justify-center">
-                             <div class="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full"></div>
+                            <div
+                                class="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full">
+                            </div>
                         </div>
 
                         <!-- Chat List -->
@@ -89,9 +93,12 @@
                                 class="flex items-center gap-4 p-4 bg-gray-800/50 rounded-xl hover:bg-gray-800 transition-colors group cursor-pointer"
                                 @click="toggleTask(task.id)">
                                 <!-- Icon Status -->
-                                <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all bg-indigo-500/20 text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                                <div
+                                    class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all bg-indigo-500/20 text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                                     </svg>
                                 </div>
 
@@ -108,10 +115,12 @@
                                 </div>
 
                                 <!-- Priority Badge -->
-                                <span v-if="task.priority === 'high'" class="px-2 py-1 rounded-md text-xs font-bold bg-red-500/20 text-red-400 animate-pulse">
+                                <span v-if="task.priority === 'high'"
+                                    class="px-2 py-1 rounded-md text-xs font-bold bg-red-500/20 text-red-400 animate-pulse">
                                     URGENTE
                                 </span>
-                                <span v-else class="px-2 py-1 rounded-md text-xs font-bold bg-green-500/20 text-green-400">
+                                <span v-else
+                                    class="px-2 py-1 rounded-md text-xs font-bold bg-green-500/20 text-green-400">
                                     ACTIVO
                                 </span>
                             </div>
@@ -120,40 +129,100 @@
 
                     <!-- Appointments Section -->
                     <div class="bg-gray-900 border border-white/10 rounded-2xl p-6 mt-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-2xl font-bold">Próximas Citas</h3>
-                            <span class="px-3 py-1 bg-green-600/20 text-green-400 rounded-full text-sm font-medium">
-                                {{ appointments.length }} programadas
-                            </span>
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+                            <div>
+                                <h3 class="text-2xl font-bold">Próximas Citas</h3>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span
+                                        class="px-3 py-1 bg-green-600/20 text-green-400 rounded-full text-sm font-medium">
+                                        {{ filteredAppointments.length }} visibles
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Filters -->
+                            <div class="flex items-center gap-2 w-full sm:w-auto">
+                                <input type="date" v-model="filterDate"
+                                    class="bg-gray-800 border border-gray-700 text-white text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2">
+                                <select v-model="filterStatus"
+                                    class="bg-gray-800 border border-gray-700 text-white text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2">
+                                    <option value="">Todos</option>
+                                    <option value="confirmed">Confirmado</option>
+                                    <option value="pending">Pendiente</option>
+                                    <option value="cancelled">Cancelado</option>
+                                </select>
+                            </div>
                         </div>
 
-                         <!-- Empty State -->
-                        <div v-if="appointments.length === 0"
+                        <!-- Empty State -->
+                        <div v-if="filteredAppointments.length === 0"
                             class="text-center py-8 border-2 border-dashed border-white/10 rounded-xl">
-                            <h4 class="text-lg font-bold mb-2">No tienes citas programadas</h4>
-                            <p class="text-gray-400 text-sm">Tus próximas citas aparecerán aquí.</p>
+                            <h4 class="text-lg font-bold mb-2">No se encontraron citas</h4>
+                            <p class="text-gray-400 text-sm">Prueba ajustando los filtros.</p>
                         </div>
 
                         <!-- Appointments List -->
                         <div v-else class="space-y-3">
-                            <div v-for="app in appointments" :key="app.id"
-                                class="flex items-center gap-4 p-4 bg-gray-800/50 rounded-xl hover:bg-gray-800 transition-colors">
+                            <div v-for="app in filteredAppointments" :key="app.id"
+                                class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 bg-gray-800/50 rounded-xl hover:bg-gray-800 transition-colors border border-transparent hover:border-indigo-500/30">
+
                                 <!-- Date Badge -->
-                                <div class="flex-shrink-0 w-12 h-12 bg-gray-700 rounded-lg flex flex-col items-center justify-center border border-white/10">
-                                    <span class="text-xs text-gray-400 uppercase font-bold">{{ new Date(app.date).toLocaleDateString('es-ES', { month: 'short' }).replace('.', '') }}</span>
-                                    <span class="text-lg font-bold text-white">{{ new Date(app.date).getDate() }}</span>
-                                </div>
-                                
-                                <div class="flex-1">
-                                    <h4 class="font-bold text-white">{{ app.serviceName || 'Servicio General' }}</h4>
-                                    <p class="text-sm text-gray-400">{{ app.customerName }} • {{ app.customerPhone }}</p>
+                                <div
+                                    class="flex-shrink-0 w-full sm:w-16 h-16 bg-gray-700/50 rounded-lg flex flex-row sm:flex-col items-center justify-center border border-white/10 gap-2 sm:gap-0 px-4 sm:px-0">
+                                    <span class="text-xs text-gray-400 uppercase font-bold">{{ new
+                                        Date(app.startTime).toLocaleDateString('es-ES', { month: 'short' }).replace('.',
+                                        '') }}</span>
+                                    <span class="text-2xl font-bold text-white">{{ new Date(app.startTime).getDate()
+                                        }}</span>
                                 </div>
 
-                                <div class="text-right">
-                                     <p class="text-sm font-bold text-indigo-400">
-                                        {{ new Date(app.date).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) }}
-                                     </p>
-                                     <span class="text-xs px-2 py-0.5 rounded bg-gray-700 text-gray-300 capitalize">{{ app.status }}</span>
+                                <!-- Info -->
+                                <div class="flex-1 min-w-0 w-full">
+                                    <div class="flex justify-between items-start">
+                                        <h4 class="font-bold text-white text-lg truncate">{{ app.serviceName ||
+                                            'Servicio Agendado' }}</h4>
+                                        <div class="text-right whitespace-nowrap ml-2">
+                                            <p class="font-bold text-indigo-400">
+                                                {{ new Date(app.startTime).toLocaleTimeString('es-ES', {
+                                                    hour:
+                                                '2-digit', minute: '2-digit' }) }} -
+                                                {{ new Date(app.endTime).toLocaleTimeString('es-ES', {
+                                                    hour: '2-digit',
+                                                minute: '2-digit' }) }}
+                                            </p>
+                                            <p class="text-xs text-gray-500">{{ app.price }} {{ app.currency }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-1 space-y-1">
+                                        <p v-if="app.userNotes"
+                                            class="text-sm text-gray-300 bg-gray-900/50 p-2 rounded border border-white/5 italic">
+                                            "{{ app.userNotes }}"
+                                        </p>
+                                        <div class="flex items-center gap-2 text-sm text-gray-400">
+                                            <span>{{ app.clientName || 'Cliente sin nombre' }}</span>
+                                            <span v-if="app.clientEmail"
+                                                class="w-1 h-1 rounded-full bg-gray-600"></span>
+                                            <span v-if="app.clientEmail">{{ app.clientEmail }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Actions -->
+                                <div
+                                    class="w-full sm:w-auto mt-2 sm:mt-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-white/5 flex sm:block justify-end">
+                                    <select :value="app.status"
+                                        @change="updateAppointmentStatus(app, $event.target.value)" :class="{
+                                            'bg-green-500/20 text-green-400 border-green-500/30': app.status === 'confirmed',
+                                            'bg-yellow-500/20 text-yellow-400 border-yellow-500/30': app.status === 'pending',
+                                            'bg-red-500/20 text-red-400 border-red-500/30': app.status === 'cancelled',
+                                            'bg-gray-700 text-gray-300 border-gray-600': !['confirmed', 'pending', 'cancelled'].includes(app.status)
+                                        }"
+                                        class="text-xs font-bold px-2 py-1 rounded border focus:ring-0 focus:outline-none cursor-pointer">
+                                        <option value="confirmed">Confirmado</option>
+                                        <option value="pending">Pendiente</option>
+                                        <option value="cancelled">Cancelado</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -275,14 +344,8 @@
         </div>
 
         <!-- Chat Window Modal -->
-        <ChatWindow 
-            v-if="selectedChat"
-            :project-id="projectId"
-            :phone="selectedChat.phone"
-            :contact-name="selectedChat.title"
-            @close="selectedChat = null"
-            @returned-to-bot="handleReturnedToBot"
-        />
+        <ChatWindow v-if="selectedChat" :project-id="projectId" :phone="selectedChat.phone"
+            :contact-name="selectedChat.title" @close="selectedChat = null" @returned-to-bot="handleReturnedToBot" />
     </div>
 </template>
 
@@ -322,6 +385,8 @@ const changingPassword = ref(false);
 // Tasks (Conversations)
 const tasks = ref([]);
 const appointments = ref([]);
+const filterDate = ref('');
+const filterStatus = ref('');
 const isLoadingTasks = ref(false);
 const selectedChat = ref(null);
 
@@ -334,7 +399,21 @@ const completedTasks = computed(() => {
     // For chats, maybe "completed" means BotType != 'human_paused' or HandledByHuman == false? 
     // Or just count resolved tickets. For now, let's just count 'human_paused' as active/incomplete.
     // Let's assume handled conversations are 'incomplete' tasks (to be done).
-    return tasks.value.filter(task => task.completed).length; 
+    return tasks.value.filter(task => task.completed).length;
+});
+
+const filteredAppointments = computed(() => {
+    return appointments.value.filter(app => {
+        let matchesDate = true;
+        if (filterDate.value) {
+            // Compare YYYY-MM-DD
+            const appDate = new Date(app.startTime).toISOString().split('T')[0];
+            matchesDate = appDate === filterDate.value;
+        }
+
+        const matchesStatus = !filterStatus.value || app.status === filterStatus.value;
+        return matchesDate && matchesStatus;
+    });
 });
 
 const toggleTask = (taskId) => {
@@ -355,7 +434,7 @@ let pollingInterval = null;
 
 const fetchAssignedConversations = async () => {
     if (!projectId.value || !employeeId.value) return;
-    
+
     // Don't show loading spinner on background updates
     if (!pollingInterval) isLoadingTasks.value = true;
 
@@ -364,7 +443,7 @@ const fetchAssignedConversations = async () => {
             pageSize: 100, // Fetch more to handle simple history
             activeOnly: true // Only get currently active sessions (Latest message assigned to me)
         });
-        
+
         // Deduplicate by Customer Phone (Group conversations)
         const uniqueConversations = {};
         conversations.forEach(conv => {
@@ -382,7 +461,7 @@ const fetchAssignedConversations = async () => {
             id: conv.id,
             title: conv.customerName || conv.customerPhone,
             description: conv.customerMessage === '(Human Reply)' ? `Tú: ${conv.botResponse}` : conv.customerMessage || conv.lastMessage || 'Sin mensajes recientes',
-            completed: false, 
+            completed: false,
             priority: conv.requiresHumanAttention ? 'high' : 'medium',
             type: 'chat',
             phone: conv.customerPhone,
@@ -404,12 +483,25 @@ const fetchAssignedAppointments = async () => {
     if (!projectId.value) return;
     try {
         const apps = await employeeService.getAppointments(projectId.value);
-        // Filter mainly for display if necessary, assume backend filters by employee logic
-        // But backend GetAppointments might return all for project if logic isn't perfect, let's trust backend for now.
-        // Actually backend GetAppointments uses userId/Role to filter.
-        appointments.value = apps; 
+        appointments.value = apps;
     } catch (error) {
         console.error("Error fetching appointments:", error);
+    }
+};
+
+const updateAppointmentStatus = async (app, newStatus) => {
+    const originalStatus = app.status;
+    // Optimistic update
+    app.status = newStatus;
+
+    try {
+        await employeeService.updateAppointmentStatus(projectId.value, app.id, newStatus);
+        // Success
+    } catch (error) {
+        console.error("Error updating appointment status:", error);
+        // Revert
+        app.status = originalStatus;
+        alert("Error al actualizar el estado de la cita");
     }
 };
 
@@ -499,7 +591,7 @@ onMounted(async () => {
         const sub = getCurrentSubdomain();
         if (sub) {
             projectName.value = sub.charAt(0).toUpperCase() + sub.slice(1);
-            
+
             // Si ya tenemos projectId del login, cargar chats directamente
             if (projectId.value) {
                 await fetchAssignedConversations();
@@ -507,14 +599,14 @@ onMounted(async () => {
             } else {
                 // Try to get public project details to get ID as fallback
                 try {
-                     // Note: tenantService doesn't have getProjectBySubdomain yet, 
-                     // relying on public API or user storage is safer.
-                     // But if user.projectId is missing, we might need a way.
-                     // Assuming login always returns projectId now.
-                     console.warn("ProjectId not found in storage, checking public details...");
-                     // const project = await projectService.getPublicDetails(sub); // This method might not exist as per previous check
-                     // projectId.value = project.id;
-                     // await fetchAssignedConversations();
+                    // Note: tenantService doesn't have getProjectBySubdomain yet, 
+                    // relying on public API or user storage is safer.
+                    // But if user.projectId is missing, we might need a way.
+                    // Assuming login always returns projectId now.
+                    console.warn("ProjectId not found in storage, checking public details...");
+                    // const project = await projectService.getPublicDetails(sub); // This method might not exist as per previous check
+                    // projectId.value = project.id;
+                    // await fetchAssignedConversations();
                 } catch (err) {
                     console.error("Error fetching project details for dashboard", err);
                 }
@@ -527,10 +619,10 @@ onMounted(async () => {
 
         // START POLLING
         if (projectId.value) {
-             pollingInterval = setInterval(async () => {
-                 await fetchAssignedConversations();
-                 await fetchAssignedAppointments();
-             }, 5000); // 5 seconds
+            pollingInterval = setInterval(async () => {
+                await fetchAssignedConversations();
+                await fetchAssignedAppointments();
+            }, 5000); // 5 seconds
         }
 
     } catch (e) {
