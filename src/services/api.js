@@ -38,7 +38,17 @@ api.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
+
+        // Check if this is a public endpoint (no auth redirect needed)
+        const isPublicEndpoint = originalRequest?.url?.includes('/public') ||
+            originalRequest?.url?.includes('/api/client/auth/');
+
         if (error.response && error.response.status === 401 && !originalRequest._retry) {
+            // For public endpoints, just reject without redirect
+            if (isPublicEndpoint) {
+                return Promise.reject(error);
+            }
+
             originalRequest._retry = true;
 
             try {
@@ -69,7 +79,19 @@ api.interceptors.response.use(
                 Cookies.remove('auth_token');
                 Cookies.remove('refresh_token');
                 localStorage.removeItem('user');
-                window.location.href = '/login';
+
+                // Check if we're on a customer route
+                const isCustomerRoute = window.location.pathname.startsWith('/explore') ||
+                    window.location.pathname.startsWith('/business') ||
+                    window.location.pathname.startsWith('/customer') ||
+                    window.location.pathname.startsWith('/book') ||
+                    window.location.pathname.startsWith('/my-appointments');
+
+                if (isCustomerRoute) {
+                    window.location.href = '/customer/login';
+                } else {
+                    window.location.href = '/login';
+                }
                 return Promise.reject(refreshError);
             }
         }
