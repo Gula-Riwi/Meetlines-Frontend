@@ -361,7 +361,8 @@ const fetchAssignedConversations = async () => {
 
     try {
         const conversations = await employeeService.getConversations(projectId.value, employeeId.value, {
-            pageSize: 50 // Increase page size to get more context
+            pageSize: 100, // Fetch more to handle simple history
+            activeOnly: true // Only get currently active sessions (Latest message assigned to me)
         });
         
         // Deduplicate by Customer Phone (Group conversations)
