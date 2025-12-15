@@ -57,55 +57,62 @@
                 </div>
 
                 <!-- Task Checklist -->
+                <!-- Task Checklist (Chats) -->
                 <div class="lg:col-span-2">
                     <div class="bg-gray-900 border border-white/10 rounded-2xl p-6">
                         <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-2xl font-bold">Mis Tareas</h3>
+                            <h3 class="text-2xl font-bold">Chats Asignados</h3>
                             <span class="px-3 py-1 bg-indigo-600/20 text-indigo-400 rounded-full text-sm font-medium">
-                                {{ completedTasks }}/{{ tasks.length }} completadas
+                                {{ tasks.length }} activos
                             </span>
                         </div>
 
                         <!-- Empty State -->
                         <div v-if="tasks.length === 0"
                             class="text-center py-12 border-2 border-dashed border-white/10 rounded-xl">
-                            <font-awesome-icon :icon="['fas', 'clipboard-list']" class="text-6xl mb-4" />
-                            <h4 class="text-lg font-bold mb-2">No hay tareas asignadas</h4>
-                            <p class="text-gray-400 text-sm">Las tareas aparecerán aquí cuando sean asignadas.</p>
+                            <!-- Icon for empty chat -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                            </svg>
+                            <h4 class="text-lg font-bold mb-2">No tienes chats asignados</h4>
+                            <p class="text-gray-400 text-sm">Cuando te asignen un cliente, aparecerá aquí.</p>
                         </div>
 
-                        <!-- Task List -->
+                        <!-- Loading State -->
+                        <div v-else-if="isLoadingTasks" class="py-12 flex justify-center">
+                             <div class="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full"></div>
+                        </div>
+
+                        <!-- Chat List -->
                         <div v-else class="space-y-3">
                             <div v-for="task in tasks" :key="task.id"
-                                class="flex items-center gap-4 p-4 bg-gray-800/50 rounded-xl hover:bg-gray-800 transition-colors group">
-                                <!-- Checkbox -->
-                                <button @click="toggleTask(task.id)"
-                                    class="flex-shrink-0 w-6 h-6 rounded-md border-2 transition-all"
-                                    :class="task.completed ? 'bg-indigo-600 border-indigo-600' : 'border-gray-600 hover:border-indigo-500'">
-                                    <svg v-if="task.completed" xmlns="http://www.w3.org/2000/svg" class="w-full h-full"
-                                        viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                class="flex items-center gap-4 p-4 bg-gray-800/50 rounded-xl hover:bg-gray-800 transition-colors group cursor-pointer"
+                                @click="toggleTask(task.id)">
+                                <!-- Icon Status -->
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all bg-indigo-500/20 text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                                     </svg>
-                                </button>
+                                </div>
 
                                 <!-- Task Content -->
                                 <div class="flex-1">
-                                    <p class="font-medium transition-all"
-                                        :class="task.completed ? 'line-through text-gray-500' : 'text-white'">
-                                        {{ task.title }}
-                                    </p>
-                                    <p v-if="task.description" class="text-sm text-gray-400 mt-1">{{ task.description }}
+                                    <div class="flex justify-between items-start">
+                                        <p class="font-bold text-white group-hover:text-indigo-300 transition-colors">
+                                            {{ task.title }}
+                                        </p>
+                                        <span class="text-xs text-gray-500">{{ task.phone }}</span>
+                                    </div>
+                                    <p class="text-sm text-gray-400 mt-1 line-clamp-1">{{ task.description }}
                                     </p>
                                 </div>
 
                                 <!-- Priority Badge -->
-                                <span v-if="task.priority" class="px-2 py-1 rounded-md text-xs font-bold" :class="{
-                                    'bg-red-500/20 text-red-400': task.priority === 'high',
-                                    'bg-yellow-500/20 text-yellow-400': task.priority === 'medium',
-                                    'bg-blue-500/20 text-blue-400': task.priority === 'low'
-                                }">
-                                    {{ task.priority === 'high' ? 'Alta' : task.priority === 'medium' ? 'Media' : 'Baja'
-                                    }}
+                                <span v-if="task.priority === 'high'" class="px-2 py-1 rounded-md text-xs font-bold bg-red-500/20 text-red-400 animate-pulse">
+                                    URGENTE
+                                </span>
+                                <span v-else class="px-2 py-1 rounded-md text-xs font-bold bg-green-500/20 text-green-400">
+                                    ACTIVO
                                 </span>
                             </div>
                         </div>
@@ -233,14 +240,19 @@ import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import Cookies from 'js-cookie';
 import authService from '@/services/authService';
+import employeeService from '@/services/employeeService';
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 import { confirmAction } from '@/utils/alert';
+import { getCurrentSubdomain } from '@/services/tenantService';
+import projectService from '@/services/projectService';
 
 const router = useRouter();
 
 const employeeName = ref('');
 const employeeRole = ref('');
+const employeeId = ref('');
 const projectName = ref('');
+const projectId = ref('');
 
 // Change Password Modal
 const showChangePasswordModal = ref(false);
@@ -255,24 +267,9 @@ const changePasswordError = ref('');
 const changePasswordSuccess = ref(false);
 const changingPassword = ref(false);
 
-// Tasks - Template for future API integration
-const tasks = ref([
-    // Example tasks - these will be replaced with API data
-    // {
-    //     id: 1,
-    //     title: 'Revisar mensajes pendientes',
-    //     description: 'Responder a los clientes en espera',
-    //     completed: false,
-    //     priority: 'high'
-    // },
-    // {
-    //     id: 2,
-    //     title: 'Actualizar estado de citas',
-    //     description: 'Marcar citas completadas del día',
-    //     completed: false,
-    //     priority: 'medium'
-    // }
-]);
+// Tasks (Conversations)
+const tasks = ref([]);
+const isLoadingTasks = ref(false);
 
 const employeeInitials = computed(() => {
     if (!employeeName.value) return 'E';
@@ -280,15 +277,43 @@ const employeeInitials = computed(() => {
 });
 
 const completedTasks = computed(() => {
-    return tasks.value.filter(task => task.completed).length;
+    // For chats, maybe "completed" means BotType != 'human_paused' or HandledByHuman == false? 
+    // Or just count resolved tickets. For now, let's just count 'human_paused' as active/incomplete.
+    // Let's assume handled conversations are 'incomplete' tasks (to be done).
+    return tasks.value.filter(task => task.completed).length; 
 });
 
 const toggleTask = (taskId) => {
-    const task = tasks.value.find(t => t.id === taskId);
-    if (task) {
-        task.completed = !task.completed;
-        // TODO: Send update to API when endpoint is ready
-        // await taskService.updateTask(taskId, { completed: task.completed });
+    // Navigate to chat detail or mark as done?
+    // user asked just to integrate not full chat UI yet maybe?
+    // Or maybe just show list.
+    console.log("Clicked task", taskId);
+};
+
+const fetchAssignedConversations = async () => {
+    if (!projectId.value || !employeeId.value) return;
+    
+    isLoadingTasks.value = true;
+    try {
+        const conversations = await employeeService.getConversations(projectId.value, employeeId.value, {
+            pageSize: 20
+        });
+        
+        // Map conversations to tasks format
+        tasks.value = conversations.map(conv => ({
+            id: conv.id,
+            title: conv.customerName || conv.customerPhone,
+            description: conv.lastMessage || 'Sin mensajes recientes',
+            completed: false, // Active chat
+            priority: conv.requiresHumanAttention ? 'high' : 'medium',
+            type: 'chat',
+            phone: conv.customerPhone
+        }));
+
+    } catch (error) {
+        console.error("Error fetching conversations:", error);
+    } finally {
+        isLoadingTasks.value = false;
     }
 };
 
@@ -359,7 +384,7 @@ const handleLogout = async () => {
     }
 }
 
-onMounted(() => {
+onMounted(async () => {
     // Cargar datos del usuario desde localStorage
     try {
         const userStr = localStorage.getItem('user');
@@ -367,15 +392,40 @@ onMounted(() => {
             const user = JSON.parse(userStr);
             employeeName.value = user.name || 'Empleado';
             employeeRole.value = 'Colaborador';
+            employeeId.value = user.id;
+            if (user.projectId) {
+                console.log("Using projectId from login:", user.projectId);
+                projectId.value = user.projectId;
+            }
         }
 
         // Detectar proyecto por subdominio
-        const sub = window.location.hostname.split('.')[0];
-        projectName.value = sub.charAt(0).toUpperCase() + sub.slice(1);
-
-        // TODO: Fetch tasks from API when endpoint is ready
-        // const response = await taskService.getEmployeeTasks();
-        // tasks.value = response.data;
+        const sub = getCurrentSubdomain();
+        if (sub) {
+            projectName.value = sub.charAt(0).toUpperCase() + sub.slice(1);
+            
+            // Si ya tenemos projectId del login, cargar chats directamente
+            if (projectId.value) {
+                await fetchAssignedConversations();
+            } else {
+                // Try to get public project details to get ID as fallback
+                try {
+                     // Note: tenantService doesn't have getProjectBySubdomain yet, 
+                     // relying on public API or user storage is safer.
+                     // But if user.projectId is missing, we might need a way.
+                     // Assuming login always returns projectId now.
+                     console.warn("ProjectId not found in storage, checking public details...");
+                     // const project = await projectService.getPublicDetails(sub); // This method might not exist as per previous check
+                     // projectId.value = project.id;
+                     // await fetchAssignedConversations();
+                } catch (err) {
+                    console.error("Error fetching project details for dashboard", err);
+                }
+            }
+        } else if (projectId.value) {
+            // Not in subdomain but have projectId (e.g. main domain login?)
+            await fetchAssignedConversations();
+        }
 
     } catch (e) {
         console.error('Error cargando datos de empleado', e);

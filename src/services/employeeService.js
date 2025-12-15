@@ -46,5 +46,20 @@ export default {
             }
         });
         return response.data;
+    },
+    /**
+     * Obtener conversaciones asignadas al empleado
+     * @param {string} projectId 
+     * @param {string} employeeId
+     * @param {object} filters { page, pageSize, etc }
+     */
+    async getConversations(projectId, employeeId, filters = {}) {
+        const response = await api.get(`/api/projects/${projectId}/conversations`, {
+            params: {
+                ...filters,
+                assignedToEmployeeId: employeeId
+            }
+        });
+        return response.data;
     }
 };
