@@ -61,5 +61,14 @@ export default {
             }
         });
         return response.data;
+    },
+
+    /**
+     * Obtener citas asignadas al empleado
+     * @param {string} projectId
+     */
+    async getAppointments(projectId) {
+        const response = await api.get(`/api/projects/${projectId}/appointments`);
+        return response.data;
     }
 };

@@ -117,6 +117,47 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Appointments Section -->
+                    <div class="bg-gray-900 border border-white/10 rounded-2xl p-6 mt-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-2xl font-bold">Próximas Citas</h3>
+                            <span class="px-3 py-1 bg-green-600/20 text-green-400 rounded-full text-sm font-medium">
+                                {{ appointments.length }} programadas
+                            </span>
+                        </div>
+
+                         <!-- Empty State -->
+                        <div v-if="appointments.length === 0"
+                            class="text-center py-8 border-2 border-dashed border-white/10 rounded-xl">
+                            <h4 class="text-lg font-bold mb-2">No tienes citas programadas</h4>
+                            <p class="text-gray-400 text-sm">Tus próximas citas aparecerán aquí.</p>
+                        </div>
+
+                        <!-- Appointments List -->
+                        <div v-else class="space-y-3">
+                            <div v-for="app in appointments" :key="app.id"
+                                class="flex items-center gap-4 p-4 bg-gray-800/50 rounded-xl hover:bg-gray-800 transition-colors">
+                                <!-- Date Badge -->
+                                <div class="flex-shrink-0 w-12 h-12 bg-gray-700 rounded-lg flex flex-col items-center justify-center border border-white/10">
+                                    <span class="text-xs text-gray-400 uppercase font-bold">{{ new Date(app.date).toLocaleDateString('es-ES', { month: 'short' }).replace('.', '') }}</span>
+                                    <span class="text-lg font-bold text-white">{{ new Date(app.date).getDate() }}</span>
+                                </div>
+                                
+                                <div class="flex-1">
+                                    <h4 class="font-bold text-white">{{ app.serviceName || 'Servicio General' }}</h4>
+                                    <p class="text-sm text-gray-400">{{ app.customerName }} • {{ app.customerPhone }}</p>
+                                </div>
+
+                                <div class="text-right">
+                                     <p class="text-sm font-bold text-indigo-400">
+                                        {{ new Date(app.date).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) }}
+                                     </p>
+                                     <span class="text-xs px-2 py-0.5 rounded bg-gray-700 text-gray-300 capitalize">{{ app.status }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -232,6 +273,16 @@
                 </form>
             </div>
         </div>
+
+        <!-- Chat Window Modal -->
+        <ChatWindow 
+            v-if="selectedChat"
+            :project-id="projectId"
+            :phone="selectedChat.phone"
+            :contact-name="selectedChat.title"
+            @close="selectedChat = null"
+            @returned-to-bot="handleReturnedToBot"
+        />
     </div>
 </template>
 
@@ -242,6 +293,7 @@ import Cookies from 'js-cookie';
 import authService from '@/services/authService';
 import employeeService from '@/services/employeeService';
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
+import ChatWindow from '@/components/ChatWindow.vue';
 import { confirmAction } from '@/utils/alert';
 import { getCurrentSubdomain } from '@/services/tenantService';
 import projectService from '@/services/projectService';
@@ -269,7 +321,9 @@ const changingPassword = ref(false);
 
 // Tasks (Conversations)
 const tasks = ref([]);
+const appointments = ref([]);
 const isLoadingTasks = ref(false);
+const selectedChat = ref(null);
 
 const employeeInitials = computed(() => {
     if (!employeeName.value) return 'E';
@@ -284,10 +338,16 @@ const completedTasks = computed(() => {
 });
 
 const toggleTask = (taskId) => {
-    // Navigate to chat detail or mark as done?
-    // user asked just to integrate not full chat UI yet maybe?
-    // Or maybe just show list.
-    console.log("Clicked task", taskId);
+    const task = tasks.value.find(t => t.id === taskId);
+    if (task) {
+        selectedChat.value = task;
+    }
+};
+
+const handleReturnedToBot = async () => {
+    // Refresh lists
+    await fetchAssignedConversations();
+    // Maybe show toast? The ChatWindow already shows alert.
 };
 
 const fetchAssignedConversations = async () => {
@@ -314,6 +374,19 @@ const fetchAssignedConversations = async () => {
         console.error("Error fetching conversations:", error);
     } finally {
         isLoadingTasks.value = false;
+    }
+};
+
+const fetchAssignedAppointments = async () => {
+    if (!projectId.value) return;
+    try {
+        const apps = await employeeService.getAppointments(projectId.value);
+        // Filter mainly for display if necessary, assume backend filters by employee logic
+        // But backend GetAppointments might return all for project if logic isn't perfect, let's trust backend for now.
+        // Actually backend GetAppointments uses userId/Role to filter.
+        appointments.value = apps; 
+    } catch (error) {
+        console.error("Error fetching appointments:", error);
     }
 };
 
@@ -407,6 +480,7 @@ onMounted(async () => {
             // Si ya tenemos projectId del login, cargar chats directamente
             if (projectId.value) {
                 await fetchAssignedConversations();
+                await fetchAssignedAppointments();
             } else {
                 // Try to get public project details to get ID as fallback
                 try {
@@ -425,6 +499,7 @@ onMounted(async () => {
         } else if (projectId.value) {
             // Not in subdomain but have projectId (e.g. main domain login?)
             await fetchAssignedConversations();
+            await fetchAssignedAppointments();
         }
 
     } catch (e) {
