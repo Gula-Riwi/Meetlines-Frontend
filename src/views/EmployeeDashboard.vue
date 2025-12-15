@@ -484,10 +484,8 @@ const fetchAssignedAppointments = async () => {
     try {
         const apps = await employeeService.getAppointments(projectId.value);
         appointments.value = apps;
-        showSuccess("Citas cargadas exitosamente");
     } catch (error) {
         console.error("Error fetching appointments:", error);
-        showError("Error al cargar las citas");
     }
 };
 
