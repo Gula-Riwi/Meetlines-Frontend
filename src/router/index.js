@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Cookies from 'js-cookie';
 import { getCurrentSubdomain, isInProjectSubdomain } from '../services/tenantService';
 
+// Business Owner Views
 import Landing from '../views/Landing.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
@@ -21,6 +22,14 @@ import OAuthDiscordCallback from '../views/OAuthDiscordCallback.vue';
 import OAuthFacebookCallback from '../views/OAuthFacebookCallback.vue';
 import EmployeesManager from '../views/EmployeesManager.vue';
 import ProjectConfig from '../views/ProjectConfig.vue';
+
+// Customer Views
+import CustomerLogin from '../views/customer/CustomerLogin.vue';
+import CustomerRegister from '../views/customer/CustomerRegister.vue';
+import BusinessExplore from '../views/customer/BusinessExplore.vue';
+import BusinessDetail from '../views/customer/BusinessDetail.vue';
+import BookingFlow from '../views/customer/BookingFlow.vue';
+import MyAppointments from '../views/customer/MyAppointments.vue';
 
 
 const routes = [
@@ -115,6 +124,42 @@ const routes = [
     name: 'OAuthFacebookCallback',
     component: OAuthFacebookCallback
   },
+
+  // =====================
+  // CUSTOMER ROUTES
+  // =====================
+  {
+    path: '/customer/login',
+    name: 'CustomerLogin',
+    component: CustomerLogin
+  },
+  {
+    path: '/customer/register',
+    name: 'CustomerRegister',
+    component: CustomerRegister
+  },
+  {
+    path: '/explore',
+    name: 'BusinessExplore',
+    component: BusinessExplore
+  },
+  {
+    path: '/business/:projectId',
+    name: 'BusinessDetail',
+    component: BusinessDetail
+  },
+  {
+    path: '/book/:projectId',
+    name: 'BookingFlow',
+    component: BookingFlow,
+    meta: { requiresCustomerAuth: true }
+  },
+  {
+    path: '/my-appointments',
+    name: 'MyAppointments',
+    component: MyAppointments,
+    meta: { requiresCustomerAuth: true }
+  },
 ]
 
 const router = createRouter({
@@ -124,7 +169,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const protectedRoute = to.matched.some(record => record.meta.requiresAuth);
+  const customerProtectedRoute = to.matched.some(record => record.meta.requiresCustomerAuth);
   const token = Cookies.get('auth_token');
+  const customerToken = Cookies.get('customer_token');
   const inProjectSubdomain = isInProjectSubdomain();
   const subdomain = getCurrentSubdomain();
 
@@ -153,12 +200,20 @@ router.beforeEach((to, from, next) => {
     return;
   }
 
-  // Si intentamos acceder a una ruta protegida sin token
+  // Si intentamos acceder a una ruta protegida de business owner sin token
   if (protectedRoute && !token) {
     next('/login');
-  } else {
-    next();
+    return;
   }
+
+  // Si intentamos acceder a una ruta protegida de customer sin token de customer
+  if (customerProtectedRoute && !customerToken) {
+    next('/customer/login');
+    return;
+  }
+
+  next();
 });
 
 export default router
+
