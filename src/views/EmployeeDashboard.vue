@@ -287,7 +287,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import Cookies from 'js-cookie';
 import authService from '@/services/authService';
@@ -350,25 +350,43 @@ const handleReturnedToBot = async () => {
     // Maybe show toast? The ChatWindow already shows alert.
 };
 
+// Polling interval
+let pollingInterval = null;
+
 const fetchAssignedConversations = async () => {
     if (!projectId.value || !employeeId.value) return;
     
-    isLoadingTasks.value = true;
+    // Don't show loading spinner on background updates
+    if (!pollingInterval) isLoadingTasks.value = true;
+
     try {
         const conversations = await employeeService.getConversations(projectId.value, employeeId.value, {
-            pageSize: 20
+            pageSize: 50 // Increase page size to get more context
         });
         
-        // Map conversations to tasks format
-        tasks.value = conversations.map(conv => ({
+        // Deduplicate by Customer Phone (Group conversations)
+        const uniqueConversations = {};
+        conversations.forEach(conv => {
+            // Assume conversations are ordered by latest first, or check dates
+            if (!uniqueConversations[conv.customerPhone]) {
+                uniqueConversations[conv.customerPhone] = conv;
+            } else {
+                // If existing is older, replace (optional, depends on sort order)
+                // Assuming API returns latest first.
+            }
+        });
+
+        // Map grouped conversations to tasks
+        tasks.value = Object.values(uniqueConversations).map(conv => ({
             id: conv.id,
             title: conv.customerName || conv.customerPhone,
-            description: conv.lastMessage || 'Sin mensajes recientes',
-            completed: false, // Active chat
+            description: conv.customerMessage === '(Human Reply)' ? `Tú: ${conv.botResponse}` : conv.customerMessage || conv.lastMessage || 'Sin mensajes recientes',
+            completed: false, 
             priority: conv.requiresHumanAttention ? 'high' : 'medium',
             type: 'chat',
-            phone: conv.customerPhone
-        }));
+            phone: conv.customerPhone,
+            createdAt: conv.createdAt
+        })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     } catch (error) {
         console.error("Error fetching conversations:", error);
@@ -376,6 +394,10 @@ const fetchAssignedConversations = async () => {
         isLoadingTasks.value = false;
     }
 };
+
+onUnmounted(() => {
+    if (pollingInterval) clearInterval(pollingInterval);
+});
 
 const fetchAssignedAppointments = async () => {
     if (!projectId.value) return;
@@ -500,6 +522,14 @@ onMounted(async () => {
             // Not in subdomain but have projectId (e.g. main domain login?)
             await fetchAssignedConversations();
             await fetchAssignedAppointments();
+        }
+
+        // START POLLING
+        if (projectId.value) {
+             pollingInterval = setInterval(async () => {
+                 await fetchAssignedConversations();
+                 await fetchAssignedAppointments();
+             }, 5000); // 5 seconds
         }
 
     } catch (e) {
