@@ -6,7 +6,7 @@
                 <div class="flex items-center justify-between h-16">
                     <!-- Logo -->
                     <router-link to="/" class="flex items-center gap-2">
-                        <span class="text-2xl font-bold tracking-normal text-white">Meet<span class="text-indigo-400">Lines</span></span>
+                        <span class="text-2xl font-bold tracking-normal italic text-white">Meet<span class="text-indigo-400">Lines</span></span>
                     </router-link>
 
                     <!-- Search bar -->

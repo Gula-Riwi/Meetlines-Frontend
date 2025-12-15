@@ -156,14 +156,18 @@ const handleRegister = async () => {
         isLoading.value = true;
 
         const response = await clientAuthService.register({
-            name: name.value,
+            fullName: name.value,
             email: email.value,
             phone: phone.value || undefined,
-            password: password.value
+            password: password.value,
+            confirmPassword: confirmPassword.value
         });
 
-        if (response.success) {
-            successMsg.value = "¡Cuenta creada exitosamente! Redirigiendo...";
+        console.log("Registration response:", response);
+
+        // Check if registration was successful - look for token or data that indicates success
+        if (response.success || response.token || response.data?.token || response.userId || response.email) {
+            successMsg.value = response.message || "¡Cuenta creada exitosamente! Redirigiendo...";
             setTimeout(() => {
                 router.push('/customer/login');
             }, 2000);
@@ -172,10 +176,46 @@ const handleRegister = async () => {
         }
 
     } catch (error) {
-        console.error("Error en registro:", error);
+        console.error("=== Registration Error ===");
+        console.error("Full error:", error);
+        console.error("Error response:", error.response);
+        console.error("Error response data:", error.response?.data);
+        console.error("Error response status:", error.response?.status);
+        console.error("========================");
 
         if (error.response && error.response.data) {
-            errorMsg.value = error.response.data.message || "Error al registrarse.";
+            // Check for various error response formats from backend
+            const data = error.response.data;
+            
+            // Format 1: { success: false, message: "...", errors: [...] } - ASP.NET Core validation
+            if (data.errors && Array.isArray(data.errors)) {
+                // Extract error messages from array
+                const errorMessages = data.errors.map(err => {
+                    if (typeof err === 'string') return err;
+                    if (err.message) return err.message;
+                    if (err.description) return err.description;
+                    return JSON.stringify(err);
+                }).join('. ');
+                errorMsg.value = errorMessages || data.message || "Errores de validación";
+            }
+            // Format 2: { message: "error message" }
+            else if (data.message) {
+                errorMsg.value = data.message;
+            }
+            // Format 3: { error: "error message" }
+            else if (data.error) {
+                errorMsg.value = data.error;
+            }
+            // Format 4: { errors: { field: "error" } } - validation errors object
+            else if (data.errors && typeof data.errors === 'object') {
+                const errors = Object.values(data.errors).join(', ');
+                errorMsg.value = `Errores de validación: ${errors}`;
+            }
+            else {
+                errorMsg.value = "Error al registrarse. Por favor verifica tus datos.";
+            }
+        } else if (error.message) {
+            errorMsg.value = error.message;
         } else {
             errorMsg.value = "Error de conexión con el servidor.";
         }

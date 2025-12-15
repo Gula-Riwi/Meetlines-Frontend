@@ -11,7 +11,7 @@
                 <a v-if="currentProject.subdomain" :href="`https://${currentProject.subdomain}.meet-lines.com`"
                     target="_blank" rel="noopener noreferrer"
                     class="text-xs text-indigo-400 truncate hover:text-indigo-300 hover:underline transition-colors block mt-1">
-                    {{ currentProject.subdomain }}.meet-lines.com ↗
+                    {{ currentProject.subdomain }}.meet-lines.com
                 </a>
             </div>
         </div>
