@@ -158,14 +158,24 @@ const handleLogin = async () => {
             password: password.value
         });
 
-        if (response.success && response.data) {
-            const { accessToken, refreshToken, name, email: userEmail, userId } = response.data;
+        console.log("Login response:", response);
 
+        // Handle different response formats - token may be directly on response or nested in data
+        const loginData = response.data || response;
+        const accessToken = loginData.accessToken || loginData.token;
+        const refreshToken = loginData.refreshToken;
+        const userName = loginData.name || loginData.fullName;
+        const userEmail = loginData.email || email.value;
+        const userId = loginData.userId || loginData.id;
+
+        if (accessToken) {
             Cookies.set('customer_token', accessToken, { expires: 1, secure: true, sameSite: 'Strict' });
-            Cookies.set('customer_refresh_token', refreshToken, { expires: 7, secure: true, sameSite: 'Strict' });
+            if (refreshToken) {
+                Cookies.set('customer_refresh_token', refreshToken, { expires: 7, secure: true, sameSite: 'Strict' });
+            }
 
             const userData = {
-                name: name,
+                name: userName,
                 email: userEmail,
                 id: userId,
                 isCustomer: true

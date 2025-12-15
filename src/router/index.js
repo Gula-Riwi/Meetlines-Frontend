@@ -26,6 +26,7 @@ import ProjectConfig from '../views/ProjectConfig.vue';
 // Customer Views
 import CustomerLogin from '../views/customer/CustomerLogin.vue';
 import CustomerRegister from '../views/customer/CustomerRegister.vue';
+import CustomerForgotPassword from '../views/customer/CustomerForgotPassword.vue';
 import BusinessExplore from '../views/customer/BusinessExplore.vue';
 import BusinessDetail from '../views/customer/BusinessDetail.vue';
 import BookingFlow from '../views/customer/BookingFlow.vue';
@@ -137,6 +138,11 @@ const routes = [
     path: '/customer/register',
     name: 'CustomerRegister',
     component: CustomerRegister
+  },
+  {
+    path: '/customer/forgot-password',
+    name: 'CustomerForgotPassword',
+    component: CustomerForgotPassword
   },
   {
     path: '/explore',
