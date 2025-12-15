@@ -34,7 +34,7 @@
                     </div>
                     
                     <div class="flex-1">
-                        <h1 class="text-3xl font-bold font-league mb-2">{{ business?.name || 'Cargando...' }}</h1>
+                        <h1 class="text-3xl font-bold tracking-normal mb-2">{{ business?.name || 'Cargando...' }}</h1>
                         <p class="text-gray-400 mb-4">{{ business?.description || '' }}</p>
                         
                         <div class="flex flex-wrap gap-4 text-sm text-gray-400">
