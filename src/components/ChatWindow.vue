@@ -94,7 +94,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, nextTick, watch } from 'vue';
+import { ref, onMounted, computed, nextTick, watch, onUnmounted } from 'vue';
 import api from '@/services/api'; // Direct API usage for new endpoints or create service method
 import { confirmAction, showError, showSuccess } from '@/utils/alert';
 
@@ -133,18 +133,40 @@ const scrollToBottom = () => {
     });
 };
 
-const fetchHistory = async () => {
-    isLoadingHistory.value = true;
+const fetchHistory = async (isBackground = false) => {
+    if (!isBackground) isLoadingHistory.value = true;
     try {
         const response = await api.get(`/api/projects/${props.projectId}/chat/${props.phone}/history`);
+        // Only scroll to bottom if new message added or first load
+        const prevLength = messages.value.length;
         messages.value = response.data;
-        scrollToBottom();
+        
+        if (!isBackground || messages.value.length > prevLength) {
+             scrollToBottom();
+        }
     } catch (error) {
         console.error("Error fetching chat history", error);
     } finally {
-        isLoadingHistory.value = false;
+        if (!isBackground) isLoadingHistory.value = false;
     }
 };
+
+let pollingInterval = null;
+
+const startPolling = () => {
+    stopPolling();
+    pollingInterval = setInterval(() => {
+        fetchHistory(true);
+    }, 3000);
+};
+
+const stopPolling = () => {
+    if (pollingInterval) clearInterval(pollingInterval);
+};
+
+onUnmounted(() => {
+    stopPolling();
+});
 
 const sendMessage = async () => {
     if (!newMessage.value.trim()) return;
@@ -194,10 +216,12 @@ const returnToBot = async () => {
 
 onMounted(() => {
     fetchHistory();
+    startPolling();
 });
 
 // Watch for prop changes if valid to reload (though v-if in parent usually handles this)
 watch(() => props.phone, () => {
     fetchHistory();
+    startPolling();
 });
 </script>
