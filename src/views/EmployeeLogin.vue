@@ -213,8 +213,8 @@ const Login = async () => {
       return;
     }
 
-    const { accessToken, refreshToken, name, email, userId } = data;
-    console.log('🟢 Datos extraídos - userId:', userId, 'name:', name, 'email:', email);
+    const { accessToken, refreshToken, name, email, userId, projectId } = data;
+    console.log('🟢 Datos extraídos - userId:', userId, 'projectId:', projectId, 'name:', name);
 
     // Guardar tokens
     Cookies.set('auth_token', accessToken, { expires: 1, secure: false, sameSite: 'Lax' });
@@ -232,7 +232,7 @@ const Login = async () => {
     }
 
     // Guardar usuario
-    const userData = { name, email, id: userId };
+    const userData = { name, email, id: userId, projectId };
     localStorage.setItem('user', JSON.stringify(userData));
     console.log('🟢 localStorage guardado');
 
