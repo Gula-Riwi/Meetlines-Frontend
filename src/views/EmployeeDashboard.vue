@@ -2,7 +2,7 @@
     <div class="min-h-screen bg-gray-950 font-sans text-white relative">
         <!-- Header -->
         <header
-            class="h-20 flex items-center justify-between px-8 border-b border-white/5 bg-gray-950/50 backdrop-blur-sm sticky top-0 z-10">
+            class="h-20 flex items-center justify-between px-8 border-b border-white/5 bg-gray-950/50 backdrop-blur-sm sticky top-0 z-50">
             <div>
                 <h2 class="text-2xl font-bold">Bienvenido, {{ employeeName }}</h2>
                 <p class="text-sm text-gray-400">Panel de Empleado - {{ projectName }}</p>
@@ -177,7 +177,7 @@
                                         Date(app.startTime).toLocaleDateString('es-ES', { month: 'short' }).replace('.',
                                             '') }}</span>
                                     <span class="text-2xl font-bold text-white">{{ new Date(app.startTime).getDate()
-                                    }}</span>
+                                        }}</span>
                                 </div>
 
                                 <!-- Info -->
@@ -363,6 +363,19 @@
                     <button @click="closeCreateAppointmentModal" class="text-gray-400 hover:text-white">✕</button>
                 </div>
                 <form @submit.prevent="createAppointment" class="p-6 space-y-4">
+                    <!-- Service Selection -->
+                    <div class="space-y-1">
+                        <label class="text-sm text-gray-400">Servicio</label>
+                        <select v-model="newAppointment.serviceId" required
+                            class="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 text-white focus:border-indigo-500 focus:outline-none">
+                            <option value="" disabled>Selecciona un servicio</option>
+                            <option v-for="service in availableServices" :key="service.id" :value="service.id">
+                                {{ service.name }} ({{ service.duration }} min) - {{ service.price }} {{
+                                service.currency }}
+                            </option>
+                        </select>
+                    </div>
+
                     <!-- Client Info -->
                     <div class="grid grid-cols-2 gap-4">
                         <div class="space-y-1">
@@ -456,6 +469,7 @@ const changingPassword = ref(false);
 // Tasks (Conversations)
 const tasks = ref([]);
 const appointments = ref([]);
+const availableServices = ref([]);
 const filterDate = ref('');
 const filterStatus = ref('');
 const isLoadingTasks = ref(false);
@@ -470,7 +484,8 @@ const newAppointment = ref({
     clientEmail: '',
     startTimeLocal: '',
     endTimeLocal: '',
-    userNotes: ''
+    userNotes: '',
+    serviceId: ''
 });
 
 const employeeInitials = computed(() => {
@@ -607,7 +622,7 @@ const createAppointment = async () => {
 
         const payload = {
             projectId: projectId.value,
-            serviceId: 0,
+            serviceId: newAppointment.value.serviceId,
             employeeId: employeeId.value,
             startTime: start,
             endTime: end,
@@ -641,7 +656,8 @@ const closeCreateAppointmentModal = () => {
         clientEmail: '',
         startTimeLocal: '',
         endTimeLocal: '',
-        userNotes: ''
+        userNotes: '',
+        serviceId: availableServices.value.length > 0 ? availableServices.value[0].id : ''
     };
 };
 
@@ -736,6 +752,7 @@ onMounted(async () => {
             if (projectId.value) {
                 await fetchAssignedConversations();
                 await fetchAssignedAppointments();
+                await fetchServices();
             } else {
                 // Try to get public project details to get ID as fallback
                 try {
@@ -755,6 +772,7 @@ onMounted(async () => {
             // Not in subdomain but have projectId (e.g. main domain login?)
             await fetchAssignedConversations();
             await fetchAssignedAppointments();
+            await fetchServices();
         }
 
         // START POLLING
@@ -769,4 +787,19 @@ onMounted(async () => {
         console.error('Error cargando datos de empleado', e);
     }
 });
+
+const fetchServices = async () => {
+    if (!projectId.value) return;
+    try {
+        const services = await projectService.getProjectServices(projectId.value);
+        availableServices.value = Array.isArray(services) ? services : (services.data || []);
+
+        // Auto-select first service if available
+        if (availableServices.value.length > 0) {
+            newAppointment.value.serviceId = availableServices.value[0].id;
+        }
+    } catch (error) {
+        console.error("Error fetching services:", error);
+    }
+};
 </script>
