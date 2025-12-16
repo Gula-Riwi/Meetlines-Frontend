@@ -51,7 +51,7 @@
                         <div v-else
                             class="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-900/40 to-purple-900/40">
                             <span class="text-4xl font-bold text-white/20">{{ project.name.charAt(0).toUpperCase()
-                            }}</span>
+                                }}</span>
                         </div>
                     </div>
 
@@ -61,7 +61,8 @@
                         </span>
 
                         <!-- Action Buttons -->
-                        <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity" @click.stop>
+                        <div class="flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+                            @click.stop>
                             <button @click.stop="openEditModal(project)"
                                 class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-indigo-400 transition-colors"
                                 title="Editar">
@@ -77,7 +78,7 @@
 
                     <h3 class="text-xl font-bold text-white mb-1">{{ project.name }}</h3>
                     <p v-if="project.subdomain" class="text-sm text-indigo-400 mb-4">{{ project.subdomain
-                        }}.meet-lines.com</p>
+                    }}.meet-lines.com</p>
                     <p class="text-sm text-gray-500 line-clamp-2">{{ project.description || 'Sin descripción' }}</p>
 
                     <div
@@ -95,7 +96,7 @@
         <div v-if="showCreateModal"
             class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
             <div
-                class="bg-gray-900 border border-white/10 rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden animate-fade-in-up">
+                class="bg-gray-900 border border-white/10 rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden animate-fade-in-up max-h-[90vh] overflow-y-auto">
                 <div class="p-6 border-b border-white/10">
                     <h3 class="text-4xl tracking-wide font-league font-bold text-white">{{ isEditing ? 'Editar Proyecto'
                         : 'Nuevo Proyecto' }}</h3>
