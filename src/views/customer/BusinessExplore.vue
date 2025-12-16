@@ -52,7 +52,7 @@
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <!-- Hero section -->
             <div class="text-center mb-12">
-                <h1 class="text-4xl md:text-5xl font-bold tracking-normal mb-4">
+                <h1 class="text-4xl md:text-7xl font-bold font-league tracking-normal mb-4">
                     Encuentra y agenda con los
                     <span class="text-indigo-400">mejores negocios</span>
                 </h1>

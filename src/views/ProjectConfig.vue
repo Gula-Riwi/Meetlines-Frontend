@@ -227,14 +227,29 @@
 
                         <!-- Telegram -->
                         <div class="bg-gray-900 border border-white/10 rounded-2xl p-4 md:p-6">
-                            <div class="flex items-center gap-3 mb-6">
+                            <div class="flex items-start gap-3 mb-6">
                                 <div
-                                    class="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-400 text-xl">
+                                    class="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-400 text-xl flex-shrink-0">
                                     <font-awesome-icon :icon="['fab', 'telegram']" />
                                 </div>
                                 <div>
                                     <h3 class="text-lg md:text-xl font-bold">Telegram Bot</h3>
                                     <p class="text-xs md:text-sm text-gray-400">Conecta tu Bot.</p>
+
+                                    <!-- LINK DEL TUTORIAL -->
+                                    <a href="https://www.siteguarding.com/en/how-to-get-telegram-bot-api-token"
+                                        target="_blank" rel="noopener noreferrer"
+                                        class="text-xs text-blue-400 hover:text-blue-300 hover:underline mt-1 inline-flex items-center gap-1 transition-colors">
+                                        <span>¿Cómo obtener el Token?</span>
+                                        <!-- Ícono de link externo pequeño -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path
+                                                d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                                            <path
+                                                d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                                        </svg>
+                                    </a>
                                 </div>
                             </div>
 

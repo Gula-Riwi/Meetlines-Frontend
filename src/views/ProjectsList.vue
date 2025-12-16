@@ -51,7 +51,7 @@
                         <div v-else
                             class="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-900/40 to-purple-900/40">
                             <span class="text-4xl font-bold text-white/20">{{ project.name.charAt(0).toUpperCase()
-                                }}</span>
+                            }}</span>
                         </div>
                     </div>
 
@@ -77,7 +77,7 @@
 
                     <h3 class="text-xl font-bold text-white mb-1">{{ project.name }}</h3>
                     <p v-if="project.subdomain" class="text-sm text-indigo-400 mb-4">{{ project.subdomain
-                    }}.meet-lines.com</p>
+                        }}.meet-lines.com</p>
                     <p class="text-sm text-gray-500 line-clamp-2">{{ project.description || 'Sin descripción' }}</p>
 
                     <div
@@ -137,13 +137,26 @@
                                 class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors"></textarea>
                         </div>
 
-                        <!-- Foto de Perfil URL -->
+                        <!-- Foto de Perfil (Archivo) -->
                         <div class="space-y-1">
-                            <label class="text-sm text-gray-400">URL Foto de Perfil</label>
-                            <input type="text" v-model="newProject.profilePhotoUrl"
-                                placeholder="https://ejemplo.com/foto.jpg"
-                                class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors">
-                            <p class="text-xs text-gray-500">Enlace directo a la imagen del logo o fachada.</p>
+                            <label class="text-sm text-gray-400">Logo/Foto del Negocio</label>
+
+                            <!-- Preview Area -->
+                            <div class="flex items-center gap-4 mb-2" v-if="previewImage || newProject.profilePhotoUrl">
+                                <div
+                                    class="w-16 h-16 rounded-xl bg-gray-800 overflow-hidden border border-white/10 relative group">
+                                    <img :src="previewImage || newProject.profilePhotoUrl"
+                                        class="w-full h-full object-cover">
+                                    <!-- Button to remove/change -->
+                                </div>
+                                <div class="text-xs text-indigo-400 font-medium">
+                                    {{ previewImage ? 'Imagen seleccionada' : 'Imagen actual' }}
+                                </div>
+                            </div>
+
+                            <input type="file" @change="handleFileUpload" accept="image/*" ref="fileInput"
+                                class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500">
+                            <p class="text-xs text-gray-500">Sube una imagen cuadrada (PNG, JPG) para tu logo.</p>
                         </div>
 
                         <div class="border-t border-white/10 pt-4 mt-2">
@@ -231,6 +244,9 @@ const showCreateModal = ref(false);
 const isEditing = ref(false);
 const editingId = ref(null);
 const isCreating = ref(false);
+const fileInput = ref(null);
+const previewImage = ref(null);
+const selectedFile = ref(null);
 
 
 const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS;
@@ -279,6 +295,19 @@ const handleMapClick = (event) => {
     }
 };
 
+const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        selectedFile.value = file;
+        // Create preview URL
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImage.value = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+};
+
 const openEditModal = async (project) => {
     try {
         isLoading.value = true;
@@ -306,6 +335,10 @@ const openEditModal = async (project) => {
         if (projectData.latitude && projectData.longitude) {
             mapCenter.value = { lat: projectData.latitude, lng: projectData.longitude };
         }
+
+        // Reset file selection
+        selectedFile.value = null;
+        previewImage.value = null;
 
         showCreateModal.value = true;
     } catch (error) {
@@ -337,19 +370,33 @@ const createProject = async () => {
     try {
         isCreating.value = true;
 
-        const payload = { ...newProject.value };
+        const payload = new FormData();
+        payload.append('name', newProject.value.name);
+        payload.append('industry', newProject.value.industry);
+        payload.append('description', newProject.value.description || '');
+        payload.append('address', newProject.value.address || '');
+        payload.append('city', newProject.value.city || '');
+        payload.append('country', newProject.value.country || '');
+        if (newProject.value.latitude) payload.append('latitude', newProject.value.latitude);
+        if (newProject.value.longitude) payload.append('longitude', newProject.value.longitude);
+
+        // Append file if selected
+        if (selectedFile.value) {
+            payload.append('profilePhoto', selectedFile.value);
+        }
 
         let response;
         if (isEditing.value) {
             response = await projectService.update(editingId.value, payload);
+            showSuccess("Proyecto actualizado con éxito");
         } else {
             response = await projectService.create(payload);
+            showSuccess("Proyecto creado con éxito");
         }
         if (response) {
             await loadProjects();
             showCreateModal.value = false;
             resetForm();
-            showSuccess(isEditing.value ? "Proyecto actualizado" : "Proyecto creado exitosamente");
         }
     } catch (error) {
         console.error("Error guardando proyecto:", error);
