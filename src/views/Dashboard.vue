@@ -201,7 +201,7 @@
                                     <td class="p-4 text-center">
                                         <button 
                                             v-if="pedido.estado !== 'confirmed' && pedido.estado !== 'cancelled' && pedido.estado !== 'completed'"
-                                            @click="updateStatus(pedido.id, 'confirmed')" 
+                                            @click="updateStatus(project.id, pedido.id, 'confirmed')" 
                                             class="p-2 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500 hover:text-white transition-all border border-indigo-500/20 hover:scale-105 active:scale-95"
                                             title="Confirmar Cita">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -213,7 +213,7 @@
                                     <td class="p-4 text-center">
                                         <button 
                                             v-if="pedido.estado !== 'cancelled' && pedido.estado !== 'completed'"
-                                            @click="updateStatus(pedido.id, 'cancelled')" 
+                                            @click="updateStatus(project.id, pedido.id, 'cancelled')" 
                                             class="p-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition-all border border-red-500/20 hover:scale-105 active:scale-95"
                                             title="Cancelar Cita">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -311,17 +311,27 @@ const loadDashboardData = async () => {
             // 1. Load AI Insights
             try {
                 const aiResponse = await aiInsightsService.getProjectInsights(projectId);
-                if (aiResponse.data?.success) { // Or just aiResponse.success if axios interceptor handles data extraction
-                    // Assuming service returns data directly or response.data
-                     const data = aiResponse.data?.data || aiResponse; 
-                     aiInsights.value = data;
+                // Service returns response.data (the body: { success: true, data: ... })
+                if (aiResponse.success) {
+                    const data = aiResponse.data;
+                    aiInsights.value = data;
 
                     // Map API data to Cards
                     metricas.value[0].valorNum = data.revenue?.totalLostRevenue || 0;
-                    metricas.value[1].valorNum = data.churnRisks?.reduce((acc, curr) => acc + curr.count, 0) || 0;
+                    
+                    // Count churn risks
+                    const churnCount = data.churnRisks?.length || 0;
+                    metricas.value[1].valorNum = churnCount;
+                    metricas.value[1].porcentaje = churnCount > 0 ? `${churnCount} Riesgos` : '0';
+                    metricas.value[1].subio = churnCount === 0; // Green if 0 risks
+
                     metricas.value[2].valorText = data.optimization?.bestTime || '--:--';
                     metricas.value[2].sufijo = data.optimization?.bestDay || '';
                     metricas.value[3].valorText = data.staffing?.actionRequired ? 'Requiere Atención' : 'Adecuado';
+                    metricas.value[3].porcentaje = data.staffing?.actionRequired ? 'Alerta' : 'Estable';
+                    metricas.value[3].subio = !data.staffing?.actionRequired;
+                } else {
+                    console.warn('AI Insights API returned success: false', aiResponse);
                 }
             } catch (err) {
                 console.error("AI Insights Error (Non-blocking):", err);
