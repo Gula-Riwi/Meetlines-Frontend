@@ -5,8 +5,20 @@
     >
         <div class="flex items-start gap-4">
             <!-- Business logo -->
-            <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-2xl font-bold shrink-0 group-hover:scale-105 transition-transform">
-                {{ business?.name?.charAt(0) || 'B' }}
+            <div class="w-16 h-16 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform overflow-hidden">
+                <img 
+                    v-if="business?.profilePhotoUrl" 
+                    :src="business.profilePhotoUrl" 
+                    :alt="business?.name"
+                    class="w-full h-full object-cover"
+                    @error="handleImageError"
+                />
+                <div 
+                    v-else 
+                    class="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-2xl font-bold text-white"
+                >
+                    {{ business?.name?.charAt(0) || 'B' }}
+                </div>
             </div>
             
             <div class="flex-1 min-w-0">
@@ -57,5 +69,10 @@ defineEmits(['click']);
 const truncateAddress = (address) => {
     if (!address) return '';
     return address.length > 30 ? address.substring(0, 30) + '...' : address;
+};
+
+const handleImageError = (event) => {
+    // Hide the broken image and let the fallback show
+    event.target.style.display = 'none';
 };
 </script>
