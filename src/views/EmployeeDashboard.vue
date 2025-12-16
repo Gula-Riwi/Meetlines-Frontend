@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-gray-950 font-sans text-white">
+    <div class="min-h-screen bg-gray-950 font-sans text-white relative">
         <!-- Header -->
         <header
             class="h-20 flex items-center justify-between px-8 border-b border-white/5 bg-gray-950/50 backdrop-blur-sm sticky top-0 z-10">
@@ -137,6 +137,10 @@
                                         class="px-3 py-1 bg-green-600/20 text-green-400 rounded-full text-sm font-medium">
                                         {{ filteredAppointments.length }} visibles
                                     </span>
+                                    <button @click="showCreateAppointmentModal = true"
+                                        class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-2 py-1 rounded ml-2 transition-colors">
+                                        + Nueva Cita
+                                    </button>
                                 </div>
                             </div>
 
@@ -171,9 +175,9 @@
                                     class="flex-shrink-0 w-full sm:w-16 h-16 bg-gray-700/50 rounded-lg flex flex-row sm:flex-col items-center justify-center border border-white/10 gap-2 sm:gap-0 px-4 sm:px-0">
                                     <span class="text-xs text-gray-400 uppercase font-bold">{{ new
                                         Date(app.startTime).toLocaleDateString('es-ES', { month: 'short' }).replace('.',
-                                        '') }}</span>
+                                            '') }}</span>
                                     <span class="text-2xl font-bold text-white">{{ new Date(app.startTime).getDate()
-                                        }}</span>
+                                    }}</span>
                                 </div>
 
                                 <!-- Info -->
@@ -185,10 +189,12 @@
                                             <p class="font-bold text-indigo-400">
                                                 {{ new Date(app.startTime).toLocaleTimeString('es-ES', {
                                                     hour:
-                                                '2-digit', minute: '2-digit' }) }} -
+                                                        '2-digit', minute: '2-digit'
+                                                }) }} -
                                                 {{ new Date(app.endTime).toLocaleTimeString('es-ES', {
                                                     hour: '2-digit',
-                                                minute: '2-digit' }) }}
+                                                    minute: '2-digit'
+                                                }) }}
                                             </p>
                                             <p class="text-xs text-gray-500">{{ app.price }} {{ app.currency }}</p>
                                         </div>
@@ -346,6 +352,70 @@
         <!-- Chat Window Modal -->
         <ChatWindow v-if="selectedChat" :project-id="projectId" :phone="selectedChat.phone"
             :contact-name="selectedChat.title" @close="selectedChat = null" @returned-to-bot="handleReturnedToBot" />
+
+        <!-- Appointment Modal -->
+        <div v-if="showCreateAppointmentModal"
+            class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <div
+                class="bg-gray-900 rounded-2xl w-full max-w-lg border border-white/10 shadow-2xl overflow-hidden animate-fade-in-up">
+                <div class="p-6 border-b border-white/10 flex justify-between items-center">
+                    <h2 class="text-xl font-bold">Agendar Nueva Cita</h2>
+                    <button @click="closeCreateAppointmentModal" class="text-gray-400 hover:text-white">✕</button>
+                </div>
+                <form @submit.prevent="createAppointment" class="p-6 space-y-4">
+                    <!-- Client Info -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="text-sm text-gray-400">Nombre Cliente</label>
+                            <input v-model="newAppointment.clientName" required type="text"
+                                class="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 text-white focus:border-indigo-500 focus:outline-none">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-sm text-gray-400">Teléfono</label>
+                            <input v-model="newAppointment.clientPhone" type="text"
+                                class="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 text-white focus:border-indigo-500 focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-sm text-gray-400">Email (Opcional)</label>
+                        <input v-model="newAppointment.clientEmail" type="email"
+                            class="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 text-white focus:border-indigo-500 focus:outline-none">
+                    </div>
+
+                    <!-- Time -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="text-sm text-gray-400">Fecha Inicio</label>
+                            <input v-model="newAppointment.startTimeLocal" required type="datetime-local"
+                                class="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 text-white focus:border-indigo-500 focus:outline-none">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-sm text-gray-400">Fecha Fin</label>
+                            <input v-model="newAppointment.endTimeLocal" required type="datetime-local"
+                                class="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 text-white focus:border-indigo-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="space-y-1">
+                        <label class="text-sm text-gray-400">Notas Internas</label>
+                        <textarea v-model="newAppointment.userNotes" rows="2"
+                            class="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 text-white focus:border-indigo-500 focus:outline-none"></textarea>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-4 border-t border-white/10">
+                        <button type="button" @click="closeCreateAppointmentModal"
+                            class="px-4 py-2 text-gray-300 hover:text-white">Cancelar</button>
+                        <button type="submit" :disabled="isCreatingAppointment"
+                            class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2 rounded-xl font-bold transition-colors flex items-center gap-2">
+                            <span v-if="isCreatingAppointment"
+                                class="animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full"></span>
+                            {{ isCreatingAppointment ? 'Agendando...' : 'Agendar Cita' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -360,6 +430,7 @@ import ChatWindow from '@/components/ChatWindow.vue';
 import { confirmAction, showError, showSuccess, showToast } from '@/utils/alert';
 import { getCurrentSubdomain } from '@/services/tenantService';
 import projectService from '@/services/projectService';
+import appointmentService from '@/services/appointmentService';
 
 const router = useRouter();
 
@@ -389,6 +460,18 @@ const filterDate = ref('');
 const filterStatus = ref('');
 const isLoadingTasks = ref(false);
 const selectedChat = ref(null);
+
+// Appointment creation
+const showCreateAppointmentModal = ref(false);
+const isCreatingAppointment = ref(false);
+const newAppointment = ref({
+    clientName: '',
+    clientPhone: '',
+    clientEmail: '',
+    startTimeLocal: '',
+    endTimeLocal: '',
+    userNotes: ''
+});
 
 const employeeInitials = computed(() => {
     if (!employeeName.value) return 'E';
@@ -482,8 +565,12 @@ onUnmounted(() => {
 const fetchAssignedAppointments = async () => {
     if (!projectId.value) return;
     try {
-        const apps = await employeeService.getAppointments(projectId.value);
-        appointments.value = apps;
+        const apps = await appointmentService.getAll(projectId.value);
+        if (apps.data) {
+            appointments.value = Array.isArray(apps.data) ? apps.data : [];
+        } else {
+            appointments.value = Array.isArray(apps) ? apps : [];
+        }
     } catch (error) {
         console.error("Error fetching appointments:", error);
     }
@@ -495,7 +582,7 @@ const updateAppointmentStatus = async (app, newStatus) => {
     app.status = newStatus;
 
     try {
-        await employeeService.updateAppointmentStatus(projectId.value, app.id, newStatus);
+        await appointmentService.updateStatus(projectId.value, app.id, newStatus);
         showToast("Estado de la cita actualizado exitosamente");
     } catch (error) {
         console.error("Error updating appointment status:", error);
@@ -503,6 +590,59 @@ const updateAppointmentStatus = async (app, newStatus) => {
         app.status = originalStatus;
         showError("Error al actualizar el estado de la cita");
     }
+};
+
+const createAppointment = async () => {
+    if (!newAppointment.value.startTimeLocal || !newAppointment.value.endTimeLocal) {
+        showError("Debes seleccionar fecha de inicio y fin");
+        return;
+    }
+
+    try {
+        isCreatingAppointment.value = true;
+
+        // Convert local datetime inputs to ISO strings (or send as is depending on backend, usually ISO)
+        const start = new Date(newAppointment.value.startTimeLocal).toISOString();
+        const end = new Date(newAppointment.value.endTimeLocal).toISOString();
+
+        const payload = {
+            projectId: projectId.value,
+            serviceId: 0,
+            employeeId: employeeId.value,
+            startTime: start,
+            endTime: end,
+            userNotes: newAppointment.value.userNotes,
+            clientName: newAppointment.value.clientName,
+            clientEmail: newAppointment.value.clientEmail,
+            clientPhone: newAppointment.value.clientPhone
+        };
+
+        const response = await appointmentService.create(projectId.value, payload);
+
+        if (response) {
+            showSuccess("Cita agendada exitosamente");
+            closeCreateAppointmentModal();
+            await fetchAssignedAppointments();
+        }
+
+    } catch (error) {
+        console.error("Error creating appointment:", error);
+        showError(error.response?.data?.message || "Error al agendar la cita");
+    } finally {
+        isCreatingAppointment.value = false;
+    }
+};
+
+const closeCreateAppointmentModal = () => {
+    showCreateAppointmentModal.value = false;
+    newAppointment.value = {
+        clientName: '',
+        clientPhone: '',
+        clientEmail: '',
+        startTimeLocal: '',
+        endTimeLocal: '',
+        userNotes: ''
+    };
 };
 
 const changePassword = async () => {
