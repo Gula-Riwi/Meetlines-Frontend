@@ -42,7 +42,18 @@
                 </button>
                 <!-- 1. Tarjetas de Proyectos Existentes -->
                 <div v-for="project in projects" :key="project.id" @click="selectProject(project)"
-                    class="group relative bg-gray-900 border border-white/10 rounded-2xl p-6 cursor-pointer hover:border-indigo-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 z-20">
+                    class="group relative bg-gray-900 border border-white/10 rounded-2xl p-6 cursor-pointer hover:border-indigo-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 z-20 flex flex-col">
+
+                    <!-- Profile Photo / Cover -->
+                    <div class="w-full h-32 mb-4 rounded-xl bg-gray-800 overflow-hidden relative">
+                        <img v-if="project.profilePhotoUrl" :src="project.profilePhotoUrl" alt="Cover"
+                            class="w-full h-full object-cover">
+                        <div v-else
+                            class="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-900/40 to-purple-900/40">
+                            <span class="text-4xl font-bold text-white/20">{{ project.name.charAt(0).toUpperCase()
+                                }}</span>
+                        </div>
+                    </div>
 
                     <div class="flex justify-between items-start mb-4">
                         <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-400 border border-white/5">
@@ -66,7 +77,7 @@
 
                     <h3 class="text-xl font-bold text-white mb-1">{{ project.name }}</h3>
                     <p v-if="project.subdomain" class="text-sm text-indigo-400 mb-4">{{ project.subdomain
-                        }}.meet-lines.com</p>
+                    }}.meet-lines.com</p>
                     <p class="text-sm text-gray-500 line-clamp-2">{{ project.description || 'Sin descripción' }}</p>
 
                     <div
@@ -124,6 +135,15 @@
                             <label class="text-sm text-gray-400">Descripción</label>
                             <textarea v-model="newProject.description" rows="3" placeholder="Breve descripción..."
                                 class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors"></textarea>
+                        </div>
+
+                        <!-- Foto de Perfil URL -->
+                        <div class="space-y-1">
+                            <label class="text-sm text-gray-400">URL Foto de Perfil</label>
+                            <input type="text" v-model="newProject.profilePhotoUrl"
+                                placeholder="https://ejemplo.com/foto.jpg"
+                                class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors">
+                            <p class="text-xs text-gray-500">Enlace directo a la imagen del logo o fachada.</p>
                         </div>
 
                         <div class="border-t border-white/10 pt-4 mt-2">
@@ -224,7 +244,8 @@ const newProject = ref({
     city: '',
     country: '',
     latitude: null,
-    longitude: null
+    longitude: null,
+    profilePhotoUrl: ''
 });
 
 onMounted(async () => {
@@ -275,8 +296,10 @@ const openEditModal = async (project) => {
             address: projectData.address || '',
             city: projectData.city || '',
             country: projectData.country || '',
+            country: projectData.country || '',
             latitude: projectData.latitude || null,
-            longitude: projectData.longitude || null
+            longitude: projectData.longitude || null,
+            profilePhotoUrl: projectData.profilePhotoUrl || ''
         };
 
         // Set map center if project has location
@@ -346,7 +369,8 @@ const resetForm = () => {
         city: '',
         country: '',
         latitude: null,
-        longitude: null
+        longitude: null,
+        profilePhotoUrl: ''
     };
     isEditing.value = false;
     editingId.value = null;

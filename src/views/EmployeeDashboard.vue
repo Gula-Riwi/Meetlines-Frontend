@@ -4,7 +4,7 @@
         <header
             class="h-20 flex items-center justify-between px-8 border-b border-white/5 bg-gray-950/50 backdrop-blur-sm sticky top-0 z-10">
             <div>
-                <h2 class="text-2xl font-bold">Bienvenido, {{ employeeName }} 👋</h2>
+                <h2 class="text-2xl font-bold">Bienvenido, {{ employeeName }}</h2>
                 <p class="text-sm text-gray-400">Panel de Empleado - {{ projectName }}</p>
             </div>
             <div class="flex items-center gap-4">
