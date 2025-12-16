@@ -13,12 +13,20 @@ export default {
     },
 
     async create(projectData) {
-        const response = await api.post('/api/projects', projectData);
+        const config = {};
+        if (projectData instanceof FormData) {
+            config.headers = { 'Content-Type': 'multipart/form-data' };
+        }
+        const response = await api.post('/api/projects', projectData, config);
         return response.data;
     },
 
     async update(id, projectData) {
-        const response = await api.put(`/api/projects/${id}`, projectData);
+        const config = {};
+        if (projectData instanceof FormData) {
+            config.headers = { 'Content-Type': 'multipart/form-data' };
+        }
+        const response = await api.put(`/api/projects/${id}`, projectData, config);
         return response.data;
     },
 

@@ -6,7 +6,7 @@
                 <div class="flex items-center justify-between h-16">
                     <!-- Logo -->
                     <router-link to="/" class="flex items-center gap-2">
-                        <span class="text-2xl font-bold tracking-normal text-white">Meet<span class="text-indigo-400">Lines</span></span>
+                        <span class="text-2xl font-bold tracking-normal italic text-white">Meet<span class="text-indigo-400">Lines</span></span>
                     </router-link>
 
                     <!-- Search bar -->
@@ -52,7 +52,7 @@
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <!-- Hero section -->
             <div class="text-center mb-12">
-                <h1 class="text-4xl md:text-5xl font-bold tracking-normal mb-4">
+                <h1 class="text-4xl md:text-7xl font-bold font-league tracking-normal mb-4">
                     Encuentra y agenda con los
                     <span class="text-indigo-400">mejores negocios</span>
                 </h1>

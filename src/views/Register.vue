@@ -28,7 +28,7 @@
 
                 <!-- Nombre -->
                 <div class="space-y-1">
-                    <label class="text-sm font-medium text-gray-300 ml-1">Nombre de Empresa / Freelancer</label>
+                    <label class="text-sm font-medium text-gray-300 ml-1">Nombre de usuario</label>
                     <input type="text" v-model="name" required placeholder="Mi Negocio Inc."
                         class="w-full bg-gray-950/50 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" />
                 </div>

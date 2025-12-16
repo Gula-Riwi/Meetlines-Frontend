@@ -42,7 +42,18 @@
                 </button>
                 <!-- 1. Tarjetas de Proyectos Existentes -->
                 <div v-for="project in projects" :key="project.id" @click="selectProject(project)"
-                    class="group relative bg-gray-900 border border-white/10 rounded-2xl p-6 cursor-pointer hover:border-indigo-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 z-20">
+                    class="group relative bg-gray-900 border border-white/10 rounded-2xl p-6 cursor-pointer hover:border-indigo-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 z-20 flex flex-col">
+
+                    <!-- Profile Photo / Cover -->
+                    <div class="w-full h-32 mb-4 rounded-xl bg-gray-800 overflow-hidden relative">
+                        <img v-if="project.profilePhotoUrl" :src="project.profilePhotoUrl" alt="Cover"
+                            class="w-full h-full object-cover">
+                        <div v-else
+                            class="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-900/40 to-purple-900/40">
+                            <span class="text-4xl font-bold text-white/20">{{ project.name.charAt(0).toUpperCase()
+                                }}</span>
+                        </div>
+                    </div>
 
                     <div class="flex justify-between items-start mb-4">
                         <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-400 border border-white/5">
@@ -50,7 +61,8 @@
                         </span>
 
                         <!-- Action Buttons -->
-                        <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity" @click.stop>
+                        <div class="flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+                            @click.stop>
                             <button @click.stop="openEditModal(project)"
                                 class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-indigo-400 transition-colors"
                                 title="Editar">
@@ -66,7 +78,7 @@
 
                     <h3 class="text-xl font-bold text-white mb-1">{{ project.name }}</h3>
                     <p v-if="project.subdomain" class="text-sm text-indigo-400 mb-4">{{ project.subdomain
-                        }}.meet-lines.com</p>
+                    }}.meet-lines.com</p>
                     <p class="text-sm text-gray-500 line-clamp-2">{{ project.description || 'Sin descripción' }}</p>
 
                     <div
@@ -84,7 +96,7 @@
         <div v-if="showCreateModal"
             class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
             <div
-                class="bg-gray-900 border border-white/10 rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden animate-fade-in-up">
+                class="bg-gray-900 border border-white/10 rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden animate-fade-in-up max-h-[90vh] overflow-y-auto">
                 <div class="p-6 border-b border-white/10">
                     <h3 class="text-4xl tracking-wide font-league font-bold text-white">{{ isEditing ? 'Editar Proyecto'
                         : 'Nuevo Proyecto' }}</h3>
@@ -124,6 +136,28 @@
                             <label class="text-sm text-gray-400">Descripción</label>
                             <textarea v-model="newProject.description" rows="3" placeholder="Breve descripción..."
                                 class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors"></textarea>
+                        </div>
+
+                        <!-- Foto de Perfil (Archivo) -->
+                        <div class="space-y-1">
+                            <label class="text-sm text-gray-400">Logo/Foto del Negocio</label>
+
+                            <!-- Preview Area -->
+                            <div class="flex items-center gap-4 mb-2" v-if="previewImage || newProject.profilePhotoUrl">
+                                <div
+                                    class="w-16 h-16 rounded-xl bg-gray-800 overflow-hidden border border-white/10 relative group">
+                                    <img :src="previewImage || newProject.profilePhotoUrl"
+                                        class="w-full h-full object-cover">
+                                    <!-- Button to remove/change -->
+                                </div>
+                                <div class="text-xs text-indigo-400 font-medium">
+                                    {{ previewImage ? 'Imagen seleccionada' : 'Imagen actual' }}
+                                </div>
+                            </div>
+
+                            <input type="file" @change="handleFileUpload" accept="image/*" ref="fileInput"
+                                class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-indigo-500 focus:outline-none transition-colors file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500">
+                            <p class="text-xs text-gray-500">Sube una imagen cuadrada (PNG, JPG) para tu logo.</p>
                         </div>
 
                         <div class="border-t border-white/10 pt-4 mt-2">
@@ -211,6 +245,9 @@ const showCreateModal = ref(false);
 const isEditing = ref(false);
 const editingId = ref(null);
 const isCreating = ref(false);
+const fileInput = ref(null);
+const previewImage = ref(null);
+const selectedFile = ref(null);
 
 
 const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS;
@@ -224,7 +261,8 @@ const newProject = ref({
     city: '',
     country: '',
     latitude: null,
-    longitude: null
+    longitude: null,
+    profilePhotoUrl: ''
 });
 
 onMounted(async () => {
@@ -258,6 +296,19 @@ const handleMapClick = (event) => {
     }
 };
 
+const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        selectedFile.value = file;
+        // Create preview URL
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImage.value = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+};
+
 const openEditModal = async (project) => {
     try {
         isLoading.value = true;
@@ -275,14 +326,20 @@ const openEditModal = async (project) => {
             address: projectData.address || '',
             city: projectData.city || '',
             country: projectData.country || '',
+            country: projectData.country || '',
             latitude: projectData.latitude || null,
-            longitude: projectData.longitude || null
+            longitude: projectData.longitude || null,
+            profilePhotoUrl: projectData.profilePhotoUrl || ''
         };
 
         // Set map center if project has location
         if (projectData.latitude && projectData.longitude) {
             mapCenter.value = { lat: projectData.latitude, lng: projectData.longitude };
         }
+
+        // Reset file selection
+        selectedFile.value = null;
+        previewImage.value = null;
 
         showCreateModal.value = true;
     } catch (error) {
@@ -314,19 +371,33 @@ const createProject = async () => {
     try {
         isCreating.value = true;
 
-        const payload = { ...newProject.value };
+        const payload = new FormData();
+        payload.append('name', newProject.value.name);
+        payload.append('industry', newProject.value.industry);
+        payload.append('description', newProject.value.description || '');
+        payload.append('address', newProject.value.address || '');
+        payload.append('city', newProject.value.city || '');
+        payload.append('country', newProject.value.country || '');
+        if (newProject.value.latitude) payload.append('latitude', newProject.value.latitude);
+        if (newProject.value.longitude) payload.append('longitude', newProject.value.longitude);
+
+        // Append file if selected
+        if (selectedFile.value) {
+            payload.append('profilePhoto', selectedFile.value);
+        }
 
         let response;
         if (isEditing.value) {
             response = await projectService.update(editingId.value, payload);
+            showSuccess("Proyecto actualizado con éxito");
         } else {
             response = await projectService.create(payload);
+            showSuccess("Proyecto creado con éxito");
         }
         if (response) {
             await loadProjects();
             showCreateModal.value = false;
             resetForm();
-            showSuccess(isEditing.value ? "Proyecto actualizado" : "Proyecto creado exitosamente");
         }
     } catch (error) {
         console.error("Error guardando proyecto:", error);
@@ -346,7 +417,8 @@ const resetForm = () => {
         city: '',
         country: '',
         latitude: null,
-        longitude: null
+        longitude: null,
+        profilePhotoUrl: ''
     };
     isEditing.value = false;
     editingId.value = null;

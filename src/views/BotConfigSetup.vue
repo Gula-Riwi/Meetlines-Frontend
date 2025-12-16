@@ -148,6 +148,7 @@
                                 <textarea v-model="config.receptionConfig.welcomeMessage" rows="3"
                                     class="w-full px-4 py-3 bg-gray-800 border border-white/10 rounded-xl text-white focus:outline-none focus:border-indigo-500 transition-colors resize-none"
                                     placeholder="¡Hola! Soy {botName}..."></textarea>
+                                <p class="text-xs text-indigo-400 mt-1">Variables disponibles: {botName}</p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium mb-2">Palabras Clave de Intención</label>
@@ -260,18 +261,53 @@
                                     </div>
                                 </label>
                             </div>
+                            <!-- Cancellation Policy -->
+                            <div class="flex items-center justify-between p-4 bg-gray-800 rounded-xl">
+                                <span class="text-sm">Permitir Cancelación</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" v-model="config.transactionalConfig.allowCancellation" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                                </label>
+                            </div>
+                            <div v-if="config.transactionalConfig.allowCancellation">
+                                <label class="block text-sm font-medium mb-2">Horas mínimas de antelación para cancelar</label>
+                                <input v-model.number="config.transactionalConfig.minCancellationHours" type="number"
+                                    class="w-full px-4 py-3 bg-gray-800 border border-white/10 rounded-xl text-white focus:outline-none focus:border-indigo-500 transition-colors">
+                            </div>
 
                             <!-- Messages Fields -->
                             <div class="space-y-4 pt-4 border-t border-white/10">
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Mensaje de Confirmación</label>
                                     <textarea v-model="config.transactionalConfig.confirmationMessage" rows="2"
-                                        class="w-full px-4 py-3 bg-gray-800 border border-white/10 rounded-xl text-white focus:outline-none focus:border-indigo-500 transition-colors resize-none"></textarea>
+                                        class="w-full px-4 py-3 bg-gray-800 border border-white/10 rounded-xl text-white focus:outline-none focus:border-indigo-500 transition-colors resize-none" 
+                                    id="confirmationMessage"
+                                    @drop="onDrop($event, 'transactionalConfig.confirmationMessage')"></textarea>
+                                <div class="flex flex-wrap gap-2 mt-2">
+                                    <div v-for="v in ['{name}', '{service}', '{date}', '{time}', '{employee}']" :key="v"
+                                        draggable="true"
+                                        @dragstart="onDragStart($event, v)"
+                                        @click="insertVariable('transactionalConfig.confirmationMessage', v, 'confirmationMessage')"
+                                        class="px-3 py-1 bg-indigo-500/20 text-indigo-300 text-xs rounded-full border border-indigo-500/30 cursor-grab hover:bg-indigo-500/30 transition-all select-none active:cursor-grabbing">
+                                        + {{ getVarLabel(v) }}
+                                    </div>
+                                </div>
                                 </div>
                                 <div v-if="config.transactionalConfig.sendReminder">
                                     <label class="block text-sm font-medium mb-2">Mensaje de Recordatorio</label>
                                     <textarea v-model="config.transactionalConfig.reminderMessage" rows="2"
-                                        class="w-full px-4 py-3 bg-gray-800 border border-white/10 rounded-xl text-white focus:outline-none focus:border-indigo-500 transition-colors resize-none"></textarea>
+                                        class="w-full px-4 py-3 bg-gray-800 border border-white/10 rounded-xl text-white focus:outline-none focus:border-indigo-500 transition-colors resize-none"
+                                    id="reminderMessage"
+                                    @drop="onDrop($event, 'transactionalConfig.reminderMessage')"></textarea>
+                                <div class="flex flex-wrap gap-2 mt-2">
+                                    <div v-for="v in ['{name}', '{service}', '{date}', '{time}', '{relative_time}']" :key="v"
+                                        draggable="true"
+                                        @dragstart="onDragStart($event, v)"
+                                        @click="insertVariable('transactionalConfig.reminderMessage', v, 'reminderMessage')"
+                                        class="px-3 py-1 bg-indigo-500/20 text-indigo-300 text-xs rounded-full border border-indigo-500/30 cursor-grab hover:bg-indigo-500/30 transition-all select-none active:cursor-grabbing">
+                                        + {{ getVarLabel(v) }}
+                                    </div>
+                                </div>
                                 </div>
 
                             </div>
@@ -306,6 +342,7 @@
                                 <textarea v-model="config.feedbackConfig.requestMessage" rows="2"
                                     class="w-full px-4 py-3 bg-gray-800 border border-white/10 rounded-xl text-white focus:outline-none focus:border-indigo-500 transition-colors resize-none"
                                     placeholder="Hola {customerName}, ¿cómo calificarías tu experiencia?"></textarea>
+                                <p class="text-xs text-indigo-400 mt-1">Variables: {customerName}, {service}, {employee}</p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium mb-2">Mensaje para Feedback Negativo</label>
@@ -361,15 +398,30 @@
                                 <label class="block text-sm font-medium mb-2">Mensajes de Reactivación</label>
                                 <div class="space-y-2">
                                     <div v-for="(message, index) in config.reactivationConfig.messages" :key="index"
-                                        class="flex gap-2">
-                                        <input v-model="config.reactivationConfig.messages[index]" type="text"
-                                            class="flex-1 px-4 py-3 bg-gray-800 border border-white/10 rounded-xl text-white focus:outline-none focus:border-indigo-500 transition-colors"
-                                            :placeholder="`Mensaje ${index + 1}`">
-                                        <button v-if="config.reactivationConfig.messages.length > 1"
-                                            @click="removeMessage(index)"
-                                            class="px-3 py-2 bg-red-600/20 text-red-400 rounded-xl hover:bg-red-600/30 transition-colors">
-                                            ✕
-                                        </button>
+                                        class="flex gap-2 flex-col">
+                                        <div class="flex gap-2 w-full">
+                                            <textarea v-model="config.reactivationConfig.messages[index]" rows="2"
+                                                class="flex-1 px-4 py-3 bg-gray-800 border border-white/10 rounded-xl text-white focus:outline-none focus:border-indigo-500 transition-colors resize-none"
+                                                :placeholder="`Mensaje ${index + 1}`"
+                                                :id="`reactivationMessage-${index}`"
+                                                @drop="onDrop($event, `reactivationConfig.messages[${index}]`)"
+                                                @dragover.prevent
+                                                @dragenter.prevent></textarea>
+                                            <button v-if="config.reactivationConfig.messages.length > 1"
+                                                @click="removeMessage(index)"
+                                                class="px-3 py-2 bg-red-600/20 text-red-400 rounded-xl hover:bg-red-600/30 transition-colors self-start">
+                                                ✕
+                                            </button>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2 mt-1">
+                                            <div v-for="v in ['{customerName}', '{botName}', '{service}', '{employee}', '{lastVisitDate}']" :key="v"
+                                                draggable="true"
+                                                @dragstart="onDragStart($event, v)"
+                                                @click="insertVariable(`reactivationConfig.messages[${index}]`, v, `reactivationMessage-${index}`)"
+                                                class="px-3 py-1 bg-indigo-500/20 text-indigo-300 text-xs rounded-full border border-indigo-500/30 cursor-grab hover:bg-indigo-500/30 transition-all select-none active:cursor-grabbing">
+                                                + {{ getVarLabel(v) }}
+                                            </div>
+                                        </div>
                                     </div>
                                     <button v-if="config.reactivationConfig.messages.length < 5" @click="addMessage"
                                         class="w-full px-4 py-2 bg-indigo-600/20 text-indigo-400 rounded-xl hover:bg-indigo-600/30 transition-colors text-sm">
@@ -398,6 +450,7 @@
                                     <input v-model="config.reactivationConfig.discountMessage" type="text"
                                         class="w-full px-4 py-3 bg-gray-800 border border-white/10 rounded-xl text-white focus:outline-none focus:border-indigo-500 transition-colors"
                                         placeholder="¡Tenemos un {discount}% de descuento para ti!">
+                                    <p class="text-xs text-indigo-400 mt-1">Variables: {discount}</p>
                                 </div>
                             </div>
                         </div>
@@ -786,6 +839,89 @@ const saveConfiguration = async () => {
         saving.value = false;
     }
 };
+// Helper to insert variable at cursor position
+const insertVariable = (fieldPath, variable, refKey) => {
+    const input = document.getElementById(refKey);
+    if (!input) {
+        console.error('Input not found:', refKey);
+        return;
+    }
+
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const text = input.value;
+    const before = text.substring(0, start);
+    const after = text.substring(end, text.length);
+    
+    // Update Value
+    const newValue = before + variable + after;
+    
+    // Update Model
+    updateConfigPath(fieldPath, newValue);
+    
+    // Restore cursor and focus
+    setTimeout(() => {
+        input.focus();
+        input.selectionStart = input.selectionEnd = start + variable.length;
+    }, 0);
+};
+
+const onDragStart = (event, variable) => {
+    if (event.dataTransfer) {
+        event.dataTransfer.setData('text/plain', variable);
+        event.dataTransfer.effectAllowed = 'copy';
+    }
+};
+
+const onDrop = (event, fieldPath) => {
+    // The default behavior of a textarea drop is to insert text at cursor.
+    // However, we want to ensure we update our Vue model correctly.
+    // Native drop might work for the visual value, but v-model binding must be updated.
+    
+    // We let the native behavior happen, then trigger an input event or update model?
+    // Actually, handling it manually ensures control.
+    
+    event.preventDefault();
+    const variable = event.dataTransfer.getData('text/plain');
+    if (!variable) return;
+    
+    const input = event.target;
+    const start = input.selectionStart; // This might be where the drop happened if browser supports it, or just current.
+    // In many browsers, drop does not automatically move cursor *before* the event fires in a way that selectionStart captures the drop point perfectly always.
+    // But usually 'drop' event gives clientX/Y. Calculation is hard.
+    // Simple approach: Use selection or append. 
+    // BETTER UX for standard inputs: Let default happen, then sync?
+    // Vue v-model usually syncs on 'input'.
+    
+    // Let's try inserting manually at cursor position (which usually updates on click/dragover).
+    const text = input.value;
+    const newValue = text.substring(0, start) + variable + text.substring(input.selectionEnd);
+    
+    updateConfigPath(fieldPath, newValue);
+};
+
+const updateConfigPath = (path, value) => {
+    const parts = path.split('.');
+    let target = config.value;
+    for (let i = 0; i < parts.length - 1; i++) {
+        target = target[parts[i]];
+    }
+    target[parts[parts.length - 1]] = value;
+};
+
+const variableLabels = {
+    '{botName}': 'Nombre del Bot',
+    '{name}': 'Nombre Cliente',
+    '{customerName}': 'Nombre Cliente',
+    '{service}': 'Servicio',
+    '{date}': 'Fecha Cita',
+    '{time}': 'Hora Cita',
+    '{employee}': 'Profesional',
+    '{relative_time}': 'Tiempo Relativo',
+    '{discount}': 'Descuento %'
+};
+
+const getVarLabel = (v) => variableLabels[v] || v;
 </script>
 
 <style scoped>

@@ -8,7 +8,8 @@
             <div class=" flex flex-wrap justify-between items-center p-2 px-4">
                 <div class="text-xl md:text-2xl font-bold flex items-center gap-2 text-white">
                     <a href="#hero" class="font-sans font-bold transition hover:text-indigo-400 ml-2 italic">
-                        Meetlines
+                        Meet
+                        <span class="text-indigo-400">Lines</span>
                     </a>
                 </div>
                 <button @click="toggleMenu"
@@ -61,7 +62,12 @@
                     class="text-lg md:text-xl mb-8 max-w-2xl font-sans hidden md:block text-gray-300" />
 
                 <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-                    <InteractiveHoverButton text="Empezar Ahora" to="/register" class="leading-normal" />
+                    <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
+                        <InteractiveHoverButton text="Empezar Ahora" to="/register" class="leading-normal" />
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
+                        <InteractiveHoverButton text="Explora los negocios" to="/explore" class="leading-normal" />
+                    </div>
                 </div>
             </div>
 

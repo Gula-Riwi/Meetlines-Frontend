@@ -70,5 +70,16 @@ export default {
     async getAppointments(projectId) {
         const response = await api.get(`/api/projects/${projectId}/appointments`);
         return response.data;
+    },
+
+    /**
+     * Actualizar estado de una cita
+     * @param {string} projectId 
+     * @param {number} appointmentId 
+     * @param {string} status 
+     */
+    async updateAppointmentStatus(projectId, appointmentId, status) {
+        const response = await api.patch(`/api/projects/${projectId}/appointments/${appointmentId}/status`, { status });
+        return response.data;
     }
 };
