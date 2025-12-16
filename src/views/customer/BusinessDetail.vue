@@ -29,8 +29,20 @@
             <div class="bg-gray-900/50 rounded-2xl p-6 mb-8 border border-white/10">
                 <div class="flex items-start gap-6">
                     <!-- Business image/logo -->
-                    <div class="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-3xl font-bold">
-                        {{ business?.name?.charAt(0) || 'B' }}
+                    <div class="w-24 h-24 rounded-xl flex items-center justify-center overflow-hidden shrink-0">
+                        <img 
+                            v-if="business?.profilePhotoUrl"
+                            :src="business.profilePhotoUrl"
+                            :alt="business?.name"
+                            class="w-full h-full object-cover"
+                            @error="handleImageError"
+                        />
+                        <div 
+                            v-else
+                            class="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-3xl font-bold text-white"
+                        >
+                            {{ business?.name?.charAt(0) || 'B' }}
+                        </div>
                     </div>
                     
                     <div class="flex-1">
