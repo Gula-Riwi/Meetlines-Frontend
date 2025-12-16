@@ -59,6 +59,15 @@ export default {
         return response.data;
     },
 
+    /**
+     * Get project photos/gallery images
+     * @param {string} projectId - Project UUID
+     */
+    async getProjectPhotos(projectId) {
+        const response = await api.get(`/api/Projects/${projectId}/photos`);
+        return response.data;
+    },
+
     // =====================
     // BOOKING
     // =====================
