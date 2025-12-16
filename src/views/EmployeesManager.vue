@@ -37,7 +37,7 @@
                 </div>
 
                 <!-- Tabla de Empleados -->
-                <div v-else class="bg-gray-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+                <div v-else class="bg-gray-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl mb-20">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse whitespace-nowrap">
                             <thead>
