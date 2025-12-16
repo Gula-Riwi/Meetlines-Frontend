@@ -85,11 +85,6 @@ export default {
         await api.delete(`/api/projects/${projectId}/photos/${photoId}`);
     },
 
-    async configureTelegram(id, configData) {
-        const response = await api.patch(`/api/projects/${id}/telegram`, configData);
-        return response.data;
-    },
-
     // Services Management
     async getProjectServices(projectId) {
         const response = await api.get(`/api/management/projects/${projectId}/services`);
