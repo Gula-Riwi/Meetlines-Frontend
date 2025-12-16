@@ -148,6 +148,7 @@
                                 <textarea v-model="config.receptionConfig.welcomeMessage" rows="3"
                                     class="w-full px-4 py-3 bg-gray-800 border border-white/10 rounded-xl text-white focus:outline-none focus:border-indigo-500 transition-colors resize-none"
                                     placeholder="¡Hola! Soy {botName}..."></textarea>
+                                <p class="text-xs text-indigo-400 mt-1">Variables disponibles: {botName}</p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium mb-2">Palabras Clave de Intención</label>
@@ -267,11 +268,13 @@
                                     <label class="block text-sm font-medium mb-2">Mensaje de Confirmación</label>
                                     <textarea v-model="config.transactionalConfig.confirmationMessage" rows="2"
                                         class="w-full px-4 py-3 bg-gray-800 border border-white/10 rounded-xl text-white focus:outline-none focus:border-indigo-500 transition-colors resize-none"></textarea>
+                                <p class="text-xs text-indigo-400 mt-1">Variables: {name}, {service}, {date}, {time}, {employee}</p>
                                 </div>
                                 <div v-if="config.transactionalConfig.sendReminder">
                                     <label class="block text-sm font-medium mb-2">Mensaje de Recordatorio</label>
                                     <textarea v-model="config.transactionalConfig.reminderMessage" rows="2"
                                         class="w-full px-4 py-3 bg-gray-800 border border-white/10 rounded-xl text-white focus:outline-none focus:border-indigo-500 transition-colors resize-none"></textarea>
+                                <p class="text-xs text-indigo-400 mt-1">Variables: {name}, {service}, {date}, {time}, {relative_time}</p>
                                 </div>
 
                             </div>
@@ -306,6 +309,7 @@
                                 <textarea v-model="config.feedbackConfig.requestMessage" rows="2"
                                     class="w-full px-4 py-3 bg-gray-800 border border-white/10 rounded-xl text-white focus:outline-none focus:border-indigo-500 transition-colors resize-none"
                                     placeholder="Hola {customerName}, ¿cómo calificarías tu experiencia?"></textarea>
+                                <p class="text-xs text-indigo-400 mt-1">Variables: {customerName}, {service}, {employee}</p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium mb-2">Mensaje para Feedback Negativo</label>
@@ -398,6 +402,7 @@
                                     <input v-model="config.reactivationConfig.discountMessage" type="text"
                                         class="w-full px-4 py-3 bg-gray-800 border border-white/10 rounded-xl text-white focus:outline-none focus:border-indigo-500 transition-colors"
                                         placeholder="¡Tenemos un {discount}% de descuento para ti!">
+                                    <p class="text-xs text-indigo-400 mt-1">Variables: {discount}</p>
                                 </div>
                             </div>
                         </div>
