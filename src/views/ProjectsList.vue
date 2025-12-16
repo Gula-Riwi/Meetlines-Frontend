@@ -326,7 +326,6 @@ const openEditModal = async (project) => {
             address: projectData.address || '',
             city: projectData.city || '',
             country: projectData.country || '',
-            country: projectData.country || '',
             latitude: projectData.latitude || null,
             longitude: projectData.longitude || null,
             profilePhotoUrl: projectData.profilePhotoUrl || ''
