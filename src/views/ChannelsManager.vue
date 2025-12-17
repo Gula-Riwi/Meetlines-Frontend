@@ -9,7 +9,7 @@
             <header class="border-b border-white/10 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-10">
                 <div class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
                     <div>
-                        <h1 class="text-4xl tracking-wide font-bold font-league">Mis Canales</h1>
+                        <h1 class="text-5xl tracking-wide font-league">Mis Canales</h1>
                         <p class="text-gray-400 mt-1">Gestiona tus redes sociales y puntos de contacto públicos</p>
                     </div>
                 </div>

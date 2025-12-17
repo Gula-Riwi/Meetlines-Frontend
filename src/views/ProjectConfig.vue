@@ -15,7 +15,7 @@
                     <div
                         class="mb-6 md:mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div>
-                            <h1 class="text-2xl md:text-4xl tracking-wide font-league font-bold mb-1 md:mb-2">
+                            <h1 class="text-2xl md:text-5xl tracking-wide font-league mb-1 md:mb-2">
                                 Configuración</h1>
                             <p class="text-sm md:text-base text-gray-400">Administra los detalles y servicios de tu
                                 negocio.</p>
