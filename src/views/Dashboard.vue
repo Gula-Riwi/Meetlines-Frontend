@@ -9,7 +9,7 @@
                 <!-- HEADER -->
                 <div class="flex justify-between items-center mb-8">
                     <div>
-                        <h1 class="text-2xl md:text-3xl font-bold text-white">Dashboard con IA</h1>
+                        <h1 class="text-2xl md:text-5xl tracking-wide font-league text-white">Dashboard con IA</h1>
                         <p class="text-gray-400 text-sm md:text-base">Analizando {{ projectName || 'Proyecto' }}</p>
                     </div>
                 </div>

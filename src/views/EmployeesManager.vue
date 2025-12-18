@@ -6,7 +6,7 @@
             <header
                 class="h-16 md:h-20 flex items-center justify-between px-4 md:px-8 border-b border-white/5 bg-gray-900/50 backdrop-blur-sm z-10 sticky top-0">
                 <div>
-                    <h2 class="text-2xl md:text-4xl tracking-wide font-bold font-league truncate">Gestión de Equipo</h2>
+                    <h2 class="text-2xl md:text-5xl tracking-wide font-league truncate">Gestión de Equipo</h2>
                     <p class="text-xs md:text-sm text-gray-400 hidden md:block">Administra quién tiene acceso a este
                         proyecto</p>
                 </div>

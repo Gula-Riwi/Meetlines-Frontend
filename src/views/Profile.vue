@@ -5,7 +5,7 @@
 
         <main class="flex-1 flex flex-col overflow-hidden relative bg-blue-950 min-w-0 pb-16 md:pb-0">
             <header class="h-16 md:h-20 flex items-center justify-between px-6 border-b border-white/5 bg-gray-900/50 backdrop-blur-sm z-10 sticky top-0">
-                <h2 class="text-2xl md:text-4xl tracking-wide font-league font-bold truncate">Mi Perfil</h2>
+                <h2 class="text-2xl md:text-5xl tracking-wide font-league truncate">Mi Perfil</h2>
             </header>
 
             <div class="flex-1 overflow-y-auto p-4 md:p-8 z-10 relative">

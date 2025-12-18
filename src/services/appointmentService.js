@@ -6,6 +6,9 @@ const appointmentService = {
     },
     updateStatus: async (projectId, appointmentId, status) => {
         return await api.patch(`/api/projects/${projectId}/appointments/${appointmentId}/status`, { status });
+    },
+    create: async (projectId, payload) => {
+        return await api.post(`/api/projects/${projectId}/appointments`, payload);
     }
 };
 
