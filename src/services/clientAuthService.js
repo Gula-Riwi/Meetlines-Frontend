@@ -57,5 +57,16 @@ export default {
     async getMe() {
         const response = await api.get('/api/client/auth/me');
         return response.data;
+    },
+
+    /**
+     * OAuth login for customers via Google
+     * @param {Object} data - OAuth data
+     * @param {string} data.code - Authorization code from Google
+     * @param {string} [data.redirectUri] - Redirect URI used during auth (optional)
+     */
+    async oauthGoogle(data) {
+        const response = await api.post('/api/customer-auth/oauth/google', data);
+        return response.data;
     }
 };
