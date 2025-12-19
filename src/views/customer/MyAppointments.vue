@@ -132,13 +132,15 @@ const isCancelling = ref(false);
 // Computed
 const filteredAppointments = computed(() => {
     if (activeTab.value === 'pending') {
-        return appointments.value.filter(a => 
-            a.status === 'PENDING' || a.status === 'CONFIRMED'
-        );
+        return appointments.value.filter(a => {
+            const status = (a.status || '').toLowerCase();
+            return status === 'pending' || status === 'confirmed';
+        });
     }
-    return appointments.value.filter(a => 
-        a.status === 'COMPLETED' || a.status === 'CANCELLED'
-    );
+    return appointments.value.filter(a => {
+        const status = (a.status || '').toLowerCase();
+        return status === 'completed' || status === 'cancelled';
+    });
 });
 
 // Methods

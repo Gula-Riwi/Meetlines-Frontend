@@ -75,16 +75,16 @@
                 <div v-else class="grid grid-cols-3 sm:grid-cols-4 gap-3">
                     <button
                         v-for="slot in availableSlots"
-                        :key="slot.startTime"
+                        :key="slot.time"
                         @click="selectedSlot = slot"
                         :class="[
                             'py-3 px-4 rounded-xl border text-center transition-all',
-                            selectedSlot?.startTime === slot.startTime
+                            selectedSlot?.time === slot.time
                                 ? 'bg-indigo-600 border-indigo-500 text-white'
                                 : 'bg-gray-900/50 border-gray-700 text-gray-300 hover:border-indigo-500'
                         ]"
                     >
-                        {{ formatTime(slot.startTime) }}
+                        {{ formatTime(slot.time) }}
                     </button>
                 </div>
 
@@ -109,7 +109,7 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-400">Hora:</span>
-                        <span class="font-medium">{{ formatTime(selectedSlot?.startTime) }}</span>
+                        <span class="font-medium">{{ formatTime(selectedSlot?.time) }}</span>
                     </div>
                     <div v-if="service" class="flex justify-between">
                         <span class="text-gray-400">Servicio:</span>
@@ -228,11 +228,27 @@ const loadSlots = async () => {
             serviceId
         );
         console.log('Slots API response:', response);
-        availableSlots.value = response.data || response || [];
-        console.log('Available slots:', availableSlots.value);
+        
+        // Backend returns { date: "2025-12-19", slots: [...] }
+        // Extract the slots array properly
+        const slotsData = response.slots || response.data?.slots || response.data || response || [];
+        
+        // De-duplicate slots by time (keep first available employee per time)
+        const uniqueSlots = [];
+        const seenTimes = new Set();
+        for (const slot of slotsData) {
+            if (!seenTimes.has(slot.time)) {
+                seenTimes.add(slot.time);
+                uniqueSlots.push(slot);
+            }
+        }
+        
+        availableSlots.value = uniqueSlots;
+        console.log('Available slots (deduplicated):', availableSlots.value);
     } catch (err) {
         console.error('Error loading slots:', err);
         console.error('Error response:', err.response?.data);
+        availableSlots.value = [];
     } finally {
         slotsLoading.value = false;
     }
@@ -240,8 +256,20 @@ const loadSlots = async () => {
 
 const formatTime = (timeString) => {
     if (!timeString) return '';
-    const date = new Date(timeString);
-    return date.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+    // Handle simple time string like "10:00" or "14:30"
+    if (typeof timeString === 'string' && timeString.match(/^\d{2}:\d{2}$/)) {
+        return timeString;
+    }
+    // Handle ISO datetime string
+    try {
+        const date = new Date(timeString);
+        if (!isNaN(date.getTime())) {
+            return date.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+        }
+    } catch {
+        // Fall through to return original
+    }
+    return timeString;
 };
 
 const formatDate = (dateString) => {
@@ -264,10 +292,20 @@ const confirmBooking = async () => {
             return;
         }
 
+        // Construct proper ISO datetime from selectedDate and slot.time
+        // slot.time is like "10:00", selectedDate is like "2025-12-19"
+        const slotTime = selectedSlot.value.time; // "10:00"
+        const startDateTime = new Date(`${selectedDate.value}T${slotTime}:00`);
+        
+        // Get service duration (default to 60 minutes if not available)
+        const durationMinutes = service.value?.durationMinutes || 60;
+        const endDateTime = new Date(startDateTime.getTime() + durationMinutes * 60000);
+
         await bookingService.bookAppointment(route.params.projectId, {
             serviceId: route.query.serviceId ? parseInt(route.query.serviceId) : undefined,
-            startTime: selectedSlot.value.startTime,
-            endTime: selectedSlot.value.endTime,
+            employeeId: selectedSlot.value.employeeId || undefined,
+            startTime: startDateTime.toISOString(),
+            endTime: endDateTime.toISOString(),
             userNotes: notes.value || undefined,
             clientName: customerData.name,
             clientEmail: customerData.email,
