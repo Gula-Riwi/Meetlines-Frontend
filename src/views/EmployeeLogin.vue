@@ -195,11 +195,9 @@ const Login = async () => {
     console.log('🔵 Iniciando login con:', { username: username.value });
 
     const response = await authService.employeeLogin({ username: username.value, password: password.value });
-    console.log('🔵 Respuesta recibida:', JSON.stringify(response, null, 2));
 
     // Extraer datos directamente de la respuesta
     const { success, data, message } = response;
-    console.log('🔵 success:', success, 'data:', !!data, 'message:', message);
 
     if (!success) {
       console.log('🔴 Login fallido: success es falso');
@@ -214,7 +212,6 @@ const Login = async () => {
     }
 
     const { accessToken, refreshToken, name, email, userId, projectId } = data;
-    console.log('🟢 Datos extraídos - userId:', userId, 'projectId:', projectId, 'name:', name);
 
     // Guardar tokens
     Cookies.set('auth_token', accessToken, { expires: 1, secure: false, sameSite: 'Lax' });

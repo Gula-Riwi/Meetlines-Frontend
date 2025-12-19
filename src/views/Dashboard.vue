@@ -201,6 +201,10 @@
                             <font-awesome-icon icon="calendar-days" /> Gestión de Citas
                         </h3>
                         <span class="text-xs text-gray-500 bg-white/5 px-2 py-1 rounded">En vivo</span>
+                        <button @click="showCreateAppointmentModal = true"
+                            class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-2 rounded-lg transition-colors font-bold ml-4">
+                            + Nueva Cita
+                        </button>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse min-w-[800px]">
@@ -283,6 +287,84 @@
                 squares-class-name="hover:fill-indigo-500/50"
                 :class="'[mask-image:radial-gradient(800px_circle_at_center,white,transparent)] opacity-40'" />
         </main>
+
+
+        <!-- Appointment Modal -->
+        <div v-if="showCreateAppointmentModal"
+            class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <div
+                class="bg-gray-900 rounded-2xl w-full max-w-lg border border-white/10 shadow-2xl overflow-hidden animate-fade-in-up">
+                <div class="p-6 border-b border-white/10 flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-white">Agendar Nueva Cita</h2>
+                    <button @click="closeCreateAppointmentModal" class="text-gray-400 hover:text-white">✕</button>
+                </div>
+                <form @submit.prevent="createAppointment" class="p-6 space-y-4">
+                    <!-- Service Selection -->
+                    <div class="space-y-1">
+                        <label class="text-sm text-gray-400">Servicio</label>
+                        <select v-model="newAppointment.serviceId" required
+                            class="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 text-white focus:border-indigo-500 focus:outline-none">
+                            <option value="" disabled>Selecciona un servicio</option>
+                            <option v-for="service in availableServices" :key="service.id" :value="service.id">
+                                {{ service.name }} ({{ service.durationMinutes }} min) - {{ service.price }} {{
+                                    service.currency }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Client Info -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="text-sm text-gray-400">Nombre Cliente</label>
+                            <input v-model="newAppointment.clientName" required type="text"
+                                class="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 text-white focus:border-indigo-500 focus:outline-none">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-sm text-gray-400">Teléfono</label>
+                            <input v-model="newAppointment.clientPhone" type="text"
+                                class="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 text-white focus:border-indigo-500 focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-sm text-gray-400">Email (Opcional)</label>
+                        <input v-model="newAppointment.clientEmail" type="email"
+                            class="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 text-white focus:border-indigo-500 focus:outline-none">
+                    </div>
+
+                    <!-- Time -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="text-sm text-gray-400">Fecha Inicio</label>
+                            <input v-model="newAppointment.startTimeLocal" required type="datetime-local"
+                                class="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 text-white focus:border-indigo-500 focus:outline-none">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-sm text-gray-400">Fecha Fin</label>
+                            <input v-model="newAppointment.endTimeLocal" required type="datetime-local"
+                                class="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 text-white focus:border-indigo-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="space-y-1">
+                        <label class="text-sm text-gray-400">Notas Internas</label>
+                        <textarea v-model="newAppointment.userNotes" rows="2"
+                            class="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 text-white focus:border-indigo-500 focus:outline-none"></textarea>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-4 border-t border-white/10">
+                        <button type="button" @click="closeCreateAppointmentModal"
+                            class="px-4 py-2 text-gray-300 hover:text-white">Cancelar</button>
+                        <button type="submit" :disabled="isCreatingAppointment"
+                            class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2 rounded-xl font-bold transition-colors flex items-center gap-2">
+                            <span v-if="isCreatingAppointment"
+                                class="animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full"></span>
+                            {{ isCreatingAppointment ? 'Agendando...' : 'Agendar Cita' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -298,6 +380,8 @@ import api from '@/services/api';
 import botConfigService from '@/services/botConfigService';
 import aiInsightsService from '@/services/aiInsightsService';
 import appointmentService from '@/services/appointmentService'; // Import Service
+import projectService from '@/services/projectService';
+import { showSuccess, showError } from '@/utils/alert';
 
 const router = useRouter();
 
@@ -315,6 +399,20 @@ const projectName = ref('');
 const isLoading = ref(true);
 const aiInsights = ref(null);
 const ultimosPedidos = ref([]); // Dynamic list
+const availableServices = ref([]);
+
+// Appointment creation
+const showCreateAppointmentModal = ref(false);
+const isCreatingAppointment = ref(false);
+const newAppointment = ref({
+    clientName: '',
+    clientPhone: '',
+    clientEmail: '',
+    startTimeLocal: '',
+    endTimeLocal: '',
+    userNotes: '',
+    serviceId: ''
+});
 
 // Computed Logic
 import { computed } from 'vue';
@@ -405,6 +503,9 @@ const loadDashboardData = async () => {
             } catch (err) {
                 console.error("Appointments Error:", err);
             }
+
+            // 3. Load Project Services
+            await fetchServices();
         }
     } catch (error) {
         console.error('Error loading dashboard data:', error);
@@ -447,6 +548,75 @@ const updateStatus = async (projectId, appointmentId, newStatus) => {
         Swal.fire({ title: 'Error', text: 'No se pudo actualizar', icon: 'error', background: '#1f2937', color: '#fff' });
         console.error(error);
     }
+}
+
+
+const fetchServices = async () => {
+    if (!project.value?.id) return;
+    try {
+        const services = await projectService.getProjectServices(project.value.id);
+        availableServices.value = Array.isArray(services) ? services : (services.data || []);
+
+        // Auto-select first service if available
+        if (availableServices.value.length > 0) {
+            newAppointment.value.serviceId = availableServices.value[0].id;
+        }
+    } catch (error) {
+        console.error("Error fetching services:", error);
+    }
+};
+
+const createAppointment = async () => {
+    if (!newAppointment.value.startTimeLocal || !newAppointment.value.endTimeLocal) {
+        showError("Debes seleccionar fecha de inicio y fin");
+        return;
+    }
+
+    try {
+        isCreatingAppointment.value = true;
+
+        // Convert local datetime inputs to ISO strings
+        const start = new Date(newAppointment.value.startTimeLocal).toISOString();
+        const end = new Date(newAppointment.value.endTimeLocal).toISOString();
+
+        const payload = {
+            projectId: project.value.id,
+            serviceId: Number(newAppointment.value.serviceId),
+            startTime: start,
+            endTime: end,
+            userNotes: newAppointment.value.userNotes || null,
+            clientName: newAppointment.value.clientName,
+            clientEmail: newAppointment.value.clientEmail || null,
+            clientPhone: newAppointment.value.clientPhone || null
+        };
+
+        const response = await appointmentService.create(project.value.id, payload);
+
+        if (response) {
+            showSuccess("Cita agendada exitosamente");
+            closeCreateAppointmentModal();
+            await loadDashboardData(); // Reload appointments
+        }
+
+    } catch (error) {
+        console.error("Error creating appointment:", error);
+        showError(error.response?.data?.message || "Error al agendar la cita");
+    } finally {
+        isCreatingAppointment.value = false;
+    }
+};
+
+const closeCreateAppointmentModal = () => {
+    showCreateAppointmentModal.value = false;
+    newAppointment.value = {
+        clientName: '',
+        clientPhone: '',
+        clientEmail: '',
+        startTimeLocal: '',
+        endTimeLocal: '',
+        userNotes: '',
+        serviceId: availableServices.value.length > 0 ? availableServices.value[0].id : ''
+    };
 };
 
 onMounted(() => {

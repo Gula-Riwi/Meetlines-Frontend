@@ -4,7 +4,7 @@
         <header
             class="h-20 flex items-center justify-between px-8 border-b border-white/5 bg-gray-950/50 backdrop-blur-sm sticky top-0 z-50">
             <div>
-                <h2 class="text-2xl font-bold">Bienvenido, {{ employeeName }}</h2>
+                <h2 class="text-2xl font-bold">Bienvenidoooooo, {{ employeeName }}</h2>
                 <p class="text-sm text-gray-400">Panel de Empleado - {{ projectName }}</p>
             </div>
             <div class="flex items-center gap-4">
@@ -177,7 +177,7 @@
                                         Date(app.startTime).toLocaleDateString('es-ES', { month: 'short' }).replace('.',
                                             '') }}</span>
                                     <span class="text-2xl font-bold text-white">{{ new Date(app.startTime).getDate()
-                                        }}</span>
+                                    }}</span>
                                 </div>
 
                                 <!-- Info -->
@@ -370,8 +370,8 @@
                             class="w-full bg-gray-950 border border-gray-700 rounded-lg px-3 py-2 text-white focus:border-indigo-500 focus:outline-none">
                             <option value="" disabled>Selecciona un servicio</option>
                             <option v-for="service in availableServices" :key="service.id" :value="service.id">
-                                {{ service.name }} ({{ service.duration }} min) - {{ service.price }} {{
-                                service.currency }}
+                                {{ service.name }} ({{ service.durationMinutes }} min) - {{ service.price }} {{
+                                    service.currency }}
                             </option>
                         </select>
                     </div>
@@ -494,9 +494,6 @@ const employeeInitials = computed(() => {
 });
 
 const completedTasks = computed(() => {
-    // For chats, maybe "completed" means BotType != 'human_paused' or HandledByHuman == false? 
-    // Or just count resolved tickets. For now, let's just count 'human_paused' as active/incomplete.
-    // Let's assume handled conversations are 'incomplete' tasks (to be done).
     return tasks.value.filter(task => task.completed).length;
 });
 
@@ -622,15 +619,17 @@ const createAppointment = async () => {
 
         const payload = {
             projectId: projectId.value,
-            serviceId: newAppointment.value.serviceId,
+            serviceId: Number(newAppointment.value.serviceId),
             employeeId: employeeId.value,
             startTime: start,
             endTime: end,
-            userNotes: newAppointment.value.userNotes,
+            userNotes: newAppointment.value.userNotes || null,
             clientName: newAppointment.value.clientName,
-            clientEmail: newAppointment.value.clientEmail,
-            clientPhone: newAppointment.value.clientPhone
+            clientEmail: newAppointment.value.clientEmail || null,
+            clientPhone: newAppointment.value.clientPhone || null
         };
+
+        console.log("Creating appointment with payload:", payload);
 
         const response = await appointmentService.create(projectId.value, payload);
 
