@@ -29,8 +29,20 @@
             <div class="bg-gray-900/50 rounded-2xl p-6 mb-8 border border-white/10">
                 <div class="flex items-start gap-6">
                     <!-- Business image/logo -->
-                    <div class="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-3xl font-bold">
-                        {{ business?.name?.charAt(0) || 'B' }}
+                    <div class="w-24 h-24 rounded-xl flex items-center justify-center overflow-hidden shrink-0">
+                        <img 
+                            v-if="business?.profilePhotoUrl"
+                            :src="business.profilePhotoUrl"
+                            :alt="business?.name"
+                            class="w-full h-full object-cover"
+                            @error="handleImageError"
+                        />
+                        <div 
+                            v-else
+                            class="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-3xl font-bold text-white"
+                        >
+                            {{ business?.name?.charAt(0) || 'B' }}
+                        </div>
                     </div>
                     
                     <div class="flex-1">
@@ -53,6 +65,74 @@
                             </span>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Photo gallery section -->
+            <section v-if="photos.length > 0" class="mb-8">
+                <h2 class="text-xl font-bold mb-4">Galería de fotos</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div 
+                        v-for="(photo, index) in photos" 
+                        :key="photo.id || index"
+                        class="relative aspect-square rounded-xl overflow-hidden cursor-pointer group"
+                        @click="openLightbox(index)"
+                    >
+                        <img 
+                            :src="photo.url || photo"
+                            :alt="`Foto ${index + 1} de ${business?.name}`"
+                            class="w-full h-full object-cover transition-transform group-hover:scale-110"
+                            @error="(e) => e.target.parentElement.style.display = 'none'"
+                        />
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lightbox modal -->
+            <div 
+                v-if="lightboxOpen" 
+                class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+                @click="closeLightbox"
+            >
+                <button 
+                    class="absolute top-4 right-4 text-white/80 hover:text-white p-2"
+                    @click="closeLightbox"
+                >
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <button 
+                    v-if="photos.length > 1"
+                    class="absolute left-4 text-white/80 hover:text-white p-2"
+                    @click.stop="prevPhoto"
+                >
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <img 
+                    :src="photos[currentPhotoIndex]?.url || photos[currentPhotoIndex]"
+                    :alt="`Foto ${currentPhotoIndex + 1}`"
+                    class="max-w-full max-h-[90vh] object-contain rounded-lg"
+                    @click.stop
+                />
+                <button 
+                    v-if="photos.length > 1"
+                    class="absolute right-4 text-white/80 hover:text-white p-2"
+                    @click.stop="nextPhoto"
+                >
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+                <div v-if="photos.length > 1" class="absolute bottom-4 text-white/80 text-sm">
+                    {{ currentPhotoIndex + 1 }} / {{ photos.length }}
                 </div>
             </div>
 
@@ -111,8 +191,11 @@ const router = useRouter();
 const business = ref(null);
 const services = ref([]);
 const employees = ref([]);
+const photos = ref([]);
 const isLoading = ref(true);
 const servicesLoading = ref(true);
+const lightboxOpen = ref(false);
+const currentPhotoIndex = ref(0);
 
 // Methods
 const loadBusiness = async () => {
@@ -171,10 +254,45 @@ const startBooking = (service) => {
     });
 };
 
+const loadPhotos = async () => {
+    const projectId = route.params.projectId;
+    
+    try {
+        const response = await bookingService.getProjectPhotos(projectId);
+        photos.value = response.data || response || [];
+    } catch (err) {
+        console.error('Error loading photos:', err);
+    }
+};
+
+const handleImageError = (event) => {
+    event.target.style.display = 'none';
+};
+
+const openLightbox = (index) => {
+    currentPhotoIndex.value = index;
+    lightboxOpen.value = true;
+    document.body.style.overflow = 'hidden';
+};
+
+const closeLightbox = () => {
+    lightboxOpen.value = false;
+    document.body.style.overflow = '';
+};
+
+const nextPhoto = () => {
+    currentPhotoIndex.value = (currentPhotoIndex.value + 1) % photos.value.length;
+};
+
+const prevPhoto = () => {
+    currentPhotoIndex.value = (currentPhotoIndex.value - 1 + photos.value.length) % photos.value.length;
+};
+
 // Lifecycle
 onMounted(() => {
     loadBusiness();
     loadServices();
     loadEmployees();
+    loadPhotos();
 });
 </script>

@@ -59,6 +59,15 @@ export default {
         return response.data;
     },
 
+    /**
+     * Get project photos/gallery images
+     * @param {string} projectId - Project UUID
+     */
+    async getProjectPhotos(projectId) {
+        const response = await api.get(`/api/Projects/${projectId}/photos`);
+        return response.data;
+    },
+
     // =====================
     // BOOKING
     // =====================
@@ -85,10 +94,18 @@ export default {
      * @param {string} [data.employeeId] - Optional employee UUID
      * @param {string} data.startTime - Start time (ISO format)
      * @param {string} data.endTime - End time (ISO format)
-     * @param {string} [data.notes] - Optional notes
+     * @param {string} [data.userNotes] - Optional notes
+     * @param {string} data.clientName - Client name
+     * @param {string} data.clientEmail - Client email
+     * @param {string} [data.clientPhone] - Optional client phone
      */
     async bookAppointment(projectId, data) {
-        const response = await api.post(`/api/projects/${projectId}/appointments`, data);
+        // Ensure projectId is included in request body
+        const requestBody = {
+            projectId: projectId,
+            ...data
+        };
+        const response = await api.post(`/api/projects/${projectId}/appointments`, requestBody);
         return response.data;
     },
 

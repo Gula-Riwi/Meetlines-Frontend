@@ -122,8 +122,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Cookies from 'js-cookie';
-import axios from 'axios';
-import { googleTokenLogin } from 'vue3-google-login';
+import { googleAuthCodeLogin } from 'vue3-google-login';
 
 // Components
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
@@ -132,7 +131,6 @@ import LineShadowText from '@/components/LineShadowText.vue';
 
 // Services
 import clientAuthService from '@/services/clientAuthService';
-import authService from '@/services/authService';
 
 const router = useRouter();
 
@@ -200,44 +198,54 @@ const handleLogin = async () => {
     }
 };
 
-// TODO: Backend needs to implement /api/client/auth/oauth/google endpoint for customer OAuth
-// Currently using business owner OAuth endpoint as temporary workaround
+// Customer Google OAuth using authorization code flow
 const loginWithGoogle = () => {
     errorMsg.value = '';
 
-    googleTokenLogin().then(async (response) => {
-        if (response.access_token) {
+    googleAuthCodeLogin().then(async (response) => {
+        if (response.code) {
             try {
                 isLoading.value = true;
-                const googleUserInfo = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
-                    headers: { Authorization: `Bearer ${response.access_token}` }
+                
+                // Send authorization code to backend for token exchange
+                const apiResponse = await clientAuthService.oauthGoogle({
+                    code: response.code,
+                    redirectUri: window.location.origin
                 });
 
-                const user = googleUserInfo.data;
+                console.log("OAuth response:", apiResponse);
 
-                const oauthData = {
-                    externalProviderId: user.sub,
-                    email: user.email,
-                    name: user.name,
-                    provider: 'Google'
-                };
+                // Handle response - may be nested in data or at root level
+                const authData = apiResponse.data || apiResponse;
+                const accessToken = authData.accessToken || authData.token;
+                const refreshToken = authData.refreshToken;
+                const userName = authData.name || authData.fullName;
+                const userEmail = authData.email;
+                const userId = authData.userId || authData.id;
 
-                // TODO: Replace with clientAuthService.oauthLogin when backend endpoint is ready
-                const apiResponse = await authService.oauthLogin(oauthData);
-
-                if (apiResponse.success && apiResponse.data) {
-                    const { accessToken, refreshToken, name, email, userId } = apiResponse.data;
+                if (accessToken) {
                     Cookies.set('customer_token', accessToken, { expires: 1, secure: true, sameSite: 'Strict' });
-                    Cookies.set('customer_refresh_token', refreshToken, { expires: 7, secure: true, sameSite: 'Strict' });
-                    localStorage.setItem('customer', JSON.stringify({ name, email, id: userId, isCustomer: true }));
+                    if (refreshToken) {
+                        Cookies.set('customer_refresh_token', refreshToken, { expires: 7, secure: true, sameSite: 'Strict' });
+                    }
+                    localStorage.setItem('customer', JSON.stringify({ 
+                        name: userName, 
+                        email: userEmail, 
+                        id: userId, 
+                        isCustomer: true 
+                    }));
                     router.push('/explore');
                 } else {
-                    errorMsg.value = apiResponse.message || "Error al iniciar con Google.";
+                    errorMsg.value = authData.message || apiResponse.message || "Error al iniciar con Google.";
                 }
 
             } catch (err) {
                 console.error("Error en proceso Google:", err);
-                errorMsg.value = "No se pudieron obtener los datos de Google.";
+                if (err.response && err.response.data) {
+                    errorMsg.value = err.response.data.error || err.response.data.message || "Error al iniciar con Google.";
+                } else {
+                    errorMsg.value = "No se pudo completar el inicio de sesión con Google.";
+                }
             } finally {
                 isLoading.value = false;
             }

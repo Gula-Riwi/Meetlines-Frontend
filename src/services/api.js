@@ -24,11 +24,10 @@ const api = axios.create({
 api.interceptors.request.use(
     (config) => {
         // Check if this is a public endpoint that doesn't need auth
-        const isPublicBookingEndpoint = config.url?.includes('/available-slots') ||
-            config.url?.includes('/public');
+        const isPublicEndpoint = config.url?.includes('/public');
 
         // Skip auth for public endpoints
-        if (isPublicBookingEndpoint) {
+        if (isPublicEndpoint) {
             return config;
         }
 
@@ -76,9 +75,7 @@ api.interceptors.response.use(
 
         // Check if this is a public/booking endpoint (no auth redirect needed)
         const isPublicEndpoint = originalRequest?.url?.includes('/public') ||
-            originalRequest?.url?.includes('/api/client/auth/') ||
-            originalRequest?.url?.includes('/available-slots') ||
-            originalRequest?.url?.includes('/appointments');
+            originalRequest?.url?.includes('/api/client/auth/');
 
         // Check if we're on a customer route
         const isCustomerRoute = window.location.pathname.startsWith('/explore') ||
@@ -106,9 +103,8 @@ api.interceptors.response.use(
                 }
 
                 // Use appropriate refresh endpoint
-                const refreshEndpoint = isCustomerRoute
-                    ? '/api/client/auth/refresh-token'
-                    : '/api/auth/refresh-token';
+                // Note: The backend currently uses the same refresh endpoint for both users and clients
+                const refreshEndpoint = '/api/Auth/refresh-token';
 
                 const response = await axios.post(`${getBaseURL()}${refreshEndpoint}`, {
                     refreshToken: refreshToken
