@@ -75,16 +75,16 @@
                 <div v-else class="grid grid-cols-3 sm:grid-cols-4 gap-3">
                     <button
                         v-for="slot in availableSlots"
-                        :key="slot.startTime"
+                        :key="slot.time"
                         @click="selectedSlot = slot"
                         :class="[
                             'py-3 px-4 rounded-xl border text-center transition-all',
-                            selectedSlot?.startTime === slot.startTime
+                            selectedSlot?.time === slot.time
                                 ? 'bg-indigo-600 border-indigo-500 text-white'
                                 : 'bg-gray-900/50 border-gray-700 text-gray-300 hover:border-indigo-500'
                         ]"
                     >
-                        {{ formatTime(slot.startTime) }}
+                        {{ formatTime(slot.time) }}
                     </button>
                 </div>
 
@@ -109,7 +109,7 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-400">Hora:</span>
-                        <span class="font-medium">{{ formatTime(selectedSlot?.startTime) }}</span>
+                        <span class="font-medium">{{ formatTime(selectedSlot?.time) }}</span>
                     </div>
                     <div v-if="service" class="flex justify-between">
                         <span class="text-gray-400">Servicio:</span>
