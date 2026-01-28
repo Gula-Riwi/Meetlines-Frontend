@@ -576,8 +576,179 @@
             </div>
         </section>
 
-        <footer class="bg-gray-900 text-white py-8 text-center">
-            <p>© 2025 Meetlines</p>
+        <!-- FOOTER PROFESIONAL -->
+        <footer class="bg-gray-950 border-t border-white/10 text-white">
+            <div class="max-w-7xl mx-auto px-6 py-16">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                    
+                    <!-- Columna 1: Marca y Descripción -->
+                    <div class="space-y-4">
+                        <BrandLogo />
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            La plataforma definitiva para automatizar tu negocio con inteligencia artificial. 
+                            Gestiona clientes 24/7 mientras te enfocas en crecer.
+                        </p>
+                        <div class="flex gap-3 pt-2">
+                            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                                class="w-10 h-10 rounded-full bg-gray-900 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-indigo-500 hover:bg-indigo-500/10 transition-all duration-300">
+                                <font-awesome-icon :icon="['fab', 'facebook']" class="text-lg" />
+                            </a>
+                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                                class="w-10 h-10 rounded-full bg-gray-900 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-pink-500 hover:bg-pink-500/10 transition-all duration-300">
+                                <font-awesome-icon :icon="['fab', 'instagram']" class="text-lg" />
+                            </a>
+                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+                                class="w-10 h-10 rounded-full bg-gray-900 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-blue-400 hover:bg-blue-400/10 transition-all duration-300">
+                                <font-awesome-icon :icon="['fab', 'twitter']" class="text-lg" />
+                            </a>
+                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+                                class="w-10 h-10 rounded-full bg-gray-900 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-blue-600 hover:bg-blue-600/10 transition-all duration-300">
+                                <font-awesome-icon :icon="['fab', 'linkedin']" class="text-lg" />
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Columna 2: Producto -->
+                    <div>
+                        <h4 class="text-white font-bold text-lg mb-4 font-league">Producto</h4>
+                        <ul class="space-y-3">
+                            <li>
+                                <router-link to="/register" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Características
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/register" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Precios
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/explore" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Explorar Negocios
+                                </router-link>
+                            </li>
+                            <li>
+                                <a href="#" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Integraciones
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    API
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna 3: Empresa -->
+                    <div>
+                        <h4 class="text-white font-bold text-lg mb-4 font-league">Empresa</h4>
+                        <ul class="space-y-3">
+                            <li>
+                                <router-link to="/about" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Sobre Nosotros
+                                </router-link>
+                            </li>
+                            <li>
+                                <a href="#" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Blog
+                                </a>
+                            </li>
+                            <li>
+                                <router-link to="/careers" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Carreras
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/contact" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Contacto
+                                </router-link>
+                            </li>
+                            <li>
+                                <a href="#" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Prensa
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna 4: Soporte y Legal -->
+                    <div>
+                        <h4 class="text-white font-bold text-lg mb-4 font-league">Soporte</h4>
+                        <ul class="space-y-3">
+                            <li>
+                                <router-link to="/help" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Centro de Ayuda
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/help" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Documentación
+                                </router-link>
+                            </li>
+                            <li>
+                                <a href="#" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Estado del Sistema
+                                </a>
+                            </li>
+                            <li>
+                                <router-link to="/terms" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Términos de Servicio
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/privacy" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Política de Privacidad
+                                </router-link>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Separador -->
+                <div class="border-t border-white/10 pt-8">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                        <p class="text-gray-500 text-sm">
+                            © {{ new Date().getFullYear() }} <span class="text-white font-semibold">Meetlines</span>. Todos los derechos reservados.
+                        </p>
+                        <div class="flex items-center gap-6 text-sm text-gray-500">
+                            <router-link to="/privacy" class="hover:text-indigo-400 transition-colors">Cookies</router-link>
+                            <router-link to="/privacy" class="hover:text-indigo-400 transition-colors">Privacidad</router-link>
+                            <router-link to="/terms" class="hover:text-indigo-400 transition-colors">Términos</router-link>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </footer>
 
     </div>
