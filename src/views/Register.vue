@@ -14,6 +14,10 @@
         <div
             class="relative z-10 w-full max-w-md p-8 bg-gray-900/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl mx-4 my-10">
 
+            <div class="flex justify-center mb-6">
+                <BrandLogo />
+            </div>
+
             <div class="text-center mb-6">
                 <h2 class="text-6xl md:text-7xl font-bold font-league text-white mb-2">
                     Crear
@@ -108,6 +112,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 // Componentes
+import BrandLogo from '@/components/BrandLogo.vue';
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 import ShimmerButton from '@/components/ShimmerButton.vue';
 import LineShadowText from '@/components/LineShadowText.vue';
