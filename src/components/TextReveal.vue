@@ -40,15 +40,15 @@ onMounted(() => {
         gsap.from(splitInstance.lines, {
             duration: props.duration,
             delay: props.delay,
-            y: "100%",    
+            y: "100%",
             opacity: 0,
             stagger: props.stagger,
             ease: "power4.out",
             scrollTrigger: {
                 trigger: textContainer.value,
-                start: "top 85%",           
+                start: "top 85%",
                 end: "bottom 50%",
-                toggleActions: "play none none reverse", 
+                toggleActions: "play none none reverse",
             }
         });
 
@@ -65,5 +65,12 @@ onUnmounted(() => {
 .line-clamp {
     overflow: hidden;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    padding: 0.1em 0;
+    margin: -0.1em 0;
+}
+
+.word {
+    display: inline-block;
+    white-space: nowrap;
 }
 </style>
