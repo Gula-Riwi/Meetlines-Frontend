@@ -55,22 +55,30 @@
                     </div>
                     <div class="grid grid-cols-2 gap-6">
                         <div class="bg-gray-900 p-8 rounded-2xl border border-white/10 hover:border-indigo-500/50 transition-all">
-                            <div class="text-5xl mb-4">🚀</div>
+                            <div class="w-14 h-14 bg-indigo-500/20 rounded-full flex items-center justify-center mb-4">
+                                <font-awesome-icon :icon="['fas', 'rocket']" class="text-2xl text-indigo-400" />
+                            </div>
                             <h3 class="text-2xl font-bold text-white mb-2">Innovación</h3>
                             <p class="text-gray-400 text-sm">Tecnología de punta al servicio de tu negocio</p>
                         </div>
-                        <div class="bg-gray-900 p-8 rounded-2xl border border-white/10 hover:border-indigo-500/50 transition-all translate-y-8">
-                            <div class="text-5xl mb-4">🤝</div>
+                        <div class="bg-gray-900 p-8 rounded-2xl border border-white/10 hover:border-purple-500/50 transition-all translate-y-8">
+                            <div class="w-14 h-14 bg-purple-500/20 rounded-full flex items-center justify-center mb-4">
+                                <font-awesome-icon :icon="['fas', 'handshake']" class="text-2xl text-purple-400" />
+                            </div>
                             <h3 class="text-2xl font-bold text-white mb-2">Accesibilidad</h3>
                             <p class="text-gray-400 text-sm">IA para todos, sin importar el tamaño</p>
                         </div>
-                        <div class="bg-gray-900 p-8 rounded-2xl border border-white/10 hover:border-indigo-500/50 transition-all">
-                            <div class="text-5xl mb-4">💡</div>
+                        <div class="bg-gray-900 p-8 rounded-2xl border border-white/10 hover:border-yellow-500/50 transition-all">
+                            <div class="w-14 h-14 bg-yellow-500/20 rounded-full flex items-center justify-center mb-4">
+                                <font-awesome-icon :icon="['fas', 'lightbulb']" class="text-2xl text-yellow-400" />
+                            </div>
                             <h3 class="text-2xl font-bold text-white mb-2">Simplicidad</h3>
                             <p class="text-gray-400 text-sm">Fácil de usar, sin código ni complicaciones</p>
                         </div>
-                        <div class="bg-gray-900 p-8 rounded-2xl border border-white/10 hover:border-indigo-500/50 transition-all translate-y-8">
-                            <div class="text-5xl mb-4">📈</div>
+                        <div class="bg-gray-900 p-8 rounded-2xl border border-white/10 hover:border-green-500/50 transition-all translate-y-8">
+                            <div class="w-14 h-14 bg-green-500/20 rounded-full flex items-center justify-center mb-4">
+                                <font-awesome-icon :icon="['fas', 'chart-line']" class="text-2xl text-green-400" />
+                            </div>
                             <h3 class="text-2xl font-bold text-white mb-2">Resultados</h3>
                             <p class="text-gray-400 text-sm">Impacto real en tu productividad</p>
                         </div>

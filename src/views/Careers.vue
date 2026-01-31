@@ -44,7 +44,9 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="bg-gray-900 p-8 rounded-2xl border border-white/10 hover:border-indigo-500/50 transition-all hover:-translate-y-2">
-                        <div class="text-5xl mb-4">🚀</div>
+                        <div class="w-16 h-16 bg-indigo-500/20 rounded-full flex items-center justify-center mb-4">
+                            <font-awesome-icon :icon="['fas', 'rocket']" class="text-3xl text-indigo-400" />
+                        </div>
                         <h3 class="text-2xl font-bold text-white mb-3 font-league">Impacto Real</h3>
                         <p class="text-gray-300">
                             Tu trabajo ayudará a miles de pequeños negocios a crecer y prosperar
@@ -52,7 +54,9 @@
                     </div>
 
                     <div class="bg-gray-900 p-8 rounded-2xl border border-white/10 hover:border-purple-500/50 transition-all hover:-translate-y-2">
-                        <div class="text-5xl mb-4">🌱</div>
+                        <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mb-4">
+                            <font-awesome-icon :icon="['fas', 'seedling']" class="text-3xl text-purple-400" />
+                        </div>
                         <h3 class="text-2xl font-bold text-white mb-3 font-league">Crecimiento</h3>
                         <p class="text-gray-300">
                             Oportunidades constantes de aprendizaje y desarrollo profesional
@@ -60,7 +64,9 @@
                     </div>
 
                     <div class="bg-gray-900 p-8 rounded-2xl border border-white/10 hover:border-green-500/50 transition-all hover:-translate-y-2">
-                        <div class="text-5xl mb-4">🤝</div>
+                        <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mb-4">
+                            <font-awesome-icon :icon="['fas', 'handshake']" class="text-3xl text-green-400" />
+                        </div>
                         <h3 class="text-2xl font-bold text-white mb-3 font-league">Cultura</h3>
                         <p class="text-gray-300">
                             Ambiente colaborativo, flexible y enfocado en el bienestar
@@ -115,7 +121,9 @@
                 </div>
 
                 <div v-if="jobs.length === 0" class="text-center py-20">
-                    <div class="text-6xl mb-6">🔍</div>
+                    <div class="w-20 h-20 bg-indigo-500/20 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <font-awesome-icon :icon="['fas', 'magnifying-glass']" class="text-4xl text-indigo-400" />
+                    </div>
                     <h3 class="text-3xl font-bold text-white mb-4 font-league">No hay posiciones abiertas</h3>
                     <p class="text-gray-400 mb-8">
                         Pero siempre estamos buscando talento excepcional. Envíanos tu CV de todas formas.
@@ -212,40 +220,7 @@ import BrandLogo from '@/components/BrandLogo.vue';
 import LineShadowText from '@/components/LineShadowText.vue';
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 
-const jobs = ref([
-    {
-        title: 'Senior Full Stack Developer',
-        type: 'Tiempo Completo',
-        location: 'Remoto',
-        department: 'Ingeniería',
-        experience: '5+ años',
-        description: 'Buscamos un desarrollador experimentado en Vue.js, Node.js y tecnologías de IA para liderar el desarrollo de nuevas funcionalidades.'
-    },
-    {
-        title: 'ML Engineer',
-        type: 'Tiempo Completo',
-        location: 'Remoto',
-        department: 'IA/ML',
-        experience: '3+ años',
-        description: 'Únete a nuestro equipo de IA para mejorar y entrenar nuestros modelos de lenguaje natural y sistemas de recomendación.'
-    },
-    {
-        title: 'Product Designer',
-        type: 'Tiempo Completo',
-        location: 'Remoto',
-        department: 'Diseño',
-        experience: '4+ años',
-        description: 'Diseña experiencias de usuario excepcionales para nuestra plataforma de agentes de IA.'
-    },
-    {
-        title: 'Customer Success Manager',
-        type: 'Tiempo Completo',
-        location: 'Híbrido',
-        department: 'Customer Success',
-        experience: '2+ años',
-        description: 'Ayuda a nuestros clientes a tener éxito con Meetlines, brindando soporte y capacitación.'
-    }
-]);
+const jobs = ref([]);
 
 const applyJob = (title) => {
     alert(`Gracias por tu interés en la posición de ${title}. Serás redirigido al formulario de aplicación.`);

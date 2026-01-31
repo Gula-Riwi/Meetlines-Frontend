@@ -91,25 +91,25 @@
 
                         <div class="space-y-6">
                             <div class="flex items-start gap-4 p-6 bg-gray-900/50 rounded-2xl border border-white/10 hover:border-indigo-500/50 transition-all">
-                                <div class="w-12 h-12 bg-indigo-500/20 rounded-full flex items-center justify-center shrink-0">
-                                    <font-awesome-icon :icon="['fas', 'envelope']" class="text-xl text-indigo-400" />
+                                <div class="w-12 h-12 bg-indigo-500/30 rounded-full flex items-center justify-center shrink-0">
+                                    <font-awesome-icon :icon="['fas', 'envelope']" class="text-2xl text-indigo-300" />
                                 </div>
                                 <div>
                                     <h3 class="text-white font-bold mb-1">Email</h3>
                                     <a href="mailto:hola@meetlines.com" class="text-gray-400 hover:text-indigo-400 transition-colors">
-                                        hola@meetlines.com
+                                        meetlines06@gmail.com
                                     </a>
                                 </div>
                             </div>
 
                             <div class="flex items-start gap-4 p-6 bg-gray-900/50 rounded-2xl border border-white/10 hover:border-purple-500/50 transition-all">
-                                <div class="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center shrink-0">
-                                    <font-awesome-icon :icon="['fas', 'phone']" class="text-xl text-purple-400" />
+                                <div class="w-12 h-12 bg-purple-500/30 rounded-full flex items-center justify-center shrink-0">
+                                    <font-awesome-icon :icon="['fas', 'phone']" class="text-2xl text-purple-300" />
                                 </div>
                                 <div>
                                     <h3 class="text-white font-bold mb-1">Teléfono</h3>
                                     <a href="tel:+573001234567" class="text-gray-400 hover:text-purple-400 transition-colors">
-                                        +57 300 123 4567
+                                        +57 324 649 3990
                                     </a>
                                 </div>
                             </div>
@@ -120,8 +120,8 @@
                                 </div>
                                 <div>
                                     <h3 class="text-white font-bold mb-1">WhatsApp</h3>
-                                    <a href="https://wa.me/573001234567" target="_blank" class="text-gray-400 hover:text-green-400 transition-colors">
-                                        +57 300 123 4567
+                                    <a href="https://wa.me/573246493990" target="_blank" class="text-gray-400 hover:text-green-400 transition-colors">
+                                        +57 324 649 3990
                                     </a>
                                 </div>
                             </div>
@@ -133,7 +133,6 @@
                                 <div>
                                     <h3 class="text-white font-bold mb-1">Horario de Atención</h3>
                                     <p class="text-gray-400">Lunes a Viernes: 9:00 AM - 6:00 PM</p>
-                                    <p class="text-gray-400 text-sm">Sábados: 10:00 AM - 2:00 PM</p>
                                 </div>
                             </div>
                         </div>
@@ -149,14 +148,6 @@
                                 <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
                                     class="w-12 h-12 rounded-full bg-gray-900 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-pink-500 hover:bg-pink-500/10 transition-all duration-300">
                                     <font-awesome-icon :icon="['fab', 'instagram']" class="text-xl" />
-                                </a>
-                                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
-                                    class="w-12 h-12 rounded-full bg-gray-900 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-blue-400 hover:bg-blue-400/10 transition-all duration-300">
-                                    <font-awesome-icon :icon="['fab', 'twitter']" class="text-xl" />
-                                </a>
-                                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
-                                    class="w-12 h-12 rounded-full bg-gray-900 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-blue-600 hover:bg-blue-600/10 transition-all duration-300">
-                                    <font-awesome-icon :icon="['fab', 'linkedin']" class="text-xl" />
                                 </a>
                             </div>
                         </div>

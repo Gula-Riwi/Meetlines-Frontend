@@ -44,7 +44,7 @@
 
         <!-- HERO -->
         <header id="hero"
-            class="relative flex flex-col justify-center items-center px-6 md:px-16 text-white min-h-svh bg-blue-950 overflow-hidden pt-32 md:pt-0">
+            class="relative flex flex-col justify-center items-center px-6 md:px-16 text-white min-h-svh bg-gradient-to-b from-blue-950 via-blue-950 to-gray-950 overflow-hidden pt-32 md:pt-0">
 
             <div class="relative z-10 w-full max-w-7xl flex flex-col md:flex-row items-center justify-between gap-12">
                 <div class="text-center md:text-left">
@@ -94,7 +94,7 @@
         </header>
 
         <!-- FEATURES -->
-        <section class="py-20 bg-gray-950 px-4">
+        <section id="features" class="py-20 bg-gradient-to-b from-gray-950 via-gray-950 to-gray-950 px-4">
             <div class="max-w-4xl mx-auto mb-20 text-center">
                 <TextReveal class="text-6xl md:text-9xl font-bold font-league text-white mb-4 leading-tight">Todo lo que
                     necesitas</TextReveal>
@@ -221,7 +221,7 @@
         <!-- 3. SOBRE NOSOTROS -->
         <section class="py-24 relative overflow-hidden">
             <!-- Fondo sutil -->
-            <div class="absolute inset-0 bg-gray-950">
+            <div class="absolute inset-0 bg-gradient-to-b from-gray-950 via-gray-950 to-gray-950">
                 <div
                     class="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-900/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2">
                 </div>
@@ -318,7 +318,7 @@
         </section>
 
         <!-- PANEL DE CONTROL -->
-        <section class="py-10 pb-24 bg-gray-950 px-4">
+        <section class="py-10 pb-24 bg-gradient-to-b from-gray-950 via-gray-950 to-indigo-950/10 px-4">
             <div class="max-w-7xl mx-auto">
                 <div class="relative rounded-3xl overflow-hidden min-h-[500px] group border border-white/10 shadow-2xl">
                     <!-- Imagen de fondo -->
@@ -369,7 +369,7 @@
         </section>
 
         <!-- EXPLORA NEGOCIOS -->
-        <section class="py-24 bg-gradient-to-b from-gray-950 to-indigo-950/20 relative overflow-hidden">
+        <section class="py-24 bg-gradient-to-b from-indigo-950/10 via-indigo-950/20 to-gray-900/50 relative overflow-hidden">
             <div class="max-w-7xl mx-auto px-6 relative z-10">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <!-- Texto -->
@@ -493,7 +493,7 @@
         </section>
 
         <!-- 4. PLANES -->
-        <section class="py-20 bg-gray-900">
+        <section id="planes" class="py-20 bg-gradient-to-b from-gray-900/50 via-gray-900 to-gray-950">
             <div class="max-w-7xl mx-auto px-4 text-center">
                 <TextReveal class="text-5xl md:text-7xl font-bold font-league tracking-wide text-white mb-10">
                     Nuestros Planes
@@ -577,7 +577,7 @@
         </section>
 
         <!-- FOOTER PROFESIONAL -->
-        <footer class="bg-gray-950 border-t border-white/10 text-white">
+        <footer class="bg-gradient-to-b from-gray-950 to-gray-950 border-t border-white/10 text-white">
             <div class="max-w-7xl mx-auto px-6 py-16">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                     
@@ -588,24 +588,6 @@
                             La plataforma definitiva para automatizar tu negocio con inteligencia artificial. 
                             Gestiona clientes 24/7 mientras te enfocas en crecer.
                         </p>
-                        <div class="flex gap-3 pt-2">
-                            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
-                                class="w-10 h-10 rounded-full bg-gray-900 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-indigo-500 hover:bg-indigo-500/10 transition-all duration-300">
-                                <font-awesome-icon :icon="['fab', 'facebook']" class="text-lg" />
-                            </a>
-                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
-                                class="w-10 h-10 rounded-full bg-gray-900 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-pink-500 hover:bg-pink-500/10 transition-all duration-300">
-                                <font-awesome-icon :icon="['fab', 'instagram']" class="text-lg" />
-                            </a>
-                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
-                                class="w-10 h-10 rounded-full bg-gray-900 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-blue-400 hover:bg-blue-400/10 transition-all duration-300">
-                                <font-awesome-icon :icon="['fab', 'twitter']" class="text-lg" />
-                            </a>
-                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
-                                class="w-10 h-10 rounded-full bg-gray-900 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-blue-600 hover:bg-blue-600/10 transition-all duration-300">
-                                <font-awesome-icon :icon="['fab', 'linkedin']" class="text-lg" />
-                            </a>
-                        </div>
                     </div>
 
                     <!-- Columna 2: Producto -->
@@ -613,18 +595,18 @@
                         <h4 class="text-white font-bold text-lg mb-4 font-league">Producto</h4>
                         <ul class="space-y-3">
                             <li>
-                                <router-link to="/register" 
+                                <a href="#features" 
                                     class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
                                     <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
                                     Características
-                                </router-link>
+                                </a>
                             </li>
                             <li>
-                                <router-link to="/register" 
+                                <a href="#planes" 
                                     class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
                                     <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
                                     Precios
-                                </router-link>
+                                </a>
                             </li>
                             <li>
                                 <router-link to="/explore" 
@@ -632,20 +614,6 @@
                                     <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
                                     Explorar Negocios
                                 </router-link>
-                            </li>
-                            <li>
-                                <a href="#" 
-                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
-                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
-                                    Integraciones
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" 
-                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
-                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
-                                    API
-                                </a>
                             </li>
                         </ul>
                     </div>
@@ -662,13 +630,6 @@
                                 </router-link>
                             </li>
                             <li>
-                                <a href="#" 
-                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
-                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
-                                    Blog
-                                </a>
-                            </li>
-                            <li>
                                 <router-link to="/careers" 
                                     class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
                                     <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
@@ -681,13 +642,6 @@
                                     <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
                                     Contacto
                                 </router-link>
-                            </li>
-                            <li>
-                                <a href="#" 
-                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
-                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
-                                    Prensa
-                                </a>
                             </li>
                         </ul>
                     </div>
@@ -702,20 +656,6 @@
                                     <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
                                     Centro de Ayuda
                                 </router-link>
-                            </li>
-                            <li>
-                                <router-link to="/help" 
-                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
-                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
-                                    Documentación
-                                </router-link>
-                            </li>
-                            <li>
-                                <a href="#" 
-                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
-                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
-                                    Estado del Sistema
-                                </a>
                             </li>
                             <li>
                                 <router-link to="/terms" 

@@ -25,19 +25,35 @@
                 </p>
                 
                 <!-- Search Bar -->
-                <div class="max-w-2xl mx-auto">
-                    <div class="relative">
-                        <input type="text" v-model="searchQuery" placeholder="Buscar en la ayuda..."
-                            class="w-full px-6 py-4 pl-14 bg-gray-900 border border-white/10 rounded-full text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-colors">
-                        <font-awesome-icon :icon="['fas', 'search']" 
-                            class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500" />
-                    </div>
+                <!-- Quick Access Buttons -->
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#faq" class="group flex items-center gap-3 px-5 py-3 bg-gray-900/50 hover:bg-gray-900 border border-white/10 rounded-full transition-all duration-300 hover:scale-105 hover:border-indigo-500/30">
+                        <div class="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center">
+                            <font-awesome-icon :icon="['fas', 'rocket']" class="text-indigo-400 text-xs" />
+                        </div>
+                        <span class="text-sm font-medium text-gray-300 group-hover:text-white">Primeros Pasos</span>
+                    </a>
+                    
+                    <a href="#faq" class="group flex items-center gap-3 px-5 py-3 bg-gray-900/50 hover:bg-gray-900 border border-white/10 rounded-full transition-all duration-300 hover:scale-105 hover:border-purple-500/30">
+                        <div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center">
+                            <font-awesome-icon :icon="['fas', 'robot']" class="text-purple-400 text-xs" />
+                        </div>
+                        <span class="text-sm font-medium text-gray-300 group-hover:text-white">Agentes IA</span>
+                    </a>
+
+                    <a href="#faq" class="group flex items-center gap-3 px-5 py-3 bg-gray-900/50 hover:bg-gray-900 border border-white/10 rounded-full transition-all duration-300 hover:scale-105 hover:border-green-500/30">
+                         <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
+                            <font-awesome-icon :icon="['fas', 'credit-card']" class="text-green-400 text-xs" />
+                        </div>
+                        <span class="text-sm font-medium text-gray-300 group-hover:text-white">Pagos</span>
+                    </a>
                 </div>
             </div>
         </section>
 
         <!-- FAQ Categories -->
-        <section class="py-20 px-6">
+        <!-- FAQ Categories -->
+        <section id="faq" class="py-20 px-6">
             <div class="max-w-7xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
                     <div class="bg-gray-900/50 p-8 rounded-2xl border border-white/10 hover:border-indigo-500/50 transition-all hover:-translate-y-2 cursor-pointer">
@@ -125,7 +141,7 @@ const faqs = ref([
     },
     {
         question: '¿Qué plataformas de mensajería soportan?',
-        answer: 'Actualmente soportamos WhatsApp, Facebook Messenger, Instagram Direct y Telegram. Estamos trabajando en agregar más plataformas próximamente.',
+        answer: 'Actualmente soportamos WhatsApp y Telegram. Estamos trabajando en agregar más plataformas próximamente.',
         open: false
     },
     {

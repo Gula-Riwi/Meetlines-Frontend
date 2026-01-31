@@ -213,7 +213,22 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    // Si hay un hash (como #planes), hacer scroll al elemento
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth',
+      }
+    }
+    // Si hay una posición guardada (botón back), ir a esa posición
+    if (savedPosition) {
+      return savedPosition
+    }
+    // Por defecto, siempre ir al inicio de la página
+    return { top: 0, behavior: 'smooth' }
+  }
 })
 
 router.beforeEach((to, from, next) => {
