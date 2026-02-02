@@ -592,7 +592,7 @@
 
                     <!-- Columna 2: Producto -->
                     <div>
-                        <h4 class="text-white font-bold text-lg mb-4 font-league">Producto</h4>
+                        <h4 class="text-white text-lg mb-4 font-league">Producto</h4>
                         <ul class="space-y-3">
                             <li>
                                 <a href="#features" 
@@ -620,7 +620,7 @@
 
                     <!-- Columna 3: Empresa -->
                     <div>
-                        <h4 class="text-white font-bold text-lg mb-4 font-league">Empresa</h4>
+                        <h4 class="text-white text-lg mb-4 font-league">Empresa</h4>
                         <ul class="space-y-3">
                             <li>
                                 <router-link to="/about" 
@@ -648,7 +648,7 @@
 
                     <!-- Columna 4: Soporte y Legal -->
                     <div>
-                        <h4 class="text-white font-bold text-lg mb-4 font-league">Soporte</h4>
+                        <h4 class="text-white text-lg mb-4 font-league">Soporte</h4>
                         <ul class="space-y-3">
                             <li>
                                 <router-link to="/help" 
