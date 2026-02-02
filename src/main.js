@@ -18,7 +18,8 @@ import {
     faBrain, faBolt, faCalendarDays, faTriangleExclamation, faCheckCircle, faChartLine,
     faBuilding, faMicrochip, faBriefcase, faMobileScreenButton, faEnvelope, faPhone,
     faDumbbell, faPaperPlane, faRocket, faHandshake, faLightbulb, faShieldHalved, faTrophy,
-    faSeedling, faMagnifyingGlass, faCreditCard, faSearch, faChevronDown, faHeadset
+    faSeedling, faMagnifyingGlass, faCreditCard, faSearch, faChevronDown, faHeadset,
+    faLocationDot, faArrowRight, faLaptop, faHeart, faGraduationCap, faPlane
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faMeta, faWhatsapp, faInstagram, faCheck, faRobot, faFacebook, faUser,
@@ -27,7 +28,8 @@ library.add(faMeta, faWhatsapp, faInstagram, faCheck, faRobot, faFacebook, faUse
     faBrain, faBolt, faCalendarDays, faTriangleExclamation, faCheckCircle, faChartLine,
     faBuilding, faMicrochip, faBriefcase, faMobileScreenButton, faEnvelope, faPhone,
     faDumbbell, faPaperPlane, faRocket, faHandshake, faLightbulb, faShieldHalved, faTrophy,
-    faSeedling, faMagnifyingGlass, faCreditCard, faSearch, faChevronDown, faHeadset)
+    faSeedling, faMagnifyingGlass, faCreditCard, faSearch, faChevronDown, faHeadset,
+    faLocationDot, faArrowRight, faLaptop, faHeart, faGraduationCap, faPlane)
 
 const app = createApp(App)
 

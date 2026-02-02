@@ -189,7 +189,7 @@
                         <div class="w-12 h-12 bg-pink-500/20 rounded-full flex items-center justify-center mb-4">
                             <font-awesome-icon :icon="['fas', 'users']" class="text-2xl text-pink-400" />
                         </div>
-                        <h3 class="text-lg font-bold text-white mb-2">Team Building</h3>
+                        <h3 class="text-lg font-bold text-white mb-2">Actividades de integración</h3>
                         <p class="text-sm text-gray-400">Eventos y actividades</p>
                     </div>
 
@@ -197,7 +197,7 @@
                         <div class="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center mb-4">
                             <font-awesome-icon :icon="['fas', 'chart-line']" class="text-2xl text-orange-400" />
                         </div>
-                        <h3 class="text-lg font-bold text-white mb-2">Equity</h3>
+                        <h3 class="text-lg font-bold text-white mb-2">Equidad</h3>
                         <p class="text-sm text-gray-400">Opciones de acciones</p>
                     </div>
 
