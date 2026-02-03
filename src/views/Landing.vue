@@ -493,49 +493,202 @@
         </section>
 
         <!-- 4. PLANES -->
-        <section class="py-20 bg-gray-400">
+        <section id="planes" class="py-20 bg-gradient-to-b from-gray-900/50 via-gray-900 to-gray-950">
             <div class="max-w-7xl mx-auto px-4 text-center">
-                <TextReveal class="text-5xl md:text-9xl font-bold font-league tracking-wide text-black mb-10">
+                <TextReveal class="text-5xl md:text-7xl font-bold font-league tracking-wide text-white mb-10">
                     Nuestros Planes
                 </TextReveal>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 justify-items-center">
-                    <div v-for="plan in planes" :key="plan.nombre" class="p-0  flex justify-center w-full bounce">
-                        <router-link to="/register" class="group cursor-pointer w-full max-w-[350px]">
-                            <GlareCard class="flex flex-col justify-center items-center bg-blue-950 shadow-2xl">
-                                <h3 class="text-4xl mt-4 tracking-wider text-white font-league">{{ plan.nombre }}</h3>
-                                <div>
-                                    <span class="text-4xl font-extrabold text-indigo-500">$</span>
-                                    <NumberTicker :value=plan.precio :decimalPlaces="0"
-                                        class="text-4xl font-extrabold text-indigo-500 my-4" />
-                                    <span class="text-gray-300 text-md">/mes</span>
+                    <div v-for="plan in planes" :key="plan.nombre" class="flex justify-center w-full">
+                        <FlipCard class="w-full max-w-[350px] h-[500px]">
+                            <template #default>
+                                <div
+                                    class="h-full w-full flex flex-col justify-between bg-blue-950 p-6 rounded-2xl border border-indigo-500/20 shadow-2xl">
+                                    <div class="text-center">
+                                        <h3 class="text-4xl mt-4 tracking-wider text-white font-league">{{ plan.nombre
+                                        }}</h3>
+                                        <div class="my-6">
+                                            <span class="text-4xl font-extrabold text-indigo-400">$</span>
+                                            <NumberTicker :value="plan.precio" :decimalPlaces="0"
+                                                class="text-5xl font-extrabold text-indigo-400" />
+                                            <span class="text-gray-400 text-lg">/mes</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex-1 w-full">
+                                        <ul class="space-y-4 text-left">
+                                            <li v-for="feature in plan.features" :key="feature"
+                                                class="flex items-start gap-3">
+                                                <div
+                                                    class="mt-1 bg-indigo-500/20 p-1 rounded-full text-indigo-300 flex-shrink-0">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                                    </svg>
+                                                </div>
+                                                <span class="text-gray-200 text-sm font-medium leading-snug">
+                                                    {{ feature }}
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="mt-4 pt-4 border-t border-white/10 text-center">
+                                        <span
+                                            class="text-xs text-indigo-300 font-bold uppercase tracking-widest animate-pulse">
+                                            Pasa el mouse para ver detalles
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="flex-1 p-6 w-full">
-                                    <ul class="space-y-4">
-                                        <li v-for="feature in plan.features" :key="feature"
-                                            class="flex items-center justify-start gap-3">
-                                            <div class="mt-1 bg-indigo-500 p-1 rounded-full text-white flex-shrink-0">
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="3" d="M5 13l4 4L19 7"></path>
-                                                </svg>
-                                            </div>
-                                            <span class="text-white leading-snug">
-                                                {{ feature }}
-                                            </span>
-                                        </li>
-                                    </ul>
+                            </template>
+
+                            <template #back>
+                                <div
+                                    class="h-full w-full flex flex-col bg-gray-900 p-6 rounded-2xl border border-indigo-500/30 overflow-y-auto custom-scrollbar">
+                                    <h4
+                                        class="text-xl font-bold text-white mb-4 text-center border-b border-indigo-500/30 pb-2">
+                                        Agentes Incluidos</h4>
+                                    <div class="space-y-4">
+                                        <div v-for="(detail, idx) in plan.details" :key="idx" class="text-left group">
+                                            <p class="text-indigo-400 font-bold text-sm mb-1 flex items-center gap-2">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+                                                {{ detail.title }}
+                                            </p>
+                                            <p
+                                                class="text-gray-400 text-xs leading-relaxed pl-3 border-l-2 border-gray-800 group-hover:border-indigo-500/50 transition-colors">
+                                                {{ detail.desc }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-auto pt-4">
+                                        <router-link to="/register"
+                                            class="block w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-center transition-colors text-sm">
+                                            Elegir {{ plan.nombre }}
+                                        </router-link>
+                                    </div>
                                 </div>
-                            </GlareCard>
-                        </router-link>
+                            </template>
+                        </FlipCard>
                     </div>
                 </div>
             </div>
         </section>
 
-        <footer class="bg-gray-900 text-white py-8 text-center">
-            <p>© 2025 Meetlines</p>
+        <!-- FOOTER PROFESIONAL -->
+        <footer class="bg-gradient-to-b from-gray-950 to-gray-950 border-t border-white/10 text-white">
+            <div class="max-w-7xl mx-auto px-6 py-16">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                    
+                    <!-- Columna 1: Marca y Descripción -->
+                    <div class="space-y-4">
+                        <BrandLogo />
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            La plataforma definitiva para automatizar tu negocio con inteligencia artificial. 
+                            Gestiona clientes 24/7 mientras te enfocas en crecer.
+                        </p>
+                    </div>
+
+                    <!-- Columna 2: Producto -->
+                    <div>
+                        <h4 class="text-white text-lg mb-4 font-league">Producto</h4>
+                        <ul class="space-y-3">
+                            <li>
+                                <a href="#features" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Características
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#planes" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Precios
+                                </a>
+                            </li>
+                            <li>
+                                <router-link to="/explore" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Explorar Negocios
+                                </router-link>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna 3: Empresa -->
+                    <div>
+                        <h4 class="text-white text-lg mb-4 font-league">Empresa</h4>
+                        <ul class="space-y-3">
+                            <li>
+                                <router-link to="/about" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Sobre Nosotros
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/careers" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Carreras
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/contact" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Contacto
+                                </router-link>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna 4: Soporte y Legal -->
+                    <div>
+                        <h4 class="text-white text-lg mb-4 font-league">Soporte</h4>
+                        <ul class="space-y-3">
+                            <li>
+                                <router-link to="/help" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Centro de Ayuda
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/terms" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Términos de Servicio
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/privacy" 
+                                    class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <span class="w-1 h-1 rounded-full bg-gray-600 group-hover:bg-indigo-400 transition-colors"></span>
+                                    Política de Privacidad
+                                </router-link>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Separador -->
+                <div class="border-t border-white/10 pt-8">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                        <p class="text-gray-500 text-sm">
+                            © {{ new Date().getFullYear() }} <span class="text-white font-semibold">Meetlines</span>. Todos los derechos reservados.
+                        </p>
+                        <div class="flex items-center gap-6 text-sm text-gray-500">
+                            <router-link to="/privacy" class="hover:text-indigo-400 transition-colors">Cookies</router-link>
+                            <router-link to="/privacy" class="hover:text-indigo-400 transition-colors">Privacidad</router-link>
+                            <router-link to="/terms" class="hover:text-indigo-400 transition-colors">Términos</router-link>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </footer>
 
     </div>
