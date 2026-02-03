@@ -737,10 +737,6 @@ onMounted(async () => {
     }
 });
 
-const toggleDay = (day) => {
-    config.value.transactionalConfig.businessHours[day].closed = !config.value.transactionalConfig.businessHours[day].closed;
-};
-
 const getDayLabel = (day) => {
     const days = {
         'monday': 'Lunes',

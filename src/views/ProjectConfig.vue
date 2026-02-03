@@ -326,8 +326,7 @@ onMounted(async () => {
 
 const loadProjectData = async () => {
     try {
-        const project = await projectService.getById(projectId);
-        // const data = project.data || project; // Unused
+        await projectService.getById(projectId);
 
         const [s, photos] = await Promise.all([
             projectService.getProjectServices(projectId),
