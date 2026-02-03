@@ -32,6 +32,15 @@ import BusinessDetail from '../views/customer/BusinessDetail.vue';
 import BookingFlow from '../views/customer/BookingFlow.vue';
 import MyAppointments from '../views/customer/MyAppointments.vue';
 
+// Footer Pages
+import AboutUs from '../views/AboutUs.vue';
+import Contact from '../views/Contact.vue';
+import HelpCenter from '../views/HelpCenter.vue';
+import PrivacyPolicy from '../views/PrivacyPolicy.vue';
+import TermsOfService from '../views/TermsOfService.vue';
+import Careers from '../views/Careers.vue';
+
+
 
 const routes = [
   { path: '/', name: 'Landing', component: Landing },
