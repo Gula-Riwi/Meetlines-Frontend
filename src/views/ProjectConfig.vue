@@ -293,7 +293,7 @@ import { useRoute } from 'vue-router';
 import projectService from '@/services/projectService';
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 import Sidebar from '@/components/Sidebar.vue';
-import { confirmAction, showSuccess, showError, showToast } from '@/utils/alert';
+import { confirmAction, showSuccess, showError } from '@/utils/alert';
 
 const route = useRoute();
 const projectId = route.params.projectId;

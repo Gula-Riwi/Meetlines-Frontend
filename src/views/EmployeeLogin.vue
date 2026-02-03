@@ -134,7 +134,7 @@ import ShimmerButton from '@/components/ShimmerButton.vue';
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 import authService from '@/services/authService';
 import Cookies from 'js-cookie';
-import { isInProjectSubdomain, getCurrentSubdomain } from '@/services/tenantService';
+import { isInProjectSubdomain } from '@/services/tenantService';
 
 const router = useRouter();
 const username = ref('');
