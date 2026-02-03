@@ -49,7 +49,7 @@
         </header>
 
         <!-- Main content -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
             <!-- Hero section -->
             <div class="text-center mb-12">
                 <h1 class="text-4xl md:text-7xl font-bold font-league tracking-normal mb-4">
@@ -62,11 +62,8 @@
             </div>
 
             <!-- Loading state -->
-            <div v-if="isLoading" class="flex justify-center items-center py-20">
-                <svg class="animate-spin h-12 w-12 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                </svg>
+            <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <SkeletonCard v-for="i in 6" :key="i" />
             </div>
 
             <!-- Error state -->
@@ -106,6 +103,7 @@ import Cookies from 'js-cookie';
 
 // Components
 import BusinessCard from '@/components/customer/BusinessCard.vue';
+import SkeletonCard from '@/components/customer/SkeletonCard.vue';
 
 // Services
 import bookingService from '@/services/bookingService';
