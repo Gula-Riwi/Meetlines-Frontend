@@ -6,11 +6,8 @@
             bg-gray-900/80 backdrop-blur-lg border border-white/10 shadow-2xl 
             transition-all duration-300 ease-in-out" :class="menuAbierto ? 'rounded-3xl' : 'rounded-full'">
             <div class=" flex flex-wrap justify-between items-center p-2 px-4">
-                <div class="text-xl md:text-2xl font-bold flex items-center gap-2 text-white">
-                    <a href="#hero" class="font-sans font-bold transition hover:text-indigo-400 ml-2 italic">
-                        Meet
-                        <span class="text-indigo-400">Lines</span>
-                    </a>
+                <div class="flex items-center gap-2">
+                    <BrandLogo />
                 </div>
                 <button @click="toggleMenu"
                     class="md:hidden text-white focus:outline-none p-2 rounded-full hover:bg-white/10 transition">
@@ -47,37 +44,57 @@
 
         <!-- HERO -->
         <header id="hero"
-            class="relative flex flex-col justify-center md:items-start sm:items-center px-6 md:px-16 text-white min-h-svh bg-blue-950 overflow-hidden pt-32 md:pt-0">
+            class="relative flex flex-col justify-center items-center px-6 md:px-16 text-white min-h-svh bg-gradient-to-b from-blue-950 via-blue-950 to-gray-950 overflow-hidden pt-32 md:pt-0">
 
-            <div class="relative z-10 mx-auto md:mx-0">
-                <h1 class="font-league italic font-bold leading-none mb-6 tracking-wide">
-                    Meet
-                    <span class="block sm:inline-block">
-                        <LineShadowText shadowColor="white">Lines</LineShadowText>
-                    </span>
-                </h1>
+            <div class="relative z-10 w-full max-w-7xl flex flex-col md:flex-row items-center justify-between gap-12">
+                <div class="text-center md:text-left">
+                    <h1 class="font-league italic font-bold leading-none mb-6 tracking-wide">
+                        Meet
+                        <span class="block sm:inline">
+                            <LineShadowText shadowColor="white">Lines</LineShadowText>
+                        </span>
+                    </h1>
 
-                <TextGenerateEffect
-                    words="La herramienta definitiva para freelancers y PyMEs. Deja que nuestra IA gestione tus clientes 24/7."
-                    class="text-lg md:text-xl mb-8 max-w-2xl font-sans hidden md:block text-gray-300" />
+                    <TextGenerateEffect
+                        words="La herramienta definitiva para freelancers y PyMEs. Deja que nuestra IA gestione tus clientes 24/7."
+                        class="text-lg md:text-xl mb-8 max-w-2xl font-sans hidden md:block text-gray-300 mx-auto md:mx-0" />
 
-                <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-                    <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-                        <InteractiveHoverButton text="Empezar Ahora" to="/register" class="leading-normal" />
+                    <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start items-center">
+                        <router-link to="/register"
+                            class="group relative px-8 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-full shadow-lg shadow-indigo-500/30 transition-all duration-300 hover:scale-105 hover:shadow-indigo-500/50 flex items-center gap-2 overflow-hidden">
+                            <span class="relative z-10">Empezar Ahora</span>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="h-5 w-5 relative z-10 group-hover:translate-x-1 transition-transform" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </router-link>
+                        <router-link to="/explore"
+                            class="group px-8 py-3 border border-gray-600 hover:border-white text-gray-300 hover:text-white font-medium rounded-full transition-all duration-300 hover:bg-white/5">
+                            Explora los negocios
+                        </router-link>
                     </div>
-                    <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-                        <InteractiveHoverButton text="Explora los negocios" to="/explore" class="leading-normal" />
-                    </div>
+                </div>
+
+                <div class="relative flex h-[500px] w-full md:w-1/2 flex-col overflow-hidden p-6">
+                    <AnimatedList>
+                        <template #default>
+                            <Notification v-for="(item, idx) in notifications" :key="idx" :name="item.name"
+                                :description="item.description" :icon="item.icon" :color="item.color"
+                                :time="item.time" />
+                        </template>
+                    </AnimatedList>
                 </div>
             </div>
 
             <InteractiveGridPattern :width="60" :height="60" :squares="[50, 50]"
                 squares-class-name="hover:fill-indigo-500/50"
-                :class="'[mask-image:radial-gradient(600px_circle_at_center,white,transparent)] opacity-40'" />
+                :class="'absolute inset-0 [mask-image:radial-gradient(600px_circle_at_center,white,transparent)] opacity-40'" />
         </header>
 
         <!-- FEATURES -->
-        <section class="py-20 bg-gray-950 px-4">
+        <section id="features" class="py-20 bg-gradient-to-b from-gray-950 via-gray-950 to-gray-950 px-4">
             <div class="max-w-4xl mx-auto mb-20 text-center">
                 <TextReveal class="text-6xl md:text-9xl font-bold font-league text-white mb-4 leading-tight">Todo lo que
                     necesitas</TextReveal>
