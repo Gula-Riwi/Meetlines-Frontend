@@ -696,17 +696,64 @@
 
 <script setup>
 import { ref } from 'vue';
+import BrandLogo from '@/components/BrandLogo.vue';
 import LineShadowText from '@/components/LineShadowText.vue';
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 import TextGenerateEffect from '@/components/TextGenerateEffect.vue';
 import InteractiveHoverButton from '@/components/InteractiveHoverButton.vue';
 import FlipCard from '@/components/FlipCard.vue';
 import TextReveal from '@/components/TextReveal.vue';
-import GlareCard from '@/components/GlareCard.vue';
 import NumberTicker from '@/components/NumberTicker.vue';
 import TextHighlight from '@/components/TextHighlight.vue';
+import AnimatedList from '@/components/AnimatedList.vue';
+import Notification from '@/components/Notification.vue';
 
+const notifications = [
+    {
+        name: "Automatización",
+        description: "Flujos de trabajo eficientes.",
+        icon: ['fas', 'bolt'],
+        color: "#00C9A7",
+    },
+    {
+        name: "Gestión Inteligente",
+        description: "Optimiza tus decisiones.",
+        icon: ['fas', 'brain'],
+        color: "#FFB800",
+    },
+    {
+        name: "Panel de control",
+        description: "Métricas en tiempo real.",
+        icon: ['fas', 'chart-line'],
+        color: "#FF3D71",
+    },
+    {
+        name: "Directorio de empresas",
+        description: "Explora nuevos servicios.",
+        icon: ['fas', 'building'],
+        color: "#1E86FF",
+    },
+    {
+        name: "Inteligencia Artificial",
+        description: "IA aplicada a tu negocio.",
+        icon: ['fas', 'microchip'],
+        color: "#9C27B0",
+    },
+    {
+        name: "Workspace empleados",
+        description: "Colaboración sin límites.",
+        icon: ['fas', 'briefcase'],
+        color: "#795548",
+    },
+    {
+        name: "App para clientes",
+        description: "Tu negocio en su bolsillo.",
+        icon: ['fas', 'mobile-screen-button'],
+        color: "#607D8B",
+    },
+];
 
+// eslint-disable-next-line no-unused-vars
 const features = ref([
     {
         title: "Chatbots Inteligentes",
