@@ -843,12 +843,12 @@ const toggleMenu = () => {
 }
 
 h1.font-league {
-    font-size: clamp(10rem, 20vw, 20rem);
+    font-size: clamp(10rem, 18vw, 19rem);
     line-height: 1;
 }
 
 h2.font-league {
-    font-size: clamp(10rem, 10vw, 12rem);
+    font-size: clamp(8rem, 9vw, 10rem);
     line-height: 1;
 }
 
