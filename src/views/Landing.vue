@@ -785,18 +785,44 @@ const features = ref([
 const planes = ref([
     {
         nombre: 'Básico',
-        precio: 20,
-        features: ['1 Chatbot', '1 empresa', 'Free trial 2 meses ']
+        precio: 50,
+        features: [
+            '2 Agentes (Recepción, Transacción)',
+            '1 Empresa',
+            'Prueba gratis 2 meses'
+        ],
+        details: [
+            { title: 'Recepción', desc: 'Saluda, responde preguntas frecuentes y presenta la empresa.' },
+            { title: 'Transacción', desc: 'Gestiona agenda, confirma y cancela citas automáticamente.' }
+        ]
     },
     {
-        nombre: 'Estándar',
-        precio: 50,
-        features: ['2 Chatbots', '2 empresas']
+        nombre: 'Intermedio',
+        precio: 90,
+        features: [
+            '3 Agentes (+Feedback)',
+            '2 Empresas',
+            'Soporte Prioritario'
+        ],
+        details: [
+            { title: 'Recepción', desc: 'Atención al cliente 24/7.' },
+            { title: 'Transacción', desc: 'Gestión completa de citas y reservas.' },
+            { title: 'Feedback', desc: 'Solicita calificación post-servicio y alerta sobre malas experiencias.' }
+        ]
     },
     {
         nombre: 'Empresarial',
-        precio: 100,
-        features: ['4 Chatbots', 'Empresas ilimitadas']
+        precio: 150,
+        features: [
+            '4 Agentes (Full Suite)',
+            'Empresas Ilimitadas',
+            'Soporte Dedicado'
+        ],
+        details: [
+            { title: 'Recepción y Transacción', desc: 'Suite base completa.' },
+            { title: 'Feedback', desc: 'Gestión de reputación y alertas.' },
+            { title: 'Reactivación', desc: 'Recupera clientes inactivos con promos (max 3 intentos).' }
+        ]
     }
 ]);
 
