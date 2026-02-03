@@ -458,7 +458,7 @@ const logout = async () => {
     if (isConfirmed) {
         try {
             const refreshToken = Cookies.get('refresh_token');
-            if (refreshToken) await authService.logout(refreshToken);
+            if (refreshToken) await authService.logout(refreshToken); // eslint-disable-line no-undef
         } catch (e) { console.error(e); }
         finally {
             Cookies.remove('auth_token');

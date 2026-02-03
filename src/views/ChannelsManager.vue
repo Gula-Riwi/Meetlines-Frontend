@@ -143,12 +143,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router'; 
 import { channelService } from '../services/channelService';
 import InteractiveGridPattern from '@/components/InteractiveGridPattern.vue';
 import Sidebar from '@/components/Sidebar.vue';
-import { showToast, confirmAction } from '@/utils/alert';
+import { confirmAction } from '@/utils/alert';
 
 
 const route = useRoute();

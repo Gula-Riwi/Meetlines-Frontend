@@ -1,0 +1,82 @@
+name: Deploy Frontend to VPS
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name:  Checkout code
+      uses: actions/checkout@v3
+    
+    - name:  Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'npm'
+    
+    - name:  Install dependencies
+      run: npm ci
+    
+    - name:  Build production
+      run: npm run build
+      env:
+        VITE_API_URL: ${{ secrets.VITE_API_URL }}
+        VITE_API_TIMEOUT: ${{ secrets.VITE_API_TIMEOUT }}
+        VITE_ENABLE_LOGGING: ${{ secrets.VITE_ENABLE_LOGGING }}
+        VITE_API_PROTOCOL: ${{ secrets.VITE_API_PROTOCOL }}
+        VITE_BACKEND_PORT: ${{ secrets.VITE_BACKEND_PORT }}
+        VITE_BASE_DOMAIN: ${{ secrets.VITE_BASE_DOMAIN }}
+        VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+        VITE_DISCORD_CLIENT_ID: ${{ secrets.VITE_DISCORD_CLIENT_ID }}
+        VITE_FACEBOOK_APP_ID: ${{ secrets.VITE_FACEBOOK_APP_ID }}
+        VITE_ENABLE_FEATURE_X: ${{ secrets.VITE_ENABLE_FEATURE_X }}
+        VITE_GOOGLE_MAPS: ${{ secrets.VITE_GOOGLE_MAPS }}
+        
+
+    - name:  Clean old files
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: 22
+        script: |
+          rm -rf /var/www/MeetLines-Frontend/dist/*
+          mkdir -p /var/www/MeetLines-Frontend/dist
+    
+    - name:  Deploy to VPS
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: 22
+        source: "dist/*"
+        target: "/var/www/MeetLines-Frontend/dist/"
+        strip_components: 1
+    
+    - name: 🔧 Fix permissions
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: 22
+        script: |
+          sudo chown -R miguel_arias:www-data /var/www/MeetLines-Frontend/
+          sudo chmod -R 755 /var/www/MeetLines-Frontend/
+    
+    - name: Reload Nginx
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: 22
+        script: |
+          sudo systemctl reload nginx
+          echo "Deployment completed!!"

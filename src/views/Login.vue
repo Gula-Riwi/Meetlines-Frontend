@@ -139,7 +139,7 @@ import ShimmerButton from '@/components/ShimmerButton.vue';
 import LineShadowText from '@/components/LineShadowText.vue';
 // Servicios
 import authService from '@/services/authService';
-import { isInProjectSubdomain, getCurrentSubdomain } from '@/services/tenantService';
+import { isInProjectSubdomain } from '@/services/tenantService';
 // Cookies
 import Cookies from 'js-cookie';
 

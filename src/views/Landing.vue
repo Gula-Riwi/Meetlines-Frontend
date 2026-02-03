@@ -703,7 +703,6 @@ import TextGenerateEffect from '@/components/TextGenerateEffect.vue';
 import InteractiveHoverButton from '@/components/InteractiveHoverButton.vue';
 import FlipCard from '@/components/FlipCard.vue';
 import TextReveal from '@/components/TextReveal.vue';
-import GlareCard from '@/components/GlareCard.vue';
 import NumberTicker from '@/components/NumberTicker.vue';
 import TextHighlight from '@/components/TextHighlight.vue';
 import AnimatedList from '@/components/AnimatedList.vue';
@@ -754,6 +753,7 @@ const notifications = [
     },
 ];
 
+// eslint-disable-next-line no-unused-vars
 const features = ref([
     {
         title: "Chatbots Inteligentes",

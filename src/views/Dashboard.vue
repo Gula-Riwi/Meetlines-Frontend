@@ -680,7 +680,7 @@ onMounted(() => {
         const swapy = createSwapy(swapyContainer.value, {
             animation: 'dynamic'
         });
-        swapy.onSwap((event) => {
+        swapy.onSwap(() => {
             // Optional: handle swap
         });
     }
