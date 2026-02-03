@@ -1,6 +1,5 @@
 <script setup>
 defineProps({
-const props = defineProps({
   name: {
     type: String,
     default: "",
