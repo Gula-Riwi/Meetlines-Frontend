@@ -104,11 +104,14 @@
             <div class="features p-0 md:p-10">
                 <!-- Feature 1 -->
                 <div class="feature-1 flex justify-center">
-                    <FlipCard class="w-full max-w-[320px] h-[350px] bounce mx-auto">
+                    <FlipCard
+                        class="w-full max-w-[320px] h-[350px] mx-auto transition-all duration-500 hover:-translate-y-4 hover:shadow-xl hover:shadow-indigo-500/20 rounded-2xl">
                         <template #default>
                             <div
-                                class="h-full w-full flex flex-col justify-center items-center bg-indigo-800 p-4 text-center">
-                                <h3 class="font-league text-white text-4xl md:text-6xl">Chatbots Inteligentes</h3>
+                                class="h-full w-full flex flex-col justify-center items-center bg-indigo-800 p-4 text-center rounded-2xl">
+                                <font-awesome-icon :icon="['fas', 'robot']"
+                                    class="text-indigo-300 text-6xl mb-6 opacity-80" />
+                                <h3 class="font-league text-white text-4xl md:text-6xl">Agentes Inteligentes</h3>
                             </div>
                         </template>
                         <template #back>
@@ -128,10 +131,13 @@
 
                 <!-- Feature 2 -->
                 <div class="feature-2 flex justify-center">
-                    <FlipCard class="w-full max-w-[320px] h-[350px] mx-auto">
+                    <FlipCard
+                        class="w-full max-w-[320px] h-[350px] mx-auto transition-all duration-500 hover:-translate-y-4 hover:shadow-xl hover:shadow-indigo-500/20 rounded-2xl">
                         <template #default>
                             <div
-                                class="h-full w-full flex flex-col justify-center items-center bg-indigo-800 p-4 text-center">
+                                class="h-full w-full flex flex-col justify-center items-center bg-indigo-800 p-4 text-center rounded-2xl">
+                                <font-awesome-icon :icon="['fas', 'bolt']"
+                                    class="text-indigo-300 text-6xl mb-6 opacity-80" />
                                 <h3 class="font-league text-white text-4xl md:text-6xl">Automatización</h3>
                             </div>
                         </template>
@@ -152,10 +158,13 @@
 
                 <!-- Feature 3 -->
                 <div class="feature-3 flex justify-center">
-                    <FlipCard class="w-full max-w-[320px] h-[350px] mx-auto">
+                    <FlipCard
+                        class="w-full max-w-[320px] h-[350px] mx-auto transition-all duration-500 hover:-translate-y-4 hover:shadow-xl hover:shadow-indigo-500/20 rounded-2xl">
                         <template #default>
                             <div
-                                class="h-full w-full flex flex-col justify-center items-center bg-indigo-800 p-4 text-center">
+                                class="h-full w-full flex flex-col justify-center items-center bg-indigo-800 p-4 text-center rounded-2xl">
+                                <font-awesome-icon :icon="['fas', 'exchange-alt']"
+                                    class="text-indigo-300 text-6xl mb-6 opacity-80" />
                                 <h3 class="font-league text-white text-4xl md:text-6xl">Integraciones</h3>
                             </div>
                         </template>
@@ -409,31 +418,8 @@ h2.font-league {
     .features {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(6, 1fr);
-        grid-column-gap: 5px;
-        grid-row-gap: 15px;
+        gap: 2rem;
         height: auto;
-        min-height: 1000px;
-    }
-
-    .feature-1 {
-        grid-area: 1 / 1 / 4 / 2;
-    }
-
-    .feature-2 {
-        grid-area: 1 / 2 / 4 / 3;
-    }
-
-    .feature-3 {
-        grid-area: 1 / 3 / 4 / 4;
-    }
-
-    .feature-4 {
-        grid-area: 4 / 1 / 7 / 2;
-    }
-
-    .feature-5 {
-        grid-area: 4 / 2 / 7 / 4;
     }
 }
 
