@@ -126,8 +126,6 @@ import { ref } from 'vue';
 import BrandLogo from '@/components/BrandLogo.vue';
 import LineShadowText from '@/components/LineShadowText.vue';
 
-const searchQuery = ref('');
-
 const faqs = ref([
     {
         question: '¿Cómo creo mi primer agente de IA?',
