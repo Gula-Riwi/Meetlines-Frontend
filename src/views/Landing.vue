@@ -320,7 +320,7 @@
         <!-- PANEL DE CONTROL -->
         <section class="py-10 pb-24 bg-gradient-to-b from-gray-950 via-gray-950 to-indigo-950/10 px-4">
             <div class="max-w-7xl mx-auto">
-                <div class="relative rounded-3xl overflow-hidden min-h-[500px] group border border-white/10 shadow-2xl">
+                <div class="relative rounded-3xl overflow-hidden min-h-[400px] md:min-h-[500px] group border border-white/10 shadow-2xl">
                     <!-- Imagen de fondo -->
                     <img src="../img/dashboard_sample.jpg" alt="MeetLines Dashboard"
                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60" />
@@ -329,36 +329,37 @@
                     <div class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/80 to-transparent"></div>
 
                     <!-- Contenido -->
-                    <div class="relative z-10 p-8 md:p-16 h-full flex flex-col justify-center max-w-3xl">
-                        <div class="mb-6">
+                    <div class="relative z-10 p-6 md:p-16 h-full flex flex-col justify-center max-w-3xl">
+                        <div class="mb-4 md:mb-6">
                             <span
-                                class="inline-block py-1 px-3 rounded-full bg-indigo-500/20 text-indigo-400 text-sm font-bold border border-indigo-500/30 mb-4">
+                                class="inline-block py-1 px-3 rounded-full bg-indigo-500/20 text-indigo-400 text-xs md:text-sm font-bold border border-indigo-500/30 mb-3">
                                 SOFTWARE POTENTE
                             </span>
-                            <h2 class="text-4xl md:text-8xl font-bold font-league text-white leading-none mb-4">
-                                Tu Panel de Control Centralizado
+                            <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold font-league text-white leading-tight mb-3 md:mb-4">
+                                <span class="md:hidden">Panel de Control</span>
+                                <span class="hidden md:inline">Panel de Control Centralizado</span>
                             </h2>
                         </div>
 
-                        <p class="text-xl text-gray-300 mb-8 leading-relaxed">
+                        <p class="text-base md:text-xl text-gray-300 mb-8 leading-relaxed">
                             Visualiza métricas en tiempo real de todos tus agentes. Edita flujos de conversación, revisa
                             estadísticas de citas y gestiona tu base de clientes desde una interfaz intuitiva y sin
                             código.
                         </p>
 
-                        <div class="flex flex-wrap gap-4">
+                        <div class="flex flex-wrap gap-2 md:gap-4">
                             <div
-                                class="flex items-center gap-2 text-gray-400 bg-gray-900/50 px-4 py-2 rounded-lg border border-white/5">
+                                class="flex items-center gap-2 text-gray-400 bg-gray-900/50 px-3 py-1.5 md:px-4 md:py-2 rounded-lg border border-white/5 text-xs md:text-sm">
                                 <font-awesome-icon :icon="['fas', 'chart-simple']" class="text-indigo-400" />
                                 <span>Analíticas en vivo</span>
                             </div>
                             <div
-                                class="flex items-center gap-2 text-gray-400 bg-gray-900/50 px-4 py-2 rounded-lg border border-white/5">
+                                class="flex items-center gap-2 text-gray-400 bg-gray-900/50 px-3 py-1.5 md:px-4 md:py-2 rounded-lg border border-white/5 text-xs md:text-sm">
                                 <font-awesome-icon :icon="['fas', 'pen']" class="text-purple-400" />
                                 <span>Editor Visual</span>
                             </div>
                             <div
-                                class="flex items-center gap-2 text-gray-400 bg-gray-900/50 px-4 py-2 rounded-lg border border-white/5">
+                                class="flex items-center gap-2 text-gray-400 bg-gray-900/50 px-3 py-1.5 md:px-4 md:py-2 rounded-lg border border-white/5 text-xs md:text-sm">
                                 <font-awesome-icon :icon="['fas', 'users']" class="text-green-400" />
                                 <span>Gestión de Clientes</span>
                             </div>
