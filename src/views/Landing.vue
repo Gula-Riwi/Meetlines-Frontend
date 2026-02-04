@@ -593,7 +593,7 @@
 
                     <!-- Columna 2: Producto -->
                     <div>
-                        <h4 class="text-white font-bold text-lg mb-4 font-league">Producto</h4>
+                        <h4 class="text-white text-lg mb-4 font-league">Producto</h4>
                         <ul class="space-y-3">
                             <li>
                                 <a href="#features" 
@@ -621,7 +621,7 @@
 
                     <!-- Columna 3: Empresa -->
                     <div>
-                        <h4 class="text-white font-bold text-lg mb-4 font-league">Empresa</h4>
+                        <h4 class="text-white text-lg mb-4 font-league">Empresa</h4>
                         <ul class="space-y-3">
                             <li>
                                 <router-link to="/about" 
@@ -649,7 +649,7 @@
 
                     <!-- Columna 4: Soporte y Legal -->
                     <div>
-                        <h4 class="text-white font-bold text-lg mb-4 font-league">Soporte</h4>
+                        <h4 class="text-white text-lg mb-4 font-league">Soporte</h4>
                         <ul class="space-y-3">
                             <li>
                                 <router-link to="/help" 
@@ -704,7 +704,6 @@ import TextGenerateEffect from '@/components/TextGenerateEffect.vue';
 import InteractiveHoverButton from '@/components/InteractiveHoverButton.vue';
 import FlipCard from '@/components/FlipCard.vue';
 import TextReveal from '@/components/TextReveal.vue';
-import GlareCard from '@/components/GlareCard.vue';
 import NumberTicker from '@/components/NumberTicker.vue';
 import TextHighlight from '@/components/TextHighlight.vue';
 import AnimatedList from '@/components/AnimatedList.vue';
@@ -755,6 +754,7 @@ const notifications = [
     },
 ];
 
+// eslint-disable-next-line no-unused-vars
 const features = ref([
     {
         title: "Chatbots Inteligentes",

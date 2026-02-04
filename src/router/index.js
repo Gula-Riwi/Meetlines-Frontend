@@ -6,8 +6,6 @@ import { getCurrentSubdomain, isInProjectSubdomain } from '../services/tenantSer
 import Landing from '../views/Landing.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
-import Dashboard from '../views/Dashboard.vue'
-import EmployeeDashboard from '../views/EmployeeDashboard.vue';
 import VerifyEmail from '../views/VerifyEmail.vue';
 import ForgotPassword from '../views/ForgotPassword.vue';
 import ResetPassword from '../views/ResetPassword.vue';

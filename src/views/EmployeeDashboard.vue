@@ -493,10 +493,6 @@ const employeeInitials = computed(() => {
     return employeeName.value.substring(0, 2).toUpperCase();
 });
 
-const completedTasks = computed(() => {
-    return tasks.value.filter(task => task.completed).length;
-});
-
 const filteredAppointments = computed(() => {
     return appointments.value.filter(app => {
         let matchesDate = true;

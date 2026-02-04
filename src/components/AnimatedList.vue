@@ -35,6 +35,7 @@ async function startLoop() {
   }
 
   // Bucle infinito de animación
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     displayedItems.value.shift();
     displayedItems.value.push({
