@@ -20,7 +20,8 @@ import {
     faDumbbell, faPaperPlane, faRocket, faHandshake, faLightbulb, faShieldHalved, faTrophy,
     faSeedling, faMagnifyingGlass, faCreditCard, faSearch, faChevronDown, faHeadset,
     faLocationDot, faArrowRight, faLaptop, faHeart, faGraduationCap, faPlane,
-    faScissors, faScaleBalanced, faSpa, faHospital, faHand, faStar, faRotate
+    faScissors, faScaleBalanced, faSpa, faHospital, faHand, faStar, faRotate,
+    faTimes, faCircle
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faMeta, faWhatsapp, faInstagram, faCheck, faRobot, faFacebook, faUser,
@@ -31,7 +32,8 @@ library.add(faMeta, faWhatsapp, faInstagram, faCheck, faRobot, faFacebook, faUse
     faDumbbell, faPaperPlane, faRocket, faHandshake, faLightbulb, faShieldHalved, faTrophy,
     faSeedling, faMagnifyingGlass, faCreditCard, faSearch, faChevronDown, faHeadset,
     faLocationDot, faArrowRight, faLaptop, faHeart, faGraduationCap, faPlane,
-    faScissors, faScaleBalanced, faSpa, faHospital, faHand, faStar, faRotate)
+    faScissors, faScaleBalanced, faSpa, faHospital, faHand, faStar, faRotate,
+    faTimes, faCircle)
 
 const app = createApp(App)
 

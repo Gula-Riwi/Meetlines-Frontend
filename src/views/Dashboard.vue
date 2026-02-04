@@ -131,7 +131,9 @@
 
                             <div class="flex-1 space-y-4">
                                 <div v-if="highRiskClients.length > 0">
-                                    <h4 class="text-xs uppercase text-red-400 font-bold mb-2">🔴 Prioridad Alta</h4>
+                                    <h4 class="text-xs uppercase text-red-400 font-bold mb-2 flex items-center gap-1">
+                                        <font-awesome-icon :icon="['fas', 'circle']" class="text-red-500" /> Prioridad Alta
+                                    </h4>
                                     <div class="space-y-2">
                                         <div v-for="(risk, i) in highRiskClients.slice(0, 3)" :key="'h' + i"
                                             class="flex justify-between text-sm p-2 bg-red-500/10 rounded">
@@ -141,7 +143,8 @@
                                     </div>
                                 </div>
                                 <div v-if="mediumRiskClients.length > 0">
-                                    <h4 class="text-xs uppercase text-orange-400 font-bold mb-2 mt-2">🟠 Riesgo Medio
+                                    <h4 class="text-xs uppercase text-orange-400 font-bold mb-2 mt-2 flex items-center gap-1">
+                                        <font-awesome-icon :icon="['fas', 'circle']" class="text-orange-500" /> Riesgo Medio
                                     </h4>
                                     <div class="space-y-2">
                                         <div v-for="(risk, i) in mediumRiskClients.slice(0, 3)" :key="'m' + i"
@@ -296,7 +299,9 @@
                 class="bg-gray-900 rounded-2xl w-full max-w-lg border border-white/10 shadow-2xl overflow-hidden animate-fade-in-up">
                 <div class="p-6 border-b border-white/10 flex justify-between items-center">
                     <h2 class="text-xl font-bold text-white">Agendar Nueva Cita</h2>
-                    <button @click="closeCreateAppointmentModal" class="text-gray-400 hover:text-white">✕</button>
+                    <button @click="closeCreateAppointmentModal" class="text-gray-400 hover:text-white transition-colors">
+                        <font-awesome-icon :icon="['fas', 'times']" class="text-xl" />
+                    </button>
                 </div>
                 <form @submit.prevent="createAppointment" class="p-6 space-y-4">
                     <!-- Service Selection -->
