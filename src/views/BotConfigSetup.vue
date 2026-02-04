@@ -64,7 +64,9 @@
                                     ? 'border-indigo-500 bg-indigo-500/10'
                                     : 'border-white/10 bg-gray-900 hover:border-indigo-500/50 hover:bg-gray-800'
                             ]">
-                            <div class="text-5xl mb-4">{{ industry.emoji }}</div>
+                            <div class="w-16 h-16 bg-indigo-500/20 rounded-full flex items-center justify-center mb-4">
+                                <font-awesome-icon :icon="['fas', industry.icon]" class="text-3xl text-indigo-400" />
+                            </div>
                             <h3 class="text-xl font-bold mb-2">{{ industry.label }}</h3>
                             <p class="text-sm text-gray-400">{{ industry.description }}</p>
                         </div>
@@ -129,7 +131,9 @@
                     <div class="bg-gray-900 rounded-2xl border border-white/10 overflow-hidden">
                         <div class="p-6 border-b border-white/10 flex items-center justify-between">
                             <div class="flex items-center gap-4">
-                                <div class="text-3xl">👋</div>
+                                <div class="w-12 h-12 bg-indigo-500/20 rounded-full flex items-center justify-center">
+                                    <font-awesome-icon :icon="['fas', 'hand']" class="text-2xl text-indigo-400" />
+                                </div>
                                 <div>
                                     <h3 class="text-xl font-bold">Bot de Recepción</h3>
                                     <p class="text-sm text-gray-400">Saluda y da la bienvenida a tus clientes</p>
@@ -209,7 +213,9 @@
                     <div class="bg-gray-900 rounded-2xl border border-white/10 overflow-hidden">
                         <div class="p-6 border-b border-white/10 flex items-center justify-between">
                             <div class="flex items-center gap-4">
-                                <div class="text-3xl">📅</div>
+                                <div class="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center">
+                                    <font-awesome-icon :icon="['fas', 'calendar-days']" class="text-2xl text-purple-400" />
+                                </div>
                                 <div>
                                     <h3 class="text-xl font-bold">Bot Transaccional</h3>
                                     <p class="text-sm text-gray-400">Gestiona citas y reservas automáticamente</p>
@@ -318,7 +324,9 @@
                     <div class="bg-gray-900 rounded-2xl border border-white/10 overflow-hidden">
                         <div class="p-6 border-b border-white/10 flex items-center justify-between">
                             <div class="flex items-center gap-4">
-                                <div class="text-3xl">⭐</div>
+                                <div class="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center">
+                                    <font-awesome-icon :icon="['fas', 'star']" class="text-2xl text-yellow-400" />
+                                </div>
                                 <div>
                                     <h3 class="text-xl font-bold">Bot de Feedback</h3>
                                     <p class="text-sm text-gray-400">Recolecta opiniones de tus clientes</p>
@@ -368,7 +376,9 @@
                     <div class="bg-gray-900 rounded-2xl border border-white/10 overflow-hidden">
                         <div class="p-6 border-b border-white/10 flex items-center justify-between">
                             <div class="flex items-center gap-4">
-                                <div class="text-3xl">🔄</div>
+                                <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center">
+                                    <font-awesome-icon :icon="['fas', 'rotate']" class="text-2xl text-green-400" />
+                                </div>
                                 <div>
                                     <h3 class="text-xl font-bold">Bot de Reactivación</h3>
                                     <p class="text-sm text-gray-400">Recupera clientes inactivos</p>
@@ -460,7 +470,9 @@
                     <div class="bg-gray-900 rounded-2xl border border-white/10 overflow-hidden">
                         <div class="p-6 border-b border-white/10 flex items-center justify-between">
                             <div class="flex items-center gap-4">
-                                <div class="text-3xl">⚙️</div>
+                                <div class="w-12 h-12 bg-gray-500/20 rounded-full flex items-center justify-center">
+                                    <font-awesome-icon :icon="['fas', 'cog']" class="text-2xl text-gray-400" />
+                                </div>
                                 <div>
                                     <h3 class="text-xl font-bold">Configuración Avanzada</h3>
                                     <p class="text-sm text-gray-400">Opciones adicionales para tu bot</p>
@@ -535,20 +547,20 @@
                             <p class="text-sm text-gray-400 mb-4">Bots Activos</p>
                             <div class="flex flex-wrap gap-2">
                                 <span v-if="config.receptionConfig.enabled"
-                                    class="px-4 py-2 bg-indigo-600/20 text-indigo-400 rounded-full text-sm font-medium">
-                                    👋 Recepción
+                                    class="px-4 py-2 bg-indigo-600/20 text-indigo-400 rounded-full text-sm font-medium flex items-center gap-2">
+                                    <font-awesome-icon :icon="['fas', 'hand']" /> Recepción
                                 </span>
                                 <span v-if="config.transactionalConfig.enabled"
-                                    class="px-4 py-2 bg-indigo-600/20 text-indigo-400 rounded-full text-sm font-medium">
-                                    📅 Transaccional
+                                    class="px-4 py-2 bg-purple-600/20 text-purple-400 rounded-full text-sm font-medium flex items-center gap-2">
+                                    <font-awesome-icon :icon="['fas', 'calendar-days']" /> Transaccional
                                 </span>
                                 <span v-if="config.feedbackConfig.enabled"
-                                    class="px-4 py-2 bg-indigo-600/20 text-indigo-400 rounded-full text-sm font-medium">
-                                    ⭐ Feedback
+                                    class="px-4 py-2 bg-yellow-600/20 text-yellow-400 rounded-full text-sm font-medium flex items-center gap-2">
+                                    <font-awesome-icon :icon="['fas', 'star']" /> Feedback
                                 </span>
                                 <span v-if="config.reactivationConfig.enabled"
-                                    class="px-4 py-2 bg-indigo-600/20 text-indigo-400 rounded-full text-sm font-medium">
-                                    🔄 Reactivación
+                                    class="px-4 py-2 bg-green-600/20 text-green-400 rounded-full text-sm font-medium flex items-center gap-2">
+                                    <font-awesome-icon :icon="['fas', 'rotate']" /> Reactivación
                                 </span>
                             </div>
                         </div>
@@ -609,12 +621,12 @@ const isEditMode = ref(false);
 const steps = ['Industria', 'Básico', 'Bots', 'Revisar'];
 
 const industries = [
-    { value: 'barbershop', label: 'Barbería', emoji: '💈', description: 'Cortes y servicios de barbería' },
-    { value: 'lawyer', label: 'Abogado', emoji: '⚖️', description: 'Servicios legales y asesoría' },
-    { value: 'spa', label: 'Spa', emoji: '🧖', description: 'Tratamientos y masajes' },
-    { value: 'clinic', label: 'Clínica', emoji: '🏥', description: 'Consultas médicas' },
-    { value: 'gym', label: 'Gimnasio', emoji: '💪', description: 'Fitness y entrenamiento' },
-    { value: 'general', label: 'General', emoji: '🏢', description: 'Negocio general' }
+    { value: 'barbershop', label: 'Barbería', icon: 'scissors', description: 'Cortes y servicios de barbería' },
+    { value: 'lawyer', label: 'Abogado', icon: 'scale-balanced', description: 'Servicios legales y asesoría' },
+    { value: 'spa', label: 'Spa', icon: 'spa', description: 'Tratamientos y masajes' },
+    { value: 'clinic', label: 'Clínica', icon: 'hospital', description: 'Consultas médicas' },
+    { value: 'gym', label: 'Gimnasio', icon: 'dumbbell', description: 'Fitness y entrenamiento' },
+    { value: 'general', label: 'General', icon: 'building', description: 'Negocio general' }
 ];
 
 const tones = [
